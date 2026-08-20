@@ -6,17 +6,19 @@
 <title>2027 届用研校招岗位库</title>
 <style>
   :root{
-    --paper:#faf7f2;
+    --paper:#f5f6fa;
     --card:#ffffff;
-    --ink:#1c2733;
-    --ink-2:#4a5866;
-    --ink-3:#8a949e;
-    --line:#e6e0d6;
-    --coral:#e2553f;
-    --coral-deep:#c43e2b;
-    --navy:#21314a;
-    --green:#1f7a5a;
-    --shadow:0 1px 2px rgba(28,39,51,.06), 0 8px 24px rgba(28,39,51,.06);
+    --ink:#1c2333;
+    --ink-2:#4b5563;
+    --ink-3:#6b7280;
+    --line:#e7e9f0;
+    --coral:#4f46e5;
+    --coral-deep:#312e81;
+    --navy:#312e81;
+    --green:#059669;
+    --purple:#7c3aed;
+    --rec:#f59e0b;
+    --shadow:0 1px 2px rgba(16,24,40,.05), 0 4px 14px rgba(16,24,40,.06);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -30,34 +32,76 @@
 
   /* ---------- Header ---------- */
   .masthead{
-    background:var(--navy);color:#f3efe7;
+    background:linear-gradient(135deg,#312e81 0%,#4f46e5 55%,#7c3aed 100%);color:#fff;
     padding:30px 0 34px;
-    background-image:radial-gradient(1100px 260px at 85% -60%, rgba(226,85,63,.35), transparent 60%);
   }
   .masthead .eyebrow{
-    font-size:12px;letter-spacing:.18em;color:#c9c3b4;text-transform:uppercase;
+    font-size:12px;letter-spacing:.18em;color:rgba(255,255,255,.74);text-transform:uppercase;
     display:flex;align-items:center;gap:10px;margin-bottom:10px;
   }
-  .masthead .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--coral);display:inline-block;}
+  .masthead .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:#fbbf24;display:inline-block;}
   .masthead h1{
     font-family:"Songti SC","STSong","Noto Serif SC",Georgia,serif;
     font-size:clamp(26px,4vw,40px);line-height:1.18;margin:0 0 6px;font-weight:600;letter-spacing:.01em;
   }
-  .masthead p{color:#d8d3c6;margin:0;max-width:640px;font-size:15px;}
+  .masthead p{color:rgba(255,255,255,.82);margin:0;max-width:640px;font-size:15px;}
   .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
   .stat{
     display:inline-flex;align-items:baseline;gap:6px;
-    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
     border-radius:10px;padding:10px 14px;
   }
   .stat b{font-size:22px;font-family:"Songti SC","STSong",serif;color:#fff;font-weight:600;}
-  .stat span{font-size:12px;color:#c9c3b4;}
+  .stat span{font-size:12px;color:rgba(255,255,255,.78);}
 
   /* ---------- Layout ---------- */
   .frame{display:grid;grid-template-columns:250px 1fr;gap:26px;padding:26px 0 60px;}
   .side{position:sticky;top:20px;align-self:start;}
+  .company-board{padding:28px 0 2px;}
+  .frame .company-board{padding-top:0;}
+  .company-board-head{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;}
+  .company-eyebrow{font-size:11px;letter-spacing:.14em;color:var(--coral);font-weight:700;margin-bottom:5px;}
+  .company-board h2{font-size:25px;line-height:1.2;margin:0 0 5px;font-weight:600;}
+  .company-board-head p{font-size:13px;color:var(--ink-3);margin:0;max-width:650px;}
+  .company-tools{display:flex;align-items:center;gap:8px;min-width:310px;}
+  .company-search,.company-status-filter{
+    height:38px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);
+    font:inherit;font-size:13px;padding:0 11px;outline:none;box-shadow:var(--shadow);
+  }
+  .company-search{min-width:138px;flex:1;}
+  .company-status-filter{min-width:158px;cursor:pointer;}
+  .company-search:focus,.company-status-filter:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(79,70,229,.12);}
+  .company-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px;color:var(--ink-3);font-size:11.5px;}
+  .company-legend>span{display:inline-flex;align-items:center;gap:5px;}
+  .legend-dot{width:7px;height:7px;border-radius:50%;display:inline-block;}
+  .legend-dot.open{background:var(--green);}
+  .legend-dot.special{background:var(--rec);}
+  .legend-dot.pending{background:#9ca3af;}
+  .company-selected-note{margin-left:auto;color:var(--coral);font-weight:600;}
+  .company-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:13px;}
+  .company-card{
+    appearance:none;text-align:left;width:100%;min-height:136px;background:var(--card);color:var(--ink);
+    border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:12px 13px;
+    cursor:pointer;font:inherit;transition:transform .15s,box-shadow .15s,border-color .15s,background .15s;
+  }
+  .company-card:hover,.company-card.selected{border-color:var(--coral);box-shadow:0 7px 18px rgba(79,70,229,.14);transform:translateY(-1px);}
+  .company-card.selected{background:#f5f3ff;}
+  .company-card:focus-visible{outline:3px solid rgba(79,70,229,.24);outline-offset:2px;}
+  .company-card-head{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-bottom:9px;}
+  .company-logo{width:34px;height:34px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;letter-spacing:-.04em;}
+  .tone-indigo{background:#eef2ff;color:#4338ca;}.tone-violet{background:#f5f3ff;color:#7c3aed;}.tone-blue{background:#eff6ff;color:#2563eb;}
+  .tone-amber{background:#fffbeb;color:#b45309;}.tone-emerald{background:#ecfdf5;color:#047857;}.tone-slate{background:#f1f5f9;color:#475569;}
+  .tone-orange{background:#fff7ed;color:#c2410c;}.tone-red{background:#fef2f2;color:#b91c1c;}
+  .company-jobs{font-size:11px;color:var(--ink-3);white-space:nowrap;}
+  .company-name{font-size:16px;font-weight:650;line-height:1.25;margin-bottom:8px;}
+  .company-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+  .company-meta .tag{font-size:10.5px;padding:1px 6px;}
+  .company-status{font-size:10.5px;padding:1px 6px;border-radius:999px;white-space:nowrap;}
+  .company-status.open{color:#047857;background:#ecfdf5;}.company-status.special{color:#b45309;background:#fffbeb;}.company-status.pending{color:#64748b;background:#f1f5f9;}
+  .company-research{font-size:11.5px;color:var(--ink-2);line-height:1.35;}
+  .company-side-hint{font-size:11px;color:var(--ink-3);line-height:1.45;margin:0 0 6px;}
   .panel{
-    background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
+    background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
     padding:18px 18px 16px;
   }
   .panel h3{margin:0 0 4px;font-size:14px;font-weight:600;}
@@ -73,7 +117,7 @@
     display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:pointer;
     font-size:13px;color:var(--ink-2);transition:background .12s;
   }
-  .fitem:hover{background:#f4f0e8;}
+  .fitem:hover{background:#f1f2f7;}
   .fitem input{accent-color:var(--coral);width:15px;height:15px;margin:0;cursor:pointer;}
   .fcount{margin-left:auto;font-size:11px;color:var(--ink-3);}
   .fitem.on{color:var(--ink);font-weight:600;}
@@ -84,26 +128,26 @@
   .toolbar .count{font-size:13px;color:var(--ink-3);}
   .active-chips{display:flex;gap:6px;flex-wrap:wrap;}
   .chip{
-    display:inline-flex;align-items:center;gap:6px;background:#f3eee5;color:var(--ink-2);
+    display:inline-flex;align-items:center;gap:6px;background:#f8f9fc;color:var(--ink-2);
     border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;
   }
   .chip .x{cursor:pointer;color:var(--ink-3);line-height:1;}
-  .chip-flag{background:#fdeae6;color:var(--coral-deep);border-color:#f5cdc5;}
+  .chip-flag{background:#fffbeb;color:#b45309;border-color:#fde68a;}
 
   .job{
     background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
     padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:box-shadow .15s, transform .15s, border-color .15s;
   }
-  .job:hover{border-color:var(--coral);box-shadow:0 6px 22px rgba(226,85,63,.14);transform:translateY(-1px);}
+  .job:hover{border-color:var(--coral);box-shadow:0 6px 22px rgba(79,70,229,.14);transform:translateY(-1px);}
   .job-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
   .job-co{font-size:11.5px;color:var(--ink-3);letter-spacing:.08em;margin-bottom:2px;}
   .job h4{margin:0 0 6px;font-size:18px;font-family:"Songti SC","STSong",serif;font-weight:600;color:var(--ink);}
   .job-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
-  .tag{font-size:11.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--ink-2);background:#fbf9f4;}
-  .tag.t-type-a{color:#5b4a9b;border-color:#d9d2ef;background:#f4f1fc;}
-  .tag.t-type-b{color:#1f7a86;border-color:#c9e2e6;background:#eef8f9;}
-  .tag.t-type-c{color:#a1541a;border-color:#f0d7b6;background:#fbf3e6;}
-  .tag.t-flag{color:var(--coral-deep);border-color:#f5cdc5;background:#fdeae6;}
+  .tag{font-size:11.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--ink-2);background:#fff;}
+  .tag.t-type-a{color:#5b21b6;border-color:#ddd6fe;background:#f5f3ff;}
+  .tag.t-type-b{color:#0369a1;border-color:#bae6fd;background:#f0f9ff;}
+  .tag.t-type-c{color:#b45309;border-color:#fde68a;background:#fffbeb;}
+  .tag.t-flag{color:#b45309;border-color:#fde68a;background:#fffbeb;}
   .job p{color:var(--ink-2);font-size:13.5px;margin:0 0 10px;}
   .job-foot{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-3);}
   .job-go{color:var(--coral);font-weight:600;font-size:12.5px;}
@@ -123,7 +167,7 @@
   .d-cta{text-align:right;}
   .btn{
     display:inline-flex;align-items:center;gap:8px;background:var(--coral);color:#fff;border:none;border-radius:10px;
-    padding:11px 18px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;box-shadow:0 6px 16px rgba(226,85,63,.28);
+    padding:11px 18px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;box-shadow:0 6px 16px rgba(79,70,229,.28);
   }
   .btn:hover{background:var(--coral-deep);}
   .d-verified{font-size:11.5px;color:var(--green);margin-top:8px;}
@@ -133,19 +177,24 @@
   }
   .kicker{font-size:11px;letter-spacing:.14em;color:var(--coral);margin-bottom:10px;font-weight:600;}
   .jd{
-    background:#f6f2ea;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+    background:#f8f9fc;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
     font-size:13px;color:var(--ink-2);white-space:pre-line;line-height:1.7;
   }
   .jd-note{font-size:11px;color:var(--ink-3);margin-top:8px;}
   .kv{font-size:13px;color:var(--ink-2);line-height:1.85;}
   .kv b{color:var(--ink);font-weight:600;}
   .aside-card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px;margin-bottom:14px;}
-  .aside-card:first-child{background:linear-gradient(180deg,#fff 0%, #fdf3f0 100%);border-color:#f2d9d2;}
+  .aside-card:first-child{background:linear-gradient(180deg,#fff 0%, #f5f3ff 100%);border-color:#ddd6fe;}
 
   .footer{color:var(--ink-3);font-size:12px;padding:0 0 40px;text-align:center;line-height:1.9;}
 
   /* ---------- Responsive ---------- */
   @media (max-width:820px){
+    .company-board{padding-top:20px;}
+    .company-board-head{align-items:stretch;flex-direction:column;gap:12px;}
+    .company-tools{min-width:0;width:100%;}
+    .company-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .company-selected-note{margin-left:0;}
     .frame{grid-template-columns:1fr;padding-top:18px;}
     .side{position:static;}
     .panel{padding:14px;}
@@ -155,6 +204,13 @@
     .d-body{grid-template-columns:1fr;}
     .d-head{flex-direction:column;}
     .d-cta{text-align:left;width:100%;}
+  }
+  @media (max-width:480px){
+    .wrap{padding:0 16px;}
+    .company-tools{flex-direction:column;align-items:stretch;}
+    .company-search,.company-status-filter{width:100%;}
+    .company-grid{grid-template-columns:1fr;}
+    .company-card{min-height:0;}
   }
 </style>
 </head>
@@ -167,7 +223,8 @@
     <p>只收录 2027 届正式校招研究岗。岗位分析、投递建议与官网公开岗位内容一页看全，帮你从「知道在招」直接走到「知道怎么投」。</p>
     <div class="meta">
       <div class="stat"><b id="statJobs">0</b><span>个正式研究岗</span></div>
-      <div class="stat"><b id="statCos">0</b><span>家公司</span></div>
+      <div class="stat"><b id="statCos">0</b><span>家公司有岗</span></div>
+      <div class="stat"><b id="statCompanies">0</b><span>公司库</span></div>
       <div class="stat"><b id="statNum">0</b><span>公开名额（下限）</span></div>
     </div>
   </div>
@@ -176,37 +233,72 @@
 <div class="wrap">
 
   <!-- ============ LIST VIEW ============ -->
-  <main id="view-list" class="frame">
-    <aside class="side">
-      <div class="panel">
-        <h3>筛选岗位</h3>
-        <p class="sub">数据快照：2026-08-14</p>
+  <main id="view-list">
+    <div class="frame">
+      <aside class="side">
+        <div class="panel">
+          <h3>筛选岗位</h3>
+          <p class="sub">数据快照：2026-08-14</p>
 
-        <div class="fgroup">
-          <div class="flabel">行业 <button data-reset="ind">重置</button></div>
-          <div id="f-industry"></div>
+          <div class="fgroup">
+            <div class="flabel">公司呈现 <button data-company-clear="all">清除选择</button></div>
+            <p class="company-side-hint">公司卡片在上方点击；这里控制公司区的显示范围。</p>
+            <label class="fitem"><input type="checkbox" id="company-only-open"> 只看已开启正式校招</label>
+            <label class="fitem"><input type="checkbox" id="company-only-research"> 只看已有用研岗</label>
+          </div>
+
+          <div class="fgroup">
+            <div class="flabel">行业 <button data-reset="ind">重置</button></div>
+            <div id="f-industry"></div>
+          </div>
+
+          <div class="fgroup">
+            <div class="flabel">类型 <button data-reset="type">重置</button></div>
+            <div id="f-type"></div>
+          </div>
+
+          <div class="fgroup">
+            <div class="flabel">只看高门槛</div>
+            <label class="fitem"><input type="checkbox" id="f-onlyflag"> 硕博 / AI 要求</label>
+          </div>
         </div>
+      </aside>
 
-        <div class="fgroup">
-          <div class="flabel">类型 <button data-reset="type">重置</button></div>
-          <div id="f-type"></div>
+      <section>
+        <section class="company-board">
+          <div class="company-board-head">
+            <div>
+              <div class="company-eyebrow">先看公司，再看岗位</div>
+              <h2 class="serif">公司库</h2>
+              <p>点击公司卡片，右侧只显示该公司的正式研究岗；岗位数为当前已核验的用研/市场研究/体验研究岗位。</p>
+            </div>
+            <div class="company-tools">
+              <input id="company-search" class="company-search" placeholder="搜索公司" aria-label="搜索公司">
+              <select id="company-status-filter" class="company-status-filter" aria-label="筛选校招状态">
+                <option value="all">全部校招状态</option>
+                <option value="open">27届正式已开</option>
+                <option value="special">技术专项已开</option>
+                <option value="pending">尚未确认正式批</option>
+              </select>
+            </div>
+          </div>
+          <div class="company-legend">
+            <span><i class="legend-dot open"></i>正式校招已开</span>
+            <span><i class="legend-dot special"></i>技术专项已开</span>
+            <span><i class="legend-dot pending"></i>暂未确认正式批</span>
+            <span class="company-selected-note" id="company-selected-note">未选择公司 · 显示全部岗位</span>
+          </div>
+          <div class="company-grid" id="company-grid"></div>
+        </section>
+
+        <div class="toolbar">
+          <div class="title serif">岗位列表</div>
+          <div class="count" id="listCount"></div>
         </div>
-
-        <div class="fgroup">
-          <div class="flabel">只看高门槛</div>
-          <label class="fitem"><input type="checkbox" id="f-onlyflag"> 硕博 / AI 要求</label>
-        </div>
-      </div>
-    </aside>
-
-    <section>
-      <div class="toolbar">
-        <div class="title serif">岗位列表</div>
-        <div class="count" id="listCount"></div>
-      </div>
-      <div class="active-chips" id="activeChips"></div>
-      <div id="list"></div>
-    </section>
+        <div class="active-chips" id="activeChips"></div>
+        <div id="list"></div>
+      </section>
+    </div>
   </main>
 
   <!-- ============ DETAIL VIEW ============ -->
@@ -257,7 +349,7 @@ const JOBS = [
     advice:"适合：硕士在读、有行业研究或社区产品研究经验的同学。建议在简历中列出「研究问题 → 数据来源 → 方法 → 结论」四行式项目简介，熟悉基础 SQL 会成为明显优势。",
   },
   {
-    id:"jd-ur", co:"京东", title:"用户研究", industry:"互联网", type:"体验管理向",
+    id:"jd-ur", co:"京东", title:"用户研究", industry:"电商", type:"体验管理向",
     loc:"北京", num:"京东科技 / 京东零售双入口", degree:"本科及以上",
     url:"https://campus.jd.com/#/jobs",
     flags:["AI 写入职责"],
@@ -267,7 +359,7 @@ const JOBS = [
     advice:"适合：能证明自己会用 AI 提效、并且讲得清人工校验边界的同学。建议在作品集中放一段「我用 AI 辅助完成了一轮定性分析的完整链路」，并附上你是如何避免 AI 幻觉或错读的说明。",
   },
   {
-    id:"oppo-ur", co:"OPPO", title:"用户研究经理", industry:"互联网", type:"体验管理向",
+    id:"oppo-ur", co:"OPPO", title:"用户研究经理", industry:"智能硬件", type:"体验管理向",
     loc:"深圳", num:"2 人", degree:"本科及以上",
     url:"https://careers.oppo.com/university/oppo/campus/post/1837?recruitType=Graduate",
     flags:["AI 写入职责"],
@@ -277,7 +369,7 @@ const JOBS = [
     advice:"适合：有产品侧用研或设计研究实习、对消费电子感兴趣的同学。建议在简历中单列「我如何用 AI 提升研究效率」的实例（哪怕是问卷设计或访谈整理），因为这条很可能成为 2027 届 OPPO 的筛选关注点。",
   },
   {
-    id:"vivo-uxm", co:"vivo", title:"市场与用户研究经理", industry:"互联网", type:"体验管理向",
+    id:"vivo-uxm", co:"vivo", title:"市场与用户研究经理", industry:"智能硬件", type:"体验管理向",
     loc:"东莞 / 上海 / 深圳", num:"20 人", degree:"本科及以上",
     url:"https://hr-campus.vivo.com/campus/detail?jobAdId=3a079cac-f687-4461-898c-80dad1f0b2c2",
     flags:["20 人"],
@@ -287,7 +379,7 @@ const JOBS = [
     advice:"适合：希望进终端厂商、方法论扎实但从大厂海量竞争中出来的同学。vivo 体量更大、名额更具体，投递成功率相对可感；记得在简历里同时体现「市场/行业视野」与「用户洞察」，它的岗位名是两个词。",
   },
   {
-    id:"vivo-uxm2", co:"vivo", title:"用户研究经理（IOT 方向）", industry:"互联网", type:"体验管理向",
+    id:"vivo-uxm2", co:"vivo", title:"用户研究经理（IOT 方向）", industry:"智能硬件", type:"体验管理向",
     loc:"东莞", num:"5 人", degree:"本科及以上",
     url:"https://hr-campus.vivo.com/campus/detail?jobAdId=40d705f1-3fbb-40b2-b1d6-7e7426d4d3e8",
     flags:["5 人"],
@@ -297,7 +389,7 @@ const JOBS = [
     advice:"适合：对智能家居、穿戴设备有真实兴趣的同学。建议准备 1 个硬件产品研究的小案例（哪怕是对某智能设备的个人体验拆解），这与「热爱消费电子」的筛选直觉同频。",
   },
   {
-    id:"vivo-insight-design", co:"vivo", title:"市场与用户洞察经理（设计方向）", industry:"互联网", type:"交互/设计向",
+    id:"vivo-insight-design", co:"vivo", title:"市场与用户洞察经理（设计方向）", industry:"智能硬件", type:"交互/设计向",
     loc:"东莞", num:"5 人", degree:"本科及以上",
     url:"https://hr-campus.vivo.com/campus/detail?jobAdId=f95165e5-cf47-43ff-aaa4-8f8e523ab7d9",
     flags:["5 人","AI 写入职责"],
@@ -307,7 +399,7 @@ const JOBS = [
     advice:"适合：设计研究、人机交互、心理学、市场研究背景，并且对消费电子有真实兴趣的同学。作品集要同时展示研究证据和设计判断：为什么选这个方法、洞察怎样改变了设计方案，以及你如何人工校验 AI 的分析结果。",
   },
   {
-    id:"vivo-hfe", co:"vivo", title:"人因研究工程师", industry:"互联网", type:"战略/策略向",
+    id:"vivo-hfe", co:"vivo", title:"人因研究工程师", industry:"智能硬件", type:"战略/策略向",
     loc:"上海", num:"5 人", degree:"硕士及以上",
     url:"https://hr-campus.vivo.com/campus/detail?jobAdId=f79e8d80-10a8-4131-b37b-3121c68b29f4",
     flags:["硕士门槛"],
@@ -317,7 +409,7 @@ const JOBS = [
     advice:"适合：硕博阶段做过人因、认知或实验心理研究的同学。请把「实验设计 → 样本 → 指标 → 结论」科学化表达放最前，公司甄别的是科研严谨度，不是作品集排版。",
   },
   {
-    id:"vivo-uxe", co:"vivo", title:"用户体验工程师", industry:"互联网", type:"交互/设计向",
+    id:"vivo-uxe", co:"vivo", title:"用户体验工程师", industry:"智能硬件", type:"交互/设计向",
     loc:"深圳 / 东莞", num:"5 人", degree:"本科及以上",
     url:"https://hr-campus.vivo.com/campus/detail?jobAdId=b26d7ff9-ed12-4636-b5c6-73127f5877f5",
     flags:["岗位名可不含『用研』"],
@@ -358,16 +450,102 @@ const JOBS = [
   },
 ];
 
+/* ---------------- 公司库 ----------------
+   公司状态是 2026-08-14 的公开渠道核验快照：
+   “尚未确认正式批”代表本次检索未找到可复核的 2027 届正式批，并不等于公司不会开放。
+   公司卡片不使用外部 logo 资源，首字标记用于保持静态页面可离线打开。
+   ---------------- */
+const COMPANIES = [
+  {name:"腾讯", mark:"腾", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"indigo"},
+  {name:"字节跳动", mark:"字", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"violet"},
+  {name:"快手", mark:"快", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"blue"},
+  {name:"京东", mark:"京", industry:"电商", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"amber"},
+  {name:"多益网络", mark:"多", industry:"游戏", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"emerald"},
+  {name:"OPPO", mark:"OP", industry:"智能硬件", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"blue"},
+  {name:"vivo", mark:"vi", industry:"智能硬件", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"indigo"},
+  {name:"小鹏汽车", mark:"鹏", industry:"汽车", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"violet"},
+  {name:"莉莉丝游戏", mark:"莉", industry:"游戏", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"amber"},
+  {name:"阿里巴巴", mark:"阿", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"orange"},
+  {name:"百度", mark:"百", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"blue"},
+  {name:"拼多多", mark:"拼", industry:"电商", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"red"},
+  {name:"网易游戏", mark:"游", industry:"游戏", status:"open", recruitment:"27届正式已开", research:"暂无可核验用研岗", tone:"red"},
+  {name:"蔚来", mark:"蔚", industry:"汽车", status:"open", recruitment:"27届批次已开", research:"暂无可核验用研岗 · 已剔除安全体验岗", tone:"indigo"},
+  {name:"大疆", mark:"疆", industry:"智能硬件", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"slate"},
+  {name:"滴滴", mark:"滴", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"emerald"},
+  {name:"哔哩哔哩", mark:"哔", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"blue"},
+  {name:"美团", mark:"美", industry:"互联网", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"amber"},
+  {name:"蚂蚁", mark:"蚁", industry:"互联网", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"blue"},
+  {name:"华为", mark:"华", industry:"智能硬件", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"red"},
+  {name:"小米", mark:"米", industry:"智能硬件", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"orange"},
+  {name:"米哈游", mark:"米", industry:"游戏", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"violet"},
+  {name:"理想汽车", mark:"理", industry:"汽车", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"slate"},
+  {name:"荣耀", mark:"荣", industry:"智能硬件", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
+  {name:"贝壳", mark:"贝", industry:"房地产", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
+  {name:"小红书", mark:"红", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
+  {name:"携程", mark:"携", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
+  {name:"得物", mark:"得", industry:"电商", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
+  {name:"SHEIN", mark:"SH", industry:"电商", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"slate"},
+  {name:"网易互联网", mark:"网", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
+  {name:"腾讯音乐", mark:"TME", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"emerald"},
+  {name:"吉利/极氪", mark:"吉", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
+  {name:"比亚迪", mark:"比", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
+  {name:"零跑汽车", mark:"零", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"indigo"},
+  {name:"长城汽车", mark:"长", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"slate"},
+  {name:"上汽集团", mark:"上", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
+  {name:"广汽埃安", mark:"埃", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
+  {name:"完美世界", mark:"完", industry:"游戏", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"amber"},
+  {name:"畅游", mark:"畅", industry:"游戏", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
+  {name:"4399", mark:"43", industry:"游戏", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
+  {name:"联想", mark:"联", industry:"智能硬件", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"indigo"},
+  {name:"唯品会", mark:"唯", industry:"电商", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
+  {name:"汽车之家", mark:"汽", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"slate"},
+  {name:"知乎", mark:"知", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
+  {name:"Soul", mark:"So", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
+  {name:"哈啰", mark:"哈", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"emerald"},
+  {name:"BOSS直聘", mark:"B", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"}
+];
+
 /* ---------------- 状态 ---------------- */
-const state = { ind:[], type:[], onlyflag:false };
+const state = { ind:[], type:[], company:[], onlyflag:false, companyOnlyOpen:false, companyOnlyResearch:false, companyStatus:"all", companyQuery:"" };
 const INDUSTRIES = [...new Set(JOBS.map(j=>j.industry))];
 const TYPES = ["战略/策略向","交互/设计向","体验管理向"];
 
 /* ---------------- 渲染 ---------------- */
 const $ = id => document.getElementById(id);
 
+function companyJobs(name){
+  return JOBS.filter(j=>j.co===name);
+}
+
+function companyMatches(c){
+  const q = state.companyQuery.trim().toLowerCase();
+  if(state.companyStatus!=="all" && c.status!==state.companyStatus) return false;
+  if(state.companyOnlyOpen && c.status!=="open") return false;
+  if(state.companyOnlyResearch && companyJobs(c.name).length===0) return false;
+  if(q && !c.name.toLowerCase().includes(q)) return false;
+  return true;
+}
+
+function renderCompanies(){
+  const cards = COMPANIES.filter(companyMatches);
+  $("company-grid").innerHTML = cards.length ? cards.map(c=>{
+    const jobs = companyJobs(c.name);
+    const selected = state.company.includes(c.name);
+    return `<button type="button" class="company-card ${selected?'selected':''}" data-company="${c.name}" aria-pressed="${selected}" aria-label="筛选 ${c.name} 的岗位">
+      <div class="company-card-head"><span class="company-logo tone-${c.tone}">${c.mark}</span><span class="company-jobs">${jobs.length} 个岗位</span></div>
+      <div class="company-name">${c.name}</div>
+      <div class="company-meta"><span class="tag">${c.industry}</span><span class="company-status ${c.status}">${c.recruitment}</span></div>
+      <div class="company-research">${jobs.length ? "✓ 当前有用研岗位" : c.research}</div>
+    </button>`;
+  }).join("") : `<div class="empty company-empty"><h4>没有匹配的公司</h4><p>试试清空搜索词，或放宽左侧的公司呈现条件。</p></div>`;
+  $("company-selected-note").textContent = state.company.length
+    ? `已选 ${state.company.join("、")} · 岗位列表同步筛选`
+    : "未选择公司 · 显示全部岗位";
+}
+
 function filters(){
   let list = JOBS;
+  if(state.company.length) list = list.filter(j=>state.company.includes(j.co));
   if(state.ind.length) list = list.filter(j=>state.ind.includes(j.industry));
   if(state.type.length) list = list.filter(j=>state.type.includes(j.type));
   if(state.onlyflag) list = list.filter(j=>j.flags && j.flags.length);
@@ -375,6 +553,8 @@ function filters(){
 }
 
 function renderSidebar(){
+  $("company-only-open").checked = state.companyOnlyOpen;
+  $("company-only-research").checked = state.companyOnlyResearch;
   $("f-industry").innerHTML = INDUSTRIES.map(i=>{
     const n = JOBS.filter(j=>j.industry===i).length;
     const on = state.ind.includes(i);
@@ -390,11 +570,13 @@ function renderSidebar(){
 function renderList(){
   const list = filters();
   $("listCount").textContent = `共 ${list.length} 个岗位`;
-  $("activeChips").innerHTML = [
+  const chips = [
+    ...state.company.map(c=>({v:c,typ:'company'})),
     ...state.ind.map(i=>({v:i,typ:'ind'})),
     ...state.type.map(t=>({v:t,typ:'type'}))
-  ].map(({v,typ})=>`<span class="chip">${v}<span class="x" data-clear="${typ}" data-v="${v}">×</span></span>`)
-   .join(state.onlyflag ? `<span class="chip chip-flag">硕博 / AI 要求<span class="x" data-clear="flag">×</span></span>` : "");
+  ];
+  if(state.onlyflag) chips.push({v:"硕博 / AI 要求",typ:"flag"});
+  $("activeChips").innerHTML = chips.map(({v,typ})=>`<span class="chip ${typ==='flag'?'chip-flag':''}">${v}<span class="x" data-clear="${typ}" data-v="${v}">×</span></span>`).join("");
 
   $("list").innerHTML = list.length ? list.map(j=>`
     <div class="job" onclick="openDetail('${j.id}')">
@@ -414,7 +596,7 @@ function renderList(){
       <p>${j.tagline}</p>
       <div class="job-foot"><span>${j.co} · ${j.loc}</span><span>${j.degree}</span></div>
     </div>`).join("")
-    : `<div class="empty"><h4>没有匹配的岗位</h4><p>试试减少筛选条件，或重置行业 / 类型。</p></div>`;
+    : `<div class="empty"><h4>没有匹配的岗位</h4><p>试试减少筛选条件，或重置公司 / 行业 / 类型。</p></div>`;
 }
 
 function renderDetail(id){
@@ -476,12 +658,18 @@ function openDetail(id){
 
 function showList(){
   $("view-detail").style.display="none";
-  document.querySelector("#view-list").style.display="grid";
+  document.querySelector("#view-list").style.display="block";
   window.scrollTo(0,0);
 }
 
 /* ---------------- 事件 ---------------- */
 document.addEventListener("click", e=>{
+  const company = e.target.closest("[data-company]");
+  if(company){
+    const name = company.dataset.company;
+    state.company = state.company.includes(name) ? state.company.filter(x=>x!==name) : [...state.company, name];
+    renderCompanies(); renderSidebar(); renderList(); return;
+  }
   const ind = e.target.closest("[data-ind]");
   const typ = e.target.closest("[data-type]");
   if(ind){
@@ -494,6 +682,11 @@ document.addEventListener("click", e=>{
     state.type = state.type.includes(w) ? state.type.filter(x=>x!==w) : [...state.type, w];
     renderSidebar(); renderList(); return;
   }
+  const companyClear = e.target.closest("[data-company-clear]");
+  if(companyClear){
+    state.company = [];
+    renderCompanies(); renderSidebar(); renderList(); return;
+  }
   const reset = e.target.closest("[data-reset]");
   if(reset){
     state[reset.dataset.reset] = [];
@@ -502,18 +695,41 @@ document.addEventListener("click", e=>{
   const clear = e.target.closest("[data-clear]");
   if(clear){
     if(clear.dataset.clear==='flag') state.onlyflag=false;
+    else if(clear.dataset.clear==='company') state.company = state.company.filter(x=>x!==clear.dataset.v);
     else state[clear.dataset.clear] = state[clear.dataset.clear].filter(x=>x!==clear.dataset.v);
-    renderSidebar(); renderList(); return;
+    renderCompanies(); renderSidebar(); renderList(); return;
   }
   const flagBox = e.target.closest("#f-onlyflag");
   if(flagBox){ state.onlyflag = flagBox.checked; renderSidebar(); renderList(); return; }
 });
 
+document.addEventListener("change", e=>{
+  if(e.target.matches("#company-only-open")){
+    state.companyOnlyOpen = e.target.checked;
+    renderCompanies(); return;
+  }
+  if(e.target.matches("#company-only-research")){
+    state.companyOnlyResearch = e.target.checked;
+    renderCompanies(); return;
+  }
+});
+
+$("company-search").addEventListener("input", e=>{
+  state.companyQuery = e.target.value;
+  renderCompanies();
+});
+$("company-status-filter").addEventListener("change", e=>{
+  state.companyStatus = e.target.value;
+  renderCompanies();
+});
+
 /* ---------------- 初始化 ---------------- */
 $("statJobs").textContent = JOBS.length;
 $("statCos").textContent = new Set(JOBS.map(j=>j.co)).size;
+$("statCompanies").textContent = COMPANIES.length;
 $("statNum").textContent = JOBS.reduce((s,j)=>{ const m = j.num.match(/(\d+)\s*人/); return s + (m ? +m[1] : 0); },0);
 renderSidebar();
+renderCompanies();
 renderList();
 </script>
 </body>
