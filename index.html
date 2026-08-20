@@ -99,6 +99,10 @@
   .company-status{font-size:10.5px;padding:1px 6px;border-radius:999px;white-space:nowrap;}
   .company-status.open{color:#047857;background:#ecfdf5;}.company-status.special{color:#b45309;background:#fffbeb;}.company-status.pending{color:#64748b;background:#f1f5f9;}
   .company-research{font-size:11.5px;color:var(--ink-2);line-height:1.35;}
+  .company-board-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;min-height:28px;color:var(--ink-3);font-size:11.5px;}
+  .company-toggle{display:inline-flex;align-items:center;gap:5px;background:#fff;color:var(--coral);border:1px solid #c7d2fe;border-radius:999px;padding:5px 11px;font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;}
+  .company-toggle:hover{background:#eef2ff;border-color:var(--coral);}
+  .company-toggle:focus-visible{outline:3px solid rgba(79,70,229,.2);outline-offset:2px;}
   .company-side-hint{font-size:11px;color:var(--ink-3);line-height:1.45;margin:0 0 6px;}
   .panel{
     background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
@@ -289,6 +293,10 @@
             <span class="company-selected-note" id="company-selected-note">未选择公司 · 显示全部岗位</span>
           </div>
           <div class="company-grid" id="company-grid"></div>
+          <div class="company-board-footer">
+            <span id="company-display-count"></span>
+            <button type="button" class="company-toggle" id="company-toggle" data-company-toggle aria-expanded="false">展开全部公司 ↓</button>
+          </div>
         </section>
 
         <div class="toolbar">
@@ -506,7 +514,7 @@ const COMPANIES = [
 ];
 
 /* ---------------- 状态 ---------------- */
-const state = { ind:[], type:[], company:[], onlyflag:false, companyOnlyOpen:false, companyOnlyResearch:false, companyStatus:"all", companyQuery:"" };
+const state = { ind:[], type:[], company:[], onlyflag:false, companyOnlyOpen:false, companyOnlyResearch:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
 const INDUSTRIES = [...new Set(JOBS.map(j=>j.industry))];
 const TYPES = ["战略/策略向","交互/设计向","体验管理向"];
 
@@ -527,8 +535,11 @@ function companyMatches(c){
 }
 
 function renderCompanies(){
-  const cards = COMPANIES.filter(companyMatches);
-  $("company-grid").innerHTML = cards.length ? cards.map(c=>{
+  const matching = COMPANIES.filter(companyMatches);
+  const searchActive = state.companyQuery.trim().length > 0;
+  const showAll = state.companyExpanded || searchActive;
+  const visible = showAll ? matching : matching.slice(0,12);
+  $("company-grid").innerHTML = visible.length ? visible.map(c=>{
     const jobs = companyJobs(c.name);
     const selected = state.company.includes(c.name);
     return `<button type="button" class="company-card ${selected?'selected':''}" data-company="${c.name}" aria-pressed="${selected}" aria-label="筛选 ${c.name} 的岗位">
@@ -541,6 +552,14 @@ function renderCompanies(){
   $("company-selected-note").textContent = state.company.length
     ? `已选 ${state.company.join("、")} · 岗位列表同步筛选`
     : "未选择公司 · 显示全部岗位";
+  $("company-display-count").textContent = matching.length
+    ? `显示 ${visible.length} / ${matching.length} 家公司`
+    : "";
+  const toggle = $("company-toggle");
+  const canToggle = matching.length > 12 && !searchActive;
+  toggle.style.display = canToggle ? "inline-flex" : "none";
+  toggle.setAttribute("aria-expanded", String(state.companyExpanded));
+  toggle.textContent = state.companyExpanded ? "收起公司库 ↑" : `展开全部 ${matching.length} 家公司 ↓`;
 }
 
 function filters(){
@@ -664,6 +683,11 @@ function showList(){
 
 /* ---------------- 事件 ---------------- */
 document.addEventListener("click", e=>{
+  const companyToggle = e.target.closest("[data-company-toggle]");
+  if(companyToggle){
+    state.companyExpanded = !state.companyExpanded;
+    renderCompanies(); return;
+  }
   const company = e.target.closest("[data-company]");
   if(company){
     const name = company.dataset.company;
