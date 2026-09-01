@@ -90,12 +90,9 @@
   .company-card.selected{background:#f5f3ff;}
   .company-card:focus-visible{outline:3px solid rgba(79,70,229,.24);outline-offset:2px;}
   .company-card-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px;}
-  .company-logo{width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;letter-spacing:-.04em;}
-  .tone-indigo{background:#eef2ff;color:#4338ca;}.tone-violet{background:#f5f3ff;color:#7c3aed;}.tone-blue{background:#eff6ff;color:#2563eb;}
-  .tone-amber{background:#fffbeb;color:#b45309;}.tone-emerald{background:#ecfdf5;color:#047857;}.tone-slate{background:#f1f5f9;color:#475569;}
-  .tone-orange{background:#fff7ed;color:#c2410c;}.tone-red{background:#fef2f2;color:#b91c1c;}
   .company-jobs{font-size:10.5px;color:var(--ink-3);white-space:nowrap;}
   .company-name{font-size:13.5px;font-weight:650;line-height:1.25;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .company-card-head .company-name{flex:1;min-width:0;margin-bottom:0;}
   .company-meta{display:flex;align-items:center;gap:4px;flex-wrap:nowrap;margin-bottom:5px;overflow:hidden;}
   .company-meta .tag{font-size:9.5px;padding:1px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .company-status{font-size:9.5px;padding:1px 5px;border-radius:999px;white-space:nowrap;}
@@ -602,8 +599,7 @@ function renderCompanies(){
     const statusLabel = c.status==="open" ? "已开" : c.status==="special" ? "专项" : "待确认";
     const researchLabel = totalJobs.length ? "有用研岗" : c.status==="pending" ? "待核验" : "暂无用研";
     return `<button type="button" class="company-card ${selected?'selected':''}" data-company="${c.name}" aria-pressed="${selected}" aria-label="筛选 ${c.name} 的岗位">
-      <div class="company-card-head"><span class="company-logo tone-${c.tone}">${c.mark}</span><span class="company-jobs">${jobs.length} 个岗位</span></div>
-      <div class="company-name" title="${c.name}">${c.name}</div>
+      <div class="company-card-head"><span class="company-name" title="${c.name}">${c.name}</span><span class="company-jobs">${jobs.length} 个岗位</span></div>
       <div class="company-meta"><span class="tag" title="${c.industry}">${c.industry}</span><span class="company-status ${c.status}" title="${c.recruitment}">${statusLabel}</span></div>
       <div class="company-research" title="${c.research}">${researchLabel}</div>
     </button>`;
