@@ -73,6 +73,8 @@
   .company-search:focus,.company-status-filter:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(79,70,229,.12);}
   .company-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px;color:var(--ink-3);font-size:11.5px;}
   .company-legend>span{display:inline-flex;align-items:center;gap:5px;}
+  .company-update-note{margin-top:9px;padding:8px 10px;border-left:3px solid #c7d2fe;background:#f8f9fc;color:var(--ink-2);font-size:11.5px;line-height:1.55;}
+  .company-update-note b{color:var(--ink);font-weight:700;}
   .legend-dot{width:7px;height:7px;border-radius:50%;display:inline-block;}
   .legend-dot.open{background:var(--green);}
   .legend-dot.special{background:var(--rec);}
@@ -180,7 +182,7 @@
   .card{
     background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px;margin-bottom:20px;
   }
-  .kicker{font-size:11px;letter-spacing:.14em;color:var(--coral);margin-bottom:10px;font-weight:600;}
+  .kicker{font-size:15px;letter-spacing:.06em;color:var(--coral);line-height:1.35;margin-bottom:12px;font-weight:700;}
   .jd{
     background:#f8f9fc;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
     font-size:13px;color:var(--ink-2);white-space:pre-line;line-height:1.7;
@@ -188,6 +190,9 @@
   .jd-note{font-size:11px;color:var(--ink-3);margin-top:8px;}
   .kv{font-size:13px;color:var(--ink-2);line-height:1.85;}
   .kv b{color:var(--ink);font-weight:600;}
+  .bullet-list{margin:0;padding:0 0 0 19px;color:var(--ink-2);font-size:13px;line-height:1.75;}
+  .bullet-list li{padding-left:3px;margin:0 0 7px;}
+  .bullet-list li:last-child{margin-bottom:0;}
   .aside-card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px;margin-bottom:14px;}
   .aside-card:first-child{background:linear-gradient(180deg,#fff 0%, #f5f3ff 100%);border-color:#ddd6fe;}
 
@@ -246,7 +251,7 @@
       <aside class="side">
         <div class="panel">
           <h3>筛选岗位</h3>
-          <p class="sub">数据快照：2026-08-14</p>
+          <p class="sub">数据快照：2026-09-01</p>
 
           <div class="fgroup">
             <div class="flabel">公司呈现 <button data-company-clear="all">清除选择</button></div>
@@ -296,6 +301,7 @@
             <span><i class="legend-dot pending"></i>暂未确认正式批</span>
             <span class="company-selected-note" id="company-selected-note">未选择公司 · 显示全部岗位</span>
           </div>
+          <div class="company-update-note"><b>9/1 更新：</b>本轮新增确认美团、蚂蚁、荣耀、小米、理想、完美世界、联想，以及中国电信、度小满、挚文集团、宁德时代、TCL、中兴通讯、Shopee、新浪&微博；卡片状态按公开校招公告标注，暂无独立用研岗的公司仍保留在公司库，方便持续追踪。</div>
           <div class="company-grid" id="company-grid"></div>
           <div class="company-board-footer">
             <span id="company-display-count"></span>
@@ -321,7 +327,7 @@
 </div>
 
 <footer class="footer">
-  数据快照：2026-08-14 官网检索；岗位会变化，投递前请回到官方链接复核。<br>
+  数据快照：2026-09-01 官网检索；岗位会变化，投递前请回到官方链接复核。<br>
   检索词：用户研究 / 市场研究 / 用户洞察 / 体验研究 / 人因研究 等 12 组。岗位信息变化很快，投递前请以企业官网为准。
 </footer>
 
@@ -431,6 +437,36 @@ const JOBS = [
     advice:"适合：设计/工设/人机交互背景、想做既懂设计又懂测评工作的同学。求职时不要只搜「用户研究」，也要在 vivo 官网用「体验」「人因」「洞察」反查，避免错过同族的其他岗位。",
   },
   {
+    id:"duxiaoman-ur-ai", co:"度小满", title:"用户研究工程师（AI方向）", industry:"互联网", type:"战略/策略向",
+    loc:"北京 / 上海", num:"未公开", degree:"本科及以上（公告未按岗位拆分）",
+    url:"https://campus.duxiaoman.com/",
+    flags:["AI方向","完整 JD 待官网核验"],
+    tagline:"度小满 2027 届公告明确列出 AI 方向用户研究工程师，研究岗位开始与金融 AI 场景绑定。",
+    jd:"岗位名称：用户研究工程师（AI方向）。官方 2027 届校园招聘公告将该岗位列入研发类岗位，招聘对象为 2026 年 9 月—2027 年 8 月毕业的海内外应届生，工作地点为北京、上海。公告未展开该岗位的具体职责、任职要求与岗位名额，请登录度小满校招官网查看实时职位详情。",
+    analysis:"度小满把「用户研究工程师（AI方向）」与大模型、AI 全栈、智能风控等岗位放在同一批校招中，意味着研究问题可能直接进入 AI 产品与金融服务场景。当前公开公告只确认岗位名称，不能据此推断具体研究方法或技术栈。",
+    advice:"适合：想把用户研究带进 AI / 金融业务、同时愿意补足数据与业务理解的同学。投递前先登录官网确认岗位是否仍在、具体归属团队与学历要求；作品集可准备一个 AI 功能的用户需求研究案例，并说明如何验证模型输出对用户的真实价值。",
+  },
+  {
+    id:"duxiaoman-ur", co:"度小满", title:"用户研究工程师", industry:"互联网", type:"体验管理向",
+    loc:"北京 / 上海", num:"未公开", degree:"本科及以上（公告未按岗位拆分）",
+    url:"https://campus.duxiaoman.com/",
+    flags:["完整 JD 待官网核验"],
+    tagline:"与 AI 方向并列出现在度小满 2027 届正式校招公告中，完整职责需登录官网。",
+    jd:"岗位名称：用户研究工程师。官方 2027 届校园招聘公告将该岗位列入研发类岗位，招聘对象为 2026 年 9 月—2027 年 8 月毕业的海内外应届生，工作地点为北京、上海。公告未展开该岗位的具体职责、任职要求与岗位名额，请登录度小满校招官网查看实时职位详情。",
+    analysis:"同一份公告同时出现通用用户研究工程师与 AI 方向用户研究工程师，说明度小满正在把研究能力拆成通用业务线与 AI 专项线。由于官网详情是动态加载，当前能确认的是岗位存在与校招批次，不能替官网补写职责。",
+    advice:"适合：有定性 / 定量研究基础、希望进入金融科技业务的同学。先用官网岗位关键词确认具体团队，再针对信贷、财富或支付场景准备一个研究项目；若岗位详情要求数据分析，提前复习 SQL、问卷统计和基础实验设计。",
+  },
+  {
+    id:"lenovo-ur", co:"联想", title:"用户研究", industry:"智能硬件", type:"交互/设计向",
+    loc:"成都", num:"未公开", degree:"应届生招聘（学历以官网详情为准）",
+    url:"https://talent.lenovo.com.cn/position?projectType=1&workPlace=7",
+    flags:["岗位挂在设计类"],
+    tagline:"联想应届生职位列表出现“用户研究”，归在 Digital Transformation 设计类，工作地成都。",
+    jd:"官网应届生招聘职位列表公开字段：用户研究｜设计类｜Digital Transformation｜工作地点成都。当前列表未在静态页面展开完整职责、任职要求、名额与截止时间，请点击官方职位列表进入实时详情复核。",
+    analysis:"联想把用户研究放在应届生招聘的设计类，而不是产品经理或市场类，说明岗位更靠近数字化转型与体验设计支持。它是岗位名称直接命中、但职责需要在动态详情页继续核验的新增样本。",
+    advice:"适合：人机交互、设计研究、心理学或有数字产品研究项目的同学。作品集要把研究证据与设计决策连起来，并准备说明你如何与产品、设计、技术团队协作；投递时重点核对成都地点与岗位的具体专业限制。",
+  },
+  {
     id:"xpeng-ur", co:"小鹏汽车", title:"用户研究培训生", industry:"汽车", type:"战略/策略向",
     loc:"广州", num:"未公开", degree:"硕士及以上",
     url:"https://xiaopeng.jobs.feishu.cn/398875/position/7658239811220343049/detail",
@@ -463,7 +499,7 @@ const JOBS = [
 ];
 
 /* ---------------- 公司库 ----------------
-   公司状态是 2026-08-14 的公开渠道核验快照：
+   公司状态是 2026-09-01 的公开渠道核验快照：
    “尚未确认正式批”代表本次检索未找到可复核的 2027 届正式批，并不等于公司不会开放。
    公司卡片不使用外部 logo 资源，首字标记用于保持静态页面可离线打开。
    ---------------- */
@@ -480,18 +516,18 @@ const COMPANIES = [
   {name:"阿里巴巴", mark:"阿", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"orange"},
   {name:"百度", mark:"百", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"blue"},
   {name:"拼多多", mark:"拼", industry:"电商", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"red"},
-  {name:"网易游戏", mark:"游", industry:"游戏", status:"open", recruitment:"27届正式已开", research:"暂无可核验用研岗", tone:"red"},
+  {name:"网易游戏", mark:"游", industry:"游戏", status:"open", recruitment:"27届正式已开 · 8/26", research:"暂无可核验用研岗", tone:"red"},
   {name:"蔚来", mark:"蔚", industry:"汽车", status:"open", recruitment:"27届批次已开", research:"暂无可核验用研岗 · 已剔除安全体验岗", tone:"indigo"},
   {name:"大疆", mark:"疆", industry:"智能硬件", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"slate"},
   {name:"滴滴", mark:"滴", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"emerald"},
   {name:"哔哩哔哩", mark:"哔", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"blue"},
-  {name:"美团", mark:"美", industry:"互联网", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"amber"},
-  {name:"蚂蚁", mark:"蚁", industry:"互联网", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"blue"},
+  {name:"美团", mark:"美", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/17", research:"暂无正式用研岗", tone:"amber"},
+  {name:"蚂蚁", mark:"蚁", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/10", research:"暂无正式用研岗", tone:"blue"},
   {name:"华为", mark:"华", industry:"智能硬件", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"red"},
-  {name:"小米", mark:"米", industry:"智能硬件", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"orange"},
+  {name:"小米", mark:"米", industry:"智能硬件", status:"open", recruitment:"27届正式已开 · 8/18", research:"暂无正式用研岗", tone:"orange"},
   {name:"米哈游", mark:"米", industry:"游戏", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"violet"},
-  {name:"理想汽车", mark:"理", industry:"汽车", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"slate"},
-  {name:"荣耀", mark:"荣", industry:"智能硬件", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
+  {name:"理想汽车", mark:"理", industry:"汽车", status:"open", recruitment:"27届正式已开 · 8/21", research:"暂无正式用研岗", tone:"slate"},
+  {name:"荣耀", mark:"荣", industry:"智能硬件", status:"open", recruitment:"27届正式已开 · 8/18", research:"暂无正式用研岗", tone:"red"},
   {name:"贝壳", mark:"贝", industry:"房地产", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
   {name:"小红书", mark:"红", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
   {name:"携程", mark:"携", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
@@ -500,21 +536,29 @@ const COMPANIES = [
   {name:"网易互联网", mark:"网", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
   {name:"腾讯音乐", mark:"TME", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"emerald"},
   {name:"吉利/极氪", mark:"吉", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
-  {name:"比亚迪", mark:"比", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
+  {name:"比亚迪", mark:"比", industry:"汽车", status:"pending", recruitment:"官网显示 27 届即将开始", research:"暂未核验", tone:"red"},
   {name:"零跑汽车", mark:"零", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"indigo"},
   {name:"长城汽车", mark:"长", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"slate"},
   {name:"上汽集团", mark:"上", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
   {name:"广汽埃安", mark:"埃", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
-  {name:"完美世界", mark:"完", industry:"游戏", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"amber"},
+  {name:"完美世界", mark:"完", industry:"游戏", status:"open", recruitment:"27届正式已开 · 8/31", research:"暂无正式用研岗", tone:"amber"},
   {name:"畅游", mark:"畅", industry:"游戏", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
   {name:"4399", mark:"43", industry:"游戏", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
-  {name:"联想", mark:"联", industry:"智能硬件", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"indigo"},
+  {name:"联想", mark:"联", industry:"智能硬件", status:"open", recruitment:"27届正式已开 · 8/5", research:"有用研岗", tone:"indigo"},
   {name:"唯品会", mark:"唯", industry:"电商", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
   {name:"汽车之家", mark:"汽", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"slate"},
   {name:"知乎", mark:"知", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
   {name:"Soul", mark:"So", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
   {name:"哈啰", mark:"哈", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"emerald"},
-  {name:"BOSS直聘", mark:"B", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"}
+  {name:"BOSS直聘", mark:"B", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
+  {name:"中国电信", mark:"电", industry:"通信", status:"open", recruitment:"27届正式已开 · 8/21", research:"暂无正式用研岗", tone:"blue"},
+  {name:"度小满", mark:"满", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/17", research:"有用研岗", tone:"violet"},
+  {name:"挚文集团", mark:"挚", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/10", research:"暂无正式用研岗", tone:"red"},
+  {name:"宁德时代", mark:"宁", industry:"汽车", status:"open", recruitment:"27届正式已开 · 8/25", research:"暂无正式用研岗", tone:"emerald"},
+  {name:"TCL", mark:"TCL", industry:"智能硬件", status:"open", recruitment:"27届正式已开", research:"暂无正式用研岗", tone:"indigo"},
+  {name:"中兴通讯", mark:"中兴", industry:"通信", status:"open", recruitment:"27届正式已开", research:"暂无正式用研岗", tone:"blue"},
+  {name:"Shopee", mark:"虾", industry:"电商", status:"open", recruitment:"27届正式已开 · 7/28", research:"暂无正式用研岗", tone:"orange"},
+  {name:"新浪&微博", mark:"新", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"暂无正式用研岗", tone:"red"}
 ];
 
 /* ---------------- 状态 ---------------- */
@@ -529,12 +573,26 @@ function companyJobs(name){
   return JOBS.filter(j=>j.co===name);
 }
 
+function jobPasses(j){
+  if(state.ind.length && !state.ind.includes(j.industry)) return false;
+  if(state.type.length && !state.type.includes(j.type)) return false;
+  if(state.onlyflag && (!j.flags || !j.flags.length)) return false;
+  return true;
+}
+
+function matchingJobsForCompany(name){
+  return companyJobs(name).filter(jobPasses);
+}
+
 function companyMatches(c){
   const q = state.companyQuery.trim().toLowerCase();
   if(state.companyStatus!=="all" && c.status!==state.companyStatus) return false;
   if(state.companyOnlyOpen && c.status!=="open") return false;
   if(state.companyOnlyResearch && companyJobs(c.name).length===0) return false;
   if(q && !c.name.toLowerCase().includes(q)) return false;
+  const matchedJobs = matchingJobsForCompany(c.name);
+  if(state.ind.length && !state.ind.includes(c.industry) && matchedJobs.length===0) return false;
+  if((state.type.length || state.onlyflag) && matchedJobs.length===0) return false;
   return true;
 }
 
@@ -544,10 +602,11 @@ function renderCompanies(){
   const showAll = state.companyExpanded || searchActive;
   const visible = showAll ? matching : matching.slice(0,12);
   $("company-grid").innerHTML = visible.length ? visible.map(c=>{
-    const jobs = companyJobs(c.name);
+    const jobs = matchingJobsForCompany(c.name);
+    const totalJobs = companyJobs(c.name);
     const selected = state.company.includes(c.name);
     const statusLabel = c.status==="open" ? "已开" : c.status==="special" ? "专项" : "待确认";
-    const researchLabel = jobs.length ? "有用研岗" : c.status==="pending" ? "待核验" : "暂无用研";
+    const researchLabel = totalJobs.length ? "有用研岗" : c.status==="pending" ? "待核验" : "暂无用研";
     return `<button type="button" class="company-card ${selected?'selected':''}" data-company="${c.name}" aria-pressed="${selected}" aria-label="筛选 ${c.name} 的岗位">
       <div class="company-card-head"><span class="company-logo tone-${c.tone}">${c.mark}</span><span class="company-jobs">${jobs.length} 个岗位</span></div>
       <div class="company-name" title="${c.name}">${c.name}</div>
@@ -571,10 +630,7 @@ function renderCompanies(){
 function filters(){
   let list = JOBS;
   if(state.company.length) list = list.filter(j=>state.company.includes(j.co));
-  if(state.ind.length) list = list.filter(j=>state.ind.includes(j.industry));
-  if(state.type.length) list = list.filter(j=>state.type.includes(j.type));
-  if(state.onlyflag) list = list.filter(j=>j.flags && j.flags.length);
-  return list;
+  return list.filter(jobPasses);
 }
 
 function renderSidebar(){
@@ -624,6 +680,11 @@ function renderList(){
     : `<div class="empty"><h4>没有匹配的岗位</h4><p>试试减少筛选条件，或重置公司 / 行业 / 类型。</p></div>`;
 }
 
+function bulletList(text){
+  const items = text.split(/\n+/).flatMap(part=>part.match(/[^。！？；]+[。！？；]?/g) || []).map(item=>item.trim()).filter(Boolean);
+  return `<ul class="bullet-list">${items.map(item=>`<li>${item}</li>`).join("")}</ul>`;
+}
+
 function renderDetail(id){
   const j = JOBS.find(x=>x.id===id);
   document.querySelector("#view-list").style.display="none";
@@ -643,17 +704,12 @@ function renderDetail(id){
       </div>
       <div class="d-cta">
         <a class="btn" href="${j.url}" target="_blank" rel="noopener">官方投递 →</a>
-        <div class="d-verified">✓ 数据核实于 2026-08-14 · 请在投递前回到官网复核</div>
+        <div class="d-verified">✓ 数据核实于 2026-09-01 · 请在投递前回到官网复核</div>
       </div>
     </div>
 
     <div class="d-body">
       <div>
-        <div class="card">
-          <div class="kicker">职责与要求 · 官网公开内容</div>
-          <div class="jd">${j.jd}</div>
-          <div class="jd-note">内容按官方招聘页面公开字段收录；部分官网为动态页面，网页快照可能滞后，请点击官方链接复核。</div>
-        </div>
         <div class="card">
           <div class="kicker">基础信息</div>
           <div class="kv">
@@ -663,15 +719,20 @@ function renderDetail(id){
             <b>学历要求：</b>${j.degree}
           </div>
         </div>
+        <div class="card">
+          <div class="kicker">职责与要求 · 官网公开内容</div>
+          <div class="jd">${j.jd}</div>
+          <div class="jd-note">内容按官方招聘页面公开字段收录；部分官网为动态页面，网页快照可能滞后，请点击官方链接复核。</div>
+        </div>
       </div>
       <div>
         <div class="aside-card">
           <div class="kicker">岗位分析</div>
-          <div class="kv">${j.analysis}</div>
+          ${bulletList(j.analysis)}
         </div>
         <div class="aside-card">
           <div class="kicker">投递建议</div>
-          <div class="kv">${j.advice}</div>
+          ${bulletList(j.advice)}
         </div>
       </div>
     </div>`;
@@ -705,12 +766,12 @@ document.addEventListener("click", e=>{
   if(ind){
     const v = ind.dataset.ind;
     state.ind = state.ind.includes(v) ? state.ind.filter(x=>x!==v) : [...state.ind, v];
-    renderSidebar(); renderList(); return;
+    renderCompanies(); renderSidebar(); renderList(); return;
   }
   if(typ){
     const w = typ.dataset.type;
     state.type = state.type.includes(w) ? state.type.filter(x=>x!==w) : [...state.type, w];
-    renderSidebar(); renderList(); return;
+    renderCompanies(); renderSidebar(); renderList(); return;
   }
   const companyClear = e.target.closest("[data-company-clear]");
   if(companyClear){
@@ -720,7 +781,7 @@ document.addEventListener("click", e=>{
   const reset = e.target.closest("[data-reset]");
   if(reset){
     state[reset.dataset.reset] = [];
-    renderSidebar(); renderList(); return;
+    renderCompanies(); renderSidebar(); renderList(); return;
   }
   const clear = e.target.closest("[data-clear]");
   if(clear){
@@ -730,7 +791,7 @@ document.addEventListener("click", e=>{
     renderCompanies(); renderSidebar(); renderList(); return;
   }
   const flagBox = e.target.closest("#f-onlyflag");
-  if(flagBox){ state.onlyflag = flagBox.checked; renderSidebar(); renderList(); return; }
+  if(flagBox){ state.onlyflag = flagBox.checked; renderCompanies(); renderSidebar(); renderList(); return; }
 });
 
 document.addEventListener("change", e=>{
