@@ -600,7 +600,9 @@ function renderCompanies(){
   const matching = COMPANIES.filter(companyMatches);
   const searchActive = state.companyQuery.trim().length > 0;
   const showAll = state.companyExpanded || searchActive;
-  const visible = showAll ? matching : matching.slice(0,12);
+  const defaultVisible = matching.slice(0,12);
+  const selectedExtra = matching.filter(c=>state.company.includes(c.name) && !defaultVisible.includes(c));
+  const visible = showAll ? matching : [...defaultVisible, ...selectedExtra];
   $("company-grid").innerHTML = visible.length ? visible.map(c=>{
     const jobs = matchingJobsForCompany(c.name);
     const totalJobs = companyJobs(c.name);
