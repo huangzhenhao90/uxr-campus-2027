@@ -182,7 +182,7 @@
   .kicker{font-size:15px;letter-spacing:.06em;color:var(--coral);line-height:1.35;margin-bottom:12px;font-weight:700;}
   .jd{
     background:#f8f9fc;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
-    font-size:13px;color:var(--ink-2);white-space:pre-line;line-height:1.7;
+    font-size:13px;color:var(--ink-2);white-space:normal;line-height:1.7;
   }
   .jd-note{font-size:11px;color:var(--ink-3);margin-top:8px;}
   .kv{font-size:13px;color:var(--ink-2);line-height:1.85;}
@@ -293,7 +293,7 @@
             <span><i class="legend-dot pending"></i>暂未确认正式批</span>
             <span class="company-selected-note" id="company-selected-note">未选择公司 · 显示全部岗位</span>
           </div>
-          <div class="company-update-note"><b>9/1 更新：</b>已有卡片状态更新：美团、蚂蚁、荣耀、小米、理想、完美世界、联想；新增公司卡片：中国电信、度小满、挚文集团、宁德时代、TCL、中兴通讯、Shopee、新浪&微博。卡片状态按公开校招公告标注，暂无独立用研岗的公司仍保留在公司库，方便持续追踪。</div>
+          <div class="company-update-note"><b>9/1 更新：</b>已有卡片状态更新：美团、蚂蚁、荣耀、小米、理想、完美世界、联想；新增公司卡片：中国电信、度小满、挚文集团、宁德时代、TCL、中兴通讯、Shopee、新浪&微博。卡片状态按公开校招公告标注，暂无独立用研岗的公司仍保留在公司库，方便持续追踪。度小满公开公告只列岗位名称，未提供完整 JD，因此暂不计入下方正式岗位列表。</div>
           <div class="company-grid" id="company-grid"></div>
           <div class="company-board-footer">
             <span id="company-display-count"></span>
@@ -329,7 +329,7 @@
    ========================================================= */
 const JOBS = [
   {
-    id:"terncent-ur", co:"腾讯", title:"用户研究", industry:"互联网", type:"体验管理向",
+    id:"terncent-ur", co:"腾讯", title:"用户研究", industry:"互联网", type:"战略/策略向",
     loc:"北京 / 深圳", num:"CSIG·IEG·PCG 共用入口", degree:"本科及以上（JD 未单列）",
     url:"https://join.qq.com/post_detail.html?postid=1283878533483275264",
     flags:["AI 写入职责"],
@@ -380,7 +380,7 @@ const JOBS = [
     advice:"适合：有产品侧用研或设计研究实习、对消费电子感兴趣的同学。建议在简历中单列「我如何用 AI 提升研究效率」的实例（哪怕是问卷设计或访谈整理），因为这条很可能成为 2027 届 OPPO 的筛选关注点。",
   },
   {
-    id:"vivo-uxm", co:"vivo", title:"市场与用户研究经理", industry:"智能硬件", type:"体验管理向",
+    id:"vivo-uxm", co:"vivo", title:"市场与用户研究经理", industry:"智能硬件", type:"战略/策略向",
     loc:"东莞 / 上海 / 深圳", num:"20 人", degree:"本科及以上",
     url:"https://hr-campus.vivo.com/campus/detail?jobAdId=3a079cac-f687-4461-898c-80dad1f0b2c2",
     flags:["20 人"],
@@ -428,26 +428,6 @@ const JOBS = [
     jd:"职位描述：负责软硬件产品全流程体验质量把控；开展用户体验旅程评测、用户需求研究与体验场景识别；使用竞品分析、专家评估、启发式评估、可用性测试等方法把控体验质量；建立与维护体验标准并推动优化。\n\n任职要求：本科及以上学历；工业设计、人机交互、心理学、社会学等专业背景；具有逆向思维与发现风险的能力；对消费电子有浓厚兴趣。",
     analysis:"岗位名里没有「用户研究」四个字，但职责 80% 是用研与体验评估：旅程评测、可用性测试、启发式评估、体验标准。这是「靠关键词搜索会漏掉的研究岗」的典型样本。",
     advice:"适合：设计/工设/人机交互背景、想做既懂设计又懂测评工作的同学。求职时不要只搜「用户研究」，也要在 vivo 官网用「体验」「人因」「洞察」反查，避免错过同族的其他岗位。",
-  },
-  {
-    id:"duxiaoman-ur-ai", co:"度小满", title:"用户研究工程师（AI方向）", industry:"互联网", type:"战略/策略向",
-    loc:"北京 / 上海", num:"未公开", degree:"本科及以上（公告未按岗位拆分）",
-    url:"https://campus.duxiaoman.com/",
-    flags:["AI方向","完整 JD 待官网核验"],
-    tagline:"度小满 2027 届公告明确列出 AI 方向用户研究工程师，研究岗位开始与金融 AI 场景绑定。",
-    jd:"岗位名称：用户研究工程师（AI方向）。官方 2027 届校园招聘公告将该岗位列入研发类岗位，招聘对象为 2026 年 9 月—2027 年 8 月毕业的海内外应届生，工作地点为北京、上海。公告未展开该岗位的具体职责、任职要求与岗位名额，请登录度小满校招官网查看实时职位详情。",
-    analysis:"度小满把「用户研究工程师（AI方向）」与大模型、AI 全栈、智能风控等岗位放在同一批校招中，意味着研究问题可能直接进入 AI 产品与金融服务场景。当前公开公告只确认岗位名称，不能据此推断具体研究方法或技术栈。",
-    advice:"适合：想把用户研究带进 AI / 金融业务、同时愿意补足数据与业务理解的同学。投递前先登录官网确认岗位是否仍在、具体归属团队与学历要求；作品集可准备一个 AI 功能的用户需求研究案例，并说明如何验证模型输出对用户的真实价值。",
-  },
-  {
-    id:"duxiaoman-ur", co:"度小满", title:"用户研究工程师", industry:"互联网", type:"体验管理向",
-    loc:"北京 / 上海", num:"未公开", degree:"本科及以上（公告未按岗位拆分）",
-    url:"https://campus.duxiaoman.com/",
-    flags:["完整 JD 待官网核验"],
-    tagline:"与 AI 方向并列出现在度小满 2027 届正式校招公告中，完整职责需登录官网。",
-    jd:"岗位名称：用户研究工程师。官方 2027 届校园招聘公告将该岗位列入研发类岗位，招聘对象为 2026 年 9 月—2027 年 8 月毕业的海内外应届生，工作地点为北京、上海。公告未展开该岗位的具体职责、任职要求与岗位名额，请登录度小满校招官网查看实时职位详情。",
-    analysis:"同一份公告同时出现通用用户研究工程师与 AI 方向用户研究工程师，说明度小满正在把研究能力拆成通用业务线与 AI 专项线。由于官网详情是动态加载，当前能确认的是岗位存在与校招批次，不能替官网补写职责。",
-    advice:"适合：有定性 / 定量研究基础、希望进入金融科技业务的同学。先用官网岗位关键词确认具体团队，再针对信贷、财富或支付场景准备一个研究项目；若岗位详情要求数据分析，提前复习 SQL、问卷统计和基础实验设计。",
   },
   {
     id:"lenovo-ur", co:"联想", title:"用户研究", industry:"智能硬件", type:"交互/设计向",
@@ -545,7 +525,7 @@ const COMPANIES = [
   {name:"哈啰", mark:"哈", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"emerald"},
   {name:"BOSS直聘", mark:"B", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
   {name:"中国电信", mark:"电", industry:"通信", status:"open", recruitment:"27届正式已开 · 8/21", research:"暂无正式用研岗", tone:"blue"},
-  {name:"度小满", mark:"满", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/17", research:"有用研岗", tone:"violet"},
+  {name:"度小满", mark:"满", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/17", research:"暂无正式用研岗", tone:"violet"},
   {name:"挚文集团", mark:"挚", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/10", research:"暂无正式用研岗", tone:"red"},
   {name:"宁德时代", mark:"宁", industry:"汽车", status:"open", recruitment:"27届正式已开 · 8/25", research:"暂无正式用研岗", tone:"emerald"},
   {name:"TCL", mark:"TCL", industry:"智能硬件", status:"open", recruitment:"27届正式已开", research:"暂无正式用研岗", tone:"indigo"},
@@ -682,6 +662,18 @@ function bulletList(text){
   return `<ul class="bullet-list">${items.map(item=>`<li>${item}</li>`).join("")}</ul>`;
 }
 
+function escapeHtml(text){
+  return text.replace(/[&<>"']/g, ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+
+function formatJd(text){
+  return escapeHtml(text)
+    .replace(/\r?\n/g,"<br>")
+    .replace(/([；;])\s*/g,"$1<br>")
+    .replace(/([：:。！？])\s*(?=\d+[、.])/g,"$1<br>")
+    .replace(/(?:<br>){3,}/g,"<br><br>");
+}
+
 function renderDetail(id){
   const j = JOBS.find(x=>x.id===id);
   if(!j) return;
@@ -720,7 +712,7 @@ function renderDetail(id){
         </div>
         <div class="card">
           <div class="kicker">职责与要求 · 官网公开内容</div>
-          <div class="jd">${j.jd}</div>
+          <div class="jd">${formatJd(j.jd)}</div>
           <div class="jd-note">内容按官方招聘页面公开字段收录；部分官网为动态页面，网页快照可能滞后，请点击官方链接复核。</div>
         </div>
       </div>
