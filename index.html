@@ -73,8 +73,6 @@
   .company-search:focus,.company-status-filter:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(79,70,229,.12);}
   .company-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px;color:var(--ink-3);font-size:11.5px;}
   .company-legend>span{display:inline-flex;align-items:center;gap:5px;}
-  .company-update-note{margin-top:9px;padding:8px 10px;border-left:3px solid #c7d2fe;background:#f8f9fc;color:var(--ink-2);font-size:11.5px;line-height:1.55;}
-  .company-update-note b{color:var(--ink);font-weight:700;}
   .legend-dot{width:7px;height:7px;border-radius:50%;display:inline-block;}
   .legend-dot.open{background:var(--green);}
   .legend-dot.special{background:var(--rec);}
@@ -184,6 +182,7 @@
     background:#f8f9fc;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
     font-size:13px;color:var(--ink-2);white-space:normal;line-height:1.7;
   }
+  .jd-ai{color:#dc2626;font-weight:650;}
   .jd-note{font-size:11px;color:var(--ink-3);margin-top:8px;}
   .kv{font-size:13px;color:var(--ink-2);line-height:1.85;}
   .kv b{color:var(--ink);font-weight:600;}
@@ -294,7 +293,6 @@
             <span><i class="legend-dot pending"></i>暂未确认正式批</span>
             <span class="company-selected-note" id="company-selected-note">未选择公司 · 显示全部岗位</span>
           </div>
-          <div class="company-update-note"><b>9/1 更新：</b>已有卡片状态更新：美团、蚂蚁、荣耀、小米、理想、完美世界、联想；新增公司卡片：中国电信、度小满、挚文集团、宁德时代、TCL、中兴通讯、Shopee、新浪&微博。卡片状态按公开校招公告标注，暂无独立用研岗的公司仍保留在公司库，方便持续追踪。度小满公开公告只列岗位名称，未提供完整 JD，因此暂不计入下方正式岗位列表。<br><b>9/2 复核：</b>得物官网已展示「2027 届秋季校园招聘项目」；其用户研究类暂未提供可独立复核的完整职位 JD，已更新公司状态，但不计入正式研究岗。<br><b>9/3 复核：</b>联想和多益官网均已补出用研岗位详情，14 条岗位记录现均有可读 JD；统计按 14 条计算。</div>
           <div class="company-grid" id="company-grid"></div>
           <div class="company-board-footer">
             <span id="company-display-count"></span>
@@ -677,12 +675,18 @@ function escapeHtml(text){
   return text.replace(/[&<>"']/g, ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 }
 
-function formatJd(text){
-  return escapeHtml(text)
+function formatJd(text, highlightAi=false){
+  const formatted = escapeHtml(text)
     .replace(/\r?\n/g,"<br>")
     .replace(/([；;])\s*/g,"$1<br>")
     .replace(/([：:。！？])\s*(?=\d+[、.])/g,"$1<br>")
     .replace(/(?:<br>){3,}/g,"<br><br>");
+  if(!highlightAi) return formatted;
+  const aiPattern = /AIGC|AI|人工智能|大模型/i;
+  return formatted.split(/(<br>)/).map(part=>{
+    if(part==="<br>" || !aiPattern.test(part)) return part;
+    return `<span class="jd-ai">${part}</span>`;
+  }).join("");
 }
 
 function renderDetail(id){
@@ -723,7 +727,7 @@ function renderDetail(id){
         </div>
         <div class="card">
           <div class="kicker">职责与要求 · 官网公开内容</div>
-          <div class="jd">${formatJd(j.jd)}</div>
+          <div class="jd">${formatJd(j.jd, hasAiRequirement(j))}</div>
           <div class="jd-note">内容按官方招聘页面公开字段收录；部分官网为动态页面，网页快照可能滞后，请点击官方链接复核。</div>
         </div>
       </div>
