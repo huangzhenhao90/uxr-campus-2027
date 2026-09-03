@@ -254,6 +254,7 @@
             <div class="flabel">公司呈现 <button data-company-clear="all">清除选择</button></div>
             <p class="company-side-hint">公司卡片在上方点击；这里控制公司区的显示范围。</p>
             <label class="fitem"><input type="checkbox" id="company-only-open"> 只看已开启正式校招</label>
+            <label class="fitem" title="只保留 JD 明确提到 AI、人工智能、大模型或 AIGC 的岗位"><input type="checkbox" id="job-only-ai"> 有 AI 要求 <span class="fcount" id="ai-filter-count">0</span></label>
           </div>
 
           <div class="fgroup">
@@ -293,7 +294,6 @@
             <span><i class="legend-dot pending"></i>暂未确认正式批</span>
             <span class="company-selected-note" id="company-selected-note">未选择公司 · 显示全部岗位</span>
           </div>
-         <div class="company-update-note"><b>9/1 更新：</b>已有卡片状态更新：美团、蚂蚁、荣耀、小米、理想、完美世界、联想；新增公司卡片：中国电信、度小满、挚文集团、宁德时代、TCL、中兴通讯、Shopee、新浪&微博。卡片状态按公开校招公告标注，暂无独立用研岗的公司仍保留在公司库，方便持续追踪。度小满公开公告只列岗位名称，未提供完整 JD，因此暂不计入下方正式岗位列表。</div>
           <div class="company-update-note"><b>9/1 更新：</b>已有卡片状态更新：美团、蚂蚁、荣耀、小米、理想、完美世界、联想；新增公司卡片：中国电信、度小满、挚文集团、宁德时代、TCL、中兴通讯、Shopee、新浪&微博。卡片状态按公开校招公告标注，暂无独立用研岗的公司仍保留在公司库，方便持续追踪。度小满公开公告只列岗位名称，未提供完整 JD，因此暂不计入下方正式岗位列表。<br><b>9/2 复核：</b>得物官网已展示「2027 届秋季校园招聘项目」；其用户研究类暂未提供可独立复核的完整职位 JD，已更新公司状态，但不计入正式研究岗。</div>
           <div class="company-grid" id="company-grid"></div>
           <div class="company-board-footer">
@@ -536,7 +536,7 @@ const COMPANIES = [
 ];
 
 /* ---------------- 状态 ---------------- */
-const state = { ind:[], type:[], company:[], companyOnlyOpen:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
+const state = { ind:[], type:[], company:[], companyOnlyOpen:false, aiOnly:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
 const INDUSTRIES = [...new Set(JOBS.map(j=>j.industry))];
 const TYPES = ["战略/策略向","交互/设计向","体验管理向","不确定"];
 
@@ -547,9 +547,14 @@ function companyJobs(name){
   return JOBS.filter(j=>j.co===name);
 }
 
+function hasAiRequirement(j){
+  return j.flags.some(f=>/AI|人工智能|大模型|AIGC/i.test(f)) || /AI|人工智能|大模型|AIGC/i.test(j.jd || "");
+}
+
 function jobPasses(j){
   if(state.ind.length && !state.ind.includes(j.industry)) return false;
   if(state.type.length && !state.type.includes(j.type)) return false;
+  if(state.aiOnly && !hasAiRequirement(j)) return false;
   return true;
 }
 
@@ -572,6 +577,7 @@ function companyMatches(c){
   const matchedJobs = matchingJobsForCompany(c.name);
   if(state.ind.length && !state.ind.includes(c.industry) && matchedJobs.length===0) return false;
   if(state.type.length && matchedJobs.length===0) return false;
+  if(state.aiOnly && matchedJobs.length===0) return false;
   return true;
 }
 
@@ -615,6 +621,9 @@ function filters(){
 
 function renderSidebar(){
   $("company-only-open").checked = state.companyOnlyOpen;
+  $("job-only-ai").checked = state.aiOnly;
+  $("job-only-ai").closest(".fitem").classList.toggle("on", state.aiOnly);
+  $("ai-filter-count").textContent = JOBS.filter(hasAiRequirement).length;
   $("f-industry").innerHTML = INDUSTRIES.map(i=>{
     const n = JOBS.filter(j=>j.industry===i).length;
     const on = state.ind.includes(i);
@@ -635,6 +644,7 @@ function renderList(){
     ...state.ind.map(i=>({v:i,typ:'ind'})),
     ...state.type.map(t=>({v:t,typ:'type'}))
   ];
+  if(state.aiOnly) chips.push({v:'有 AI 要求',typ:'aiOnly'});
   $("activeChips").innerHTML = chips.map(({v,typ})=>`<span class="chip">${v}<span class="x" data-clear="${typ}" data-v="${v}">×</span></span>`).join("");
 
   $("list").innerHTML = list.length ? list.map(j=>`
@@ -800,6 +810,7 @@ document.addEventListener("click", e=>{
   const clear = e.target.closest("[data-clear]");
   if(clear){
     if(clear.dataset.clear==='company') state.company = state.company.filter(x=>x!==clear.dataset.v);
+    else if(clear.dataset.clear==='aiOnly') state.aiOnly = false;
     else state[clear.dataset.clear] = state[clear.dataset.clear].filter(x=>x!==clear.dataset.v);
     renderCompanies(); renderSidebar(); renderList(); return;
   }
@@ -809,6 +820,10 @@ document.addEventListener("change", e=>{
   if(e.target.matches("#company-only-open")){
     state.companyOnlyOpen = e.target.checked;
     renderCompanies(); return;
+  }
+  if(e.target.matches("#job-only-ai")){
+    state.aiOnly = e.target.checked;
+    renderCompanies(); renderSidebar(); renderList(); return;
   }
 });
 
