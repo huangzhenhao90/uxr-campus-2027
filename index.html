@@ -97,6 +97,7 @@
   .company-status::before{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;margin:0 3px 1px 0;background:currentColor;}
   .company-status.open{color:#047857;background:#ecfdf5;}.company-status.special{color:#b45309;background:#fffbeb;}.company-status.pending{color:#64748b;background:#f1f5f9;}
   .company-research{font-size:10.5px;color:var(--ink-2);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .company-research.no-research{color:#dc2626;font-weight:700;}
   .company-board-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;min-height:28px;color:var(--ink-3);font-size:11.5px;}
   .company-toggle{display:inline-flex;align-items:center;gap:5px;background:#fff;color:var(--coral);border:1px solid #c7d2fe;border-radius:999px;padding:5px 11px;font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;}
   .company-toggle:hover{background:#eef2ff;border-color:var(--coral);}
@@ -247,13 +248,14 @@
       <aside class="side">
         <div class="panel">
           <h3>筛选岗位</h3>
-          <p class="sub">数据快照：2026-09-01</p>
+          <p class="sub">数据快照：2026-09-03</p>
 
           <div class="fgroup">
             <div class="flabel">公司呈现 <button data-company-clear="all">清除选择</button></div>
-            <p class="company-side-hint">公司卡片在上方点击；这里控制公司区的显示范围。</p>
-            <label class="fitem"><input type="checkbox" id="company-only-open"> 只看已开启正式校招</label>
-            <label class="fitem" title="只保留 JD 明确提到 AI、人工智能、大模型或 AIGC 的岗位"><input type="checkbox" id="job-only-ai"> 有 AI 要求 <span class="fcount" id="ai-filter-count">0</span></label>
+            <p class="company-side-hint">公司卡片在上方点击；这里控制公司区的显示范围。数字代表公司数。</p>
+            <label class="fitem" title="只显示已开启正式校招的公司"><input type="checkbox" id="company-only-open"> 已开启校招 <span class="fcount" id="company-open-count">0</span></label>
+            <label class="fitem" title="只显示当前有正式用研岗位的公司"><input type="checkbox" id="company-only-research"> 有用研岗位 <span class="fcount" id="company-research-count">0</span></label>
+            <label class="fitem" title="只显示至少一个岗位 JD 明确提到 AI、人工智能、大模型或 AIGC 的公司"><input type="checkbox" id="job-only-ai"> 有 AI 要求 <span class="fcount" id="company-ai-count">0</span></label>
           </div>
 
           <div class="fgroup">
@@ -369,6 +371,16 @@ const JOBS = [
     advice:"投递时直接打开岗位详情页，不要只停留在职位列表；页面会显示京东科技 / 京东零售两个业务归属。准备材料时突出完整研究闭环、行业信息整理能力，以及你如何用 AI 提效并人工复核。",
   },
   {
+    id:"baidu-ur", co:"百度", title:"用户研究员", industry:"互联网", type:"体验管理向",
+    loc:"北京", num:"5 人", degree:"本科及以上",
+    url:"https://talent.baidu.com/jobs/detail/GRADUATE/b6d4fb04-cfd2-43f4-bf7f-12115a53eb54",
+    flags:["AI 写入职责"],
+    tagline:"定性定量、可用性测试与 AI 辅助研究，直接服务产品改进。",
+    jd:"工作职责：\n-负责定性与定量用户研究，包括用户访谈、问卷调研、可用性测试等\n-深入洞察用户需求与行为，将研究结论转化为产品改进建议\n-与产品、设计团队协作，在产品全生命周期中提供用户视角支持\n-建立用户研究方法论体系，持续提升研究效率与影响力\n-探索AI辅助用户研究的新方法（如AI访谈、情绪分析等）\n\n职责要求：\n-本科及以上学历，心理学、社会学、人机交互等相关专业优先\n-熟悉定性与定量研究方法，有独立开展用户研究的能力\n-较强的数据分析与报告撰写能力\n-具备良好的沟通能力与同理心，善于倾听用户\n-有互联网用户研究相关实习经历者优先",
+    analysis:"百度官方 2027 届校招出现「北京-用户研究员」（J100749），列在产品类，公开 5 人。职责覆盖定性/定量、可用性测试、产品全生命周期与方法论建设，并明确探索 AI 辅助用研；按岗位内容归入体验管理向。",
+    advice:"适合：有互联网产品研究项目、能把访谈或问卷结果转为产品建议的同学。简历突出一条完整研究闭环，并准备一个 AI 辅助访谈或情绪分析的小案例，说明人工如何校验。",
+  },
+  {
     id:"oppo-ur", co:"OPPO", title:"用户研究经理", industry:"智能硬件", type:"不确定",
     loc:"深圳", num:"2 人", degree:"本科及以上",
     url:"https://careers.oppo.com/university/oppo/campus/post/1837?recruitType=Graduate",
@@ -471,7 +483,7 @@ const JOBS = [
 ];
 
 /* ---------------- 公司库 ----------------
-   公司状态是 2026-09-01 的公开渠道核验快照：
+   公司状态是 2026-09-03 的公开渠道核验快照：
    “尚未确认正式批”代表本次检索未找到可复核的 2027 届正式批，并不等于公司不会开放。
    公司卡片不使用外部 logo 资源，首字标记用于保持静态页面可离线打开。
    ---------------- */
@@ -485,8 +497,8 @@ const COMPANIES = [
   {name:"vivo", mark:"vi", industry:"智能硬件", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"indigo"},
   {name:"小鹏汽车", mark:"鹏", industry:"汽车", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"violet"},
   {name:"莉莉丝游戏", mark:"莉", industry:"游戏", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"amber"},
-  {name:"阿里巴巴", mark:"阿", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"orange"},
-  {name:"百度", mark:"百", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"blue"},
+  {name:"阿里巴巴", mark:"阿", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"官网检索用户研究 / 用户体验 / 市场研究暂无独立岗位", tone:"orange"},
+  {name:"百度", mark:"百", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"blue"},
   {name:"拼多多", mark:"拼", industry:"电商", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"red"},
   {name:"网易游戏", mark:"游", industry:"游戏", status:"open", recruitment:"27届正式已开 · 8/26", research:"暂无可核验用研岗", tone:"red"},
   {name:"蔚来", mark:"蔚", industry:"汽车", status:"open", recruitment:"27届批次已开", research:"暂无可核验用研岗 · 已剔除安全体验岗", tone:"indigo"},
@@ -534,7 +546,7 @@ const COMPANIES = [
 ];
 
 /* ---------------- 状态 ---------------- */
-const state = { ind:[], type:[], company:[], companyOnlyOpen:false, aiOnly:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
+const state = { ind:[], type:[], company:[], companyOnlyOpen:false, companyOnlyResearch:false, aiOnly:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
 const INDUSTRIES = [...new Set(JOBS.map(j=>j.industry))];
 const TYPES = ["战略/策略向","交互/设计向","体验管理向","不确定"];
 
@@ -572,6 +584,7 @@ function companyMatches(c){
   if(state.companyStatus!=="all" && c.status!==state.companyStatus) return false;
   if(state.companyOnlyOpen && c.status!=="open") return false;
   if(q && !c.name.toLowerCase().includes(q)) return false;
+  if(state.companyOnlyResearch && companyJobs(c.name).length===0) return false;
   const matchedJobs = matchingJobsForCompany(c.name);
   if(state.ind.length && !state.ind.includes(c.industry) && matchedJobs.length===0) return false;
   if(state.type.length && matchedJobs.length===0) return false;
@@ -592,10 +605,11 @@ function renderCompanies(){
     const selected = state.company.includes(c.name);
     const statusLabel = c.status==="open" ? "已开" : c.status==="special" ? "专项" : "待确认";
     const researchLabel = totalJobs.length ? "有用研岗" : c.status==="pending" ? "待核验" : "暂无用研";
+    const researchClass = totalJobs.length || c.status==="pending" ? "" : " no-research";
     return `<button type="button" class="company-card ${selected?'selected':''}" data-company="${c.name}" aria-pressed="${selected}" aria-label="筛选 ${c.name} 的岗位">
       <div class="company-card-head"><span class="company-name" title="${c.name}">${c.name}</span><span class="company-jobs">${jobs.length} 个岗位</span></div>
       <div class="company-meta"><span class="tag" title="${c.industry}">${c.industry}</span><span class="company-status ${c.status}" title="${c.recruitment}">${statusLabel}</span></div>
-      <div class="company-research" title="${c.research}">${researchLabel}</div>
+      <div class="company-research${researchClass}" title="${c.research}">${researchLabel}</div>
     </button>`;
   }).join("") : `<div class="empty company-empty"><h4>没有匹配的公司</h4><p>试试清空搜索词，或放宽左侧的公司呈现条件。</p></div>`;
   $("company-selected-note").textContent = state.company.length
@@ -614,14 +628,21 @@ function renderCompanies(){
 function filters(){
   let list = JOBS;
   if(state.company.length) list = list.filter(j=>state.company.includes(j.co));
+  if(state.companyOnlyOpen) list = list.filter(j=>COMPANIES.some(c=>c.name===j.co && c.status==="open"));
+  if(state.companyOnlyResearch) list = list.filter(j=>companyJobs(j.co).length>0);
   return list.filter(jobPasses);
 }
 
 function renderSidebar(){
   $("company-only-open").checked = state.companyOnlyOpen;
+  $("company-only-research").checked = state.companyOnlyResearch;
   $("job-only-ai").checked = state.aiOnly;
+  $("company-only-open").closest(".fitem").classList.toggle("on", state.companyOnlyOpen);
+  $("company-only-research").closest(".fitem").classList.toggle("on", state.companyOnlyResearch);
   $("job-only-ai").closest(".fitem").classList.toggle("on", state.aiOnly);
-  $("ai-filter-count").textContent = JOBS.filter(hasAiRequirement).length;
+  $("company-open-count").textContent = COMPANIES.filter(c=>c.status==="open").length;
+  $("company-research-count").textContent = new Set(JOBS.map(j=>j.co)).size;
+  $("company-ai-count").textContent = new Set(JOBS.filter(hasAiRequirement).map(j=>j.co)).size;
   $("f-industry").innerHTML = INDUSTRIES.map(i=>{
     const n = JOBS.filter(j=>j.industry===i).length;
     const on = state.ind.includes(i);
@@ -642,6 +663,8 @@ function renderList(){
     ...state.ind.map(i=>({v:i,typ:'ind'})),
     ...state.type.map(t=>({v:t,typ:'type'}))
   ];
+  if(state.companyOnlyOpen) chips.push({v:'已开启校招',typ:'companyOnlyOpen'});
+  if(state.companyOnlyResearch) chips.push({v:'有用研岗位',typ:'companyOnlyResearch'});
   if(state.aiOnly) chips.push({v:'有 AI 要求',typ:'aiOnly'});
   $("activeChips").innerHTML = chips.map(({v,typ})=>`<span class="chip">${v}<span class="x" data-clear="${typ}" data-v="${v}">×</span></span>`).join("");
 
@@ -709,7 +732,7 @@ function renderDetail(id){
       </div>
       <div class="d-cta">
         <a class="btn" href="${j.url}" target="_blank" rel="noopener">官方投递 →</a>
-        <div class="d-verified">✓ 数据核实于 2026-09-01 · 请在投递前回到官网复核</div>
+        <div class="d-verified">✓ 数据核实于 2026-09-03 · 请在投递前回到官网复核</div>
       </div>
     </div>
 
@@ -814,6 +837,8 @@ document.addEventListener("click", e=>{
   const clear = e.target.closest("[data-clear]");
   if(clear){
     if(clear.dataset.clear==='company') state.company = state.company.filter(x=>x!==clear.dataset.v);
+    else if(clear.dataset.clear==='companyOnlyOpen') state.companyOnlyOpen = false;
+    else if(clear.dataset.clear==='companyOnlyResearch') state.companyOnlyResearch = false;
     else if(clear.dataset.clear==='aiOnly') state.aiOnly = false;
     else state[clear.dataset.clear] = state[clear.dataset.clear].filter(x=>x!==clear.dataset.v);
     renderCompanies(); renderSidebar(); renderList(); return;
@@ -823,7 +848,11 @@ document.addEventListener("click", e=>{
 document.addEventListener("change", e=>{
   if(e.target.matches("#company-only-open")){
     state.companyOnlyOpen = e.target.checked;
-    renderCompanies(); return;
+    renderCompanies(); renderSidebar(); renderList(); return;
+  }
+  if(e.target.matches("#company-only-research")){
+    state.companyOnlyResearch = e.target.checked;
+    renderCompanies(); renderSidebar(); renderList(); return;
   }
   if(e.target.matches("#job-only-ai")){
     state.aiOnly = e.target.checked;
