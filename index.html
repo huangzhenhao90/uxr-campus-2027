@@ -78,6 +78,15 @@
   .legend-dot.special{background:var(--rec);}
   .legend-dot.pending{background:#9ca3af;}
   .company-selected-note{margin-left:auto;color:var(--coral);font-weight:600;}
+  .company-method{margin-top:11px;border:1px solid var(--line);border-radius:10px;background:#fbfcff;color:var(--ink-2);font-size:11.5px;}
+  .company-method summary{cursor:pointer;padding:8px 11px;color:var(--coral);font-weight:650;list-style:none;}
+  .company-method summary::-webkit-details-marker{display:none;}
+  .company-method summary::before{content:"＋";display:inline-block;margin-right:5px;color:var(--coral);font-weight:700;}
+  .company-method[open] summary::before{content:"－";}
+  .company-method-body{padding:0 13px 10px;line-height:1.55;}
+  .company-method-body p{margin:0 0 6px;}
+  .company-method-body ul{margin:0;padding-left:17px;}
+  .company-method-body li{margin:2px 0;}
   .company-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:13px;}
   .company-card{
     appearance:none;text-align:left;width:100%;min-height:82px;background:var(--card);color:var(--ink);
@@ -277,7 +286,7 @@
             <div>
               <div class="company-eyebrow">先看公司，再看岗位</div>
               <h2 class="serif">公司库</h2>
-              <p>点击公司卡片，右侧只显示该公司的正式研究岗；岗位数为当前已核验的用研/市场研究/体验研究岗位。</p>
+              <p>点击公司卡片，右侧只显示该公司的正式研究岗；岗位数为当前已核验的用研/市场研究/体验研究岗位。公司库是重点公司观察池，按行业覆盖、求职关注度、历史研究岗位与公开校招入口选入，不代表全量市场。</p>
             </div>
             <div class="company-tools">
               <input id="company-search" class="company-search" placeholder="搜索公司" aria-label="搜索公司">
@@ -295,6 +304,17 @@
             <span><i class="legend-dot pending"></i>暂未确认正式批</span>
             <span class="company-selected-note" id="company-selected-note">未选择公司 · 显示全部岗位</span>
           </div>
+          <details class="company-method">
+            <summary>公司库标准与状态说明</summary>
+            <div class="company-method-body">
+              <p>55 家是重点公司观察池，不是全量公司榜单；按求职关注度、行业覆盖、研究相关性与公开校招入口选入，并保留已开、技术专项、待确认三类对照。</p>
+              <ul>
+                <li>已开：官方招聘页/公告，或带官方投递入口的公开校招公告明确写出 2027 届应届招聘。</li>
+                <li>有用研岗：2027 届正式岗位的完整 JD 明确包含用户研究、用户洞察、市场研究、体验研究、人因或玩家研究职责。</li>
+                <li>待核验：官方页面没有当前批次、需要登录或页面不稳定，不等于公司没有岗位。</li>
+              </ul>
+            </div>
+          </details>
           <div class="company-grid" id="company-grid"></div>
           <div class="company-board-footer">
             <span id="company-display-count"></span>
@@ -480,6 +500,36 @@ const JOBS = [
     analysis:"多益官方职位页把「用户研究分析师」放在策划类，职责同时覆盖产品数据、用户研究、市场调研、用户画像和风控数据体系，研究结果直接服务业务决策。按岗位内容，它更偏战略/策略向。",
     advice:"适合：想做游戏行业研究、又愿意补数据分析的同学。简历里写清一个「研究问题—数据/样本—分析—业务动作」案例；熟悉 Excel、数据库语言或可视化工具会更贴合 JD。杭州岗位还要留意可能先去其他城市实习或入职。",
   },
+  {
+    id:"duxiaoman-ur-ai", co:"度小满", title:"用户研究工程师（AI方向）", industry:"互联网", type:"体验管理向",
+    loc:"北京", num:"未公开", degree:"硕士及以上",
+    url:"https://campus.duxiaoman.com/051736/position/7673439632847620395/detail",
+    flags:["AI 写入职责","硕士门槛"],
+    tagline:"把信贷业务、AI 应用场景与用户研究连在一起，研究结论要落到产品、运营与策略。",
+    jd:"职位描述：\n负责信贷业务及 AI 应用场景下的用户研究与体验分析工作，为产品体验优化、AI 能力建设及业务策略迭代提供研究支持，具体包括：\n1、围绕信贷业务中的 AI 应用场景，参与用户调研、体验评估及需求洞察工作，包括但不限于数字人、智能客服、智能触达、AI辅助决策等方向；\n2、结合业务目标，协助完成调研方案设计、用户访谈、问卷设计、数据分析及研究报告输出，提炼用户痛点、需求偏好和体验优化机会；\n3、跟进研究结论在产品、运营及策略侧的落地应用，持续观察业务效果与用户反馈，协助完成归因分析和复盘迭代；\n4、关注 AI 产品体验、用户行为变化及行业前沿实践，沉淀可复用的研究方法、评估框架和体验洞察。\n\n职位要求：\n1、心理学、社会学、人类学、统计学、金融经济、传媒、计算机等相关专业优先；\n2、具备用户研究、数据分析、AI产品体验评估等相关实习或项目经历者优先；\n3、掌握基础定性、定量研究方法，具备较强的信息拆解、数据分析、逻辑归纳和表达能力；\n4、对 AI 应用、用户体验、金融科技方向有兴趣，愿意深入理解业务，并将用户洞察转化为可落地的产品或策略建议；\n5、具备良好的沟通协作能力、学习能力和责任心，能够在跨团队项目中高效推进问题解决。",
+    analysis:"度小满官网 2027 届职位列表显示「用户体验」类 2 个岗位，其中一条是用户研究工程师（AI 方向）。JD 将调研、体验评估、AI 产品体验、业务策略迭代放在同一条链路上，研究结果要同时服务产品、运营和策略。",
+    advice:"适合：想做金融科技体验研究、又愿意深入 AI 场景的同学。作品集建议展示一个「研究发现—体验评估—策略落地—效果复盘」闭环，并说明 AI 在资料整理或分析中的使用边界与人工校验方式。",
+  },
+  {
+    id:"duxiaoman-ur", co:"度小满", title:"用户研究工程师", industry:"互联网", type:"体验管理向",
+    loc:"北京", num:"未公开", degree:"硕士及以上",
+    url:"https://campus.duxiaoman.com/051736/position/7673438671031257394/detail",
+    flags:["硕士门槛"],
+    tagline:"围绕信贷业务做常规调研交付，跟踪研究结论落地后的业务效果。",
+    jd:"职位描述：\n负责信贷业务方向的用户调研分析工作，为产品核心体验与策略提供研究支持，具体包括：\n1、独立开展并完成常规调研项目交付，包括但不限于：结合业务现状，与业务同学沟通调研目标、拆解并完成研究设计与执行、数据分析形成主要结论，并跟业务同学同步讨论形成落地方向；\n2、跟进调研结论应用落地后业务效果，并主动归因分析纵向变化、复盘迭代推进研究。\n\n职位要求：\n1、心理学、社会学、人类学、统计学、金融经济、传媒等相关专业者优先，有用户研究、市场调研或数据分析相关实习/项目经历，有互联网、金融相关行业经验者优先；\n2、掌握各种基础研究分析方法、流程，良好的定性、定量研究分析功底，分析总结能力突出者优先。",
+    analysis:"这是一条更贴近日常业务交付的信贷用户研究岗：从目标沟通、方案设计、执行、分析到落地复盘均由 JD 明确写出。它和 AI 方向岗位并列出现，说明度小满把研究能力拆成常规业务研究与 AI 体验研究两条入口。",
+    advice:"适合：有定性、定量项目经验，能够和业务方共同拆解问题的同学。投递材料要把研究结论如何改变产品或策略写具体，避免只罗列访谈、问卷等方法名词。",
+  },
+  {
+    id:"netease-leihuo-uxr", co:"网易游戏", title:"UX用户体验管培生（用户研究与玩家社区方向）", industry:"游戏", type:"战略/策略向",
+    loc:"杭州", num:"未公开", degree:"硕士及以上",
+    url:"https://campus.163.com/app/detail/index?id=4785&projectId=77&channel=ERAjcw",
+    flags:["AI 写入职责","硕士门槛","岗位名不含『用研』"],
+    tagline:"雷火 UX 中心的用户研究与玩家社区入口，覆盖游戏从预研到运营的全周期。",
+    jd:"部门介绍：网易游戏雷火 UX 用户体验中心，业务覆盖数据、研究、设计三大领域。\n\n岗位介绍：\n1、参与不同项目的从预研到运营的研发周期全过程，全方位提供用户研究与玩家社区支持，直至具体游戏研发；\n2、设计、执行、管理特定用户研究与社区管理项目，包括但不限于需求分析、方案设计、数据分析与洞察、结论交付与长期跟踪；涉及研究方法包括但不限于问卷调研、可用性测试、深度访谈、焦点小组、数据分析等；对游戏行业和玩家社群执行竞品研究、行业数据搜集、玩家舆情分析等；\n3、玩家社区管理与沟通是本岗位必需要完成工作；\n4、与数据科学、体验设计、本地化等岗位协同，参与更具挑战性的游戏研究项目。\n\n岗位要求：\n1、专注于游戏用户体验和研发业务，希望在本领域内建立目标，长远发展，在第一志愿中填报“UX用户体验管培生系列岗位”；\n2、对游戏行业充满高度热情，游戏体验与理解丰富而全面，且在部分垂直品类有着深度体验，对游戏产品及其用户有着敏锐的观察力与深入的洞察力；\n3、硕士及以上学历，包括但不限于心理学、计算机、社会学、人类学、工业工程、统计学等专业；\n4、对新技术充满好奇，拥抱AI，能熟练使用AI进行人机协同，提升效率；\n5、掌握1门或多门外语，有同传能力优先；\n6、高度抗压能力、优秀的沟通表达能力、擅长写作，能与不同产品、不同职能的同事进行高质量的团队协作；\n7、同等条件下，游戏社区 KOL/KOC、游戏开发或玩家社区管理实践、竞赛获奖、顶会顶刊发表、学生干部或社团负责人经历可优先面试。",
+    analysis:"网易雷火官方 2027 届 JD 把用户研究与玩家社区写在同一个正式岗位里，研究范围从预研、研发延伸到运营，并明确问卷、可用性测试、访谈、焦点小组、竞品研究和舆情分析。它是游戏行业里「研究 + 玩家社群」融合最完整的一条入口。",
+    advice:"适合：硕士及以上、对游戏品类有深度体验，且愿意和玩家长期沟通的同学。简历应写清游戏经历与研究项目的对应关系；准备一个玩家反馈如何被验证、分析并推动产品动作的案例，同时展示你如何使用 AI 做人机协同。",
+  },
 ];
 
 /* ---------------- 公司库 ----------------
@@ -506,35 +556,35 @@ const COMPANIES = [
   {name:"滴滴", mark:"滴", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"emerald"},
   {name:"哔哩哔哩", mark:"哔", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"blue"},
   {name:"美团", mark:"美", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/17", research:"暂无正式用研岗", tone:"amber"},
-  {name:"蚂蚁", mark:"蚁", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/10", research:"暂无正式用研岗", tone:"blue"},
+  {name:"蚂蚁", mark:"蚁", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/10", research:"客户体验岗位线索（含用户研究职责），官网直链待核验", tone:"blue"},
   {name:"华为", mark:"华", industry:"智能硬件", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"red"},
   {name:"小米", mark:"米", industry:"智能硬件", status:"open", recruitment:"27届正式已开 · 8/18", research:"暂无正式用研岗", tone:"orange"},
   {name:"米哈游", mark:"米", industry:"游戏", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"violet"},
   {name:"理想汽车", mark:"理", industry:"汽车", status:"open", recruitment:"27届正式已开 · 8/21", research:"暂无正式用研岗", tone:"slate"},
   {name:"荣耀", mark:"荣", industry:"智能硬件", status:"open", recruitment:"27届正式已开 · 8/18", research:"暂无正式用研岗", tone:"red"},
-  {name:"贝壳", mark:"贝", industry:"房地产", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
-  {name:"小红书", mark:"红", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
-  {name:"携程", mark:"携", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
+  {name:"贝壳", mark:"贝", industry:"房地产", status:"open", recruitment:"27届正式已开 · 8/26", research:"暂无独立用研岗（已检索16个27届职位）", tone:"blue"},
+  {name:"小红书", mark:"红", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验（官网热招页未见27届/用研）", tone:"red"},
+  {name:"携程", mark:"携", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验（官网可见岗位页为旧版）", tone:"blue"},
   {name:"得物", mark:"得", industry:"电商", status:"open", recruitment:"27届正式已开 · 8/10", research:"暂无正式用研岗", tone:"violet"},
-  {name:"SHEIN", mark:"SH", industry:"电商", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"slate"},
-  {name:"网易互联网", mark:"网", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
-  {name:"腾讯音乐", mark:"TME", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"emerald"},
-  {name:"吉利/极氪", mark:"吉", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
+  {name:"SHEIN", mark:"SH", industry:"电商", status:"pending", recruitment:"官网仍显示26届校招", research:"暂未核验", tone:"slate"},
+  {name:"网易互联网", mark:"网", industry:"互联网", status:"pending", recruitment:"网易总校招页暂未显27届", research:"暂未核验（网易游戏雷火另列）", tone:"red"},
+  {name:"腾讯音乐", mark:"TME", industry:"互联网", status:"open", recruitment:"27届正式已开 · 9月上旬面试", research:"暂无可核验独立用研岗", tone:"emerald"},
+  {name:"吉利/极氪", mark:"吉", industry:"汽车", status:"open", recruitment:"27届秋季校招已开 · 8/13", research:"暂无独立用研岗（含UX体验设计岗）", tone:"blue"},
   {name:"比亚迪", mark:"比", industry:"汽车", status:"pending", recruitment:"官网显示 27 届即将开始", research:"暂未核验", tone:"red"},
-  {name:"零跑汽车", mark:"零", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"indigo"},
+  {name:"零跑汽车", mark:"零", industry:"汽车", status:"open", recruitment:"27届正式批已开", research:"暂无独立用研岗", tone:"indigo"},
   {name:"长城汽车", mark:"长", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"slate"},
   {name:"上汽集团", mark:"上", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
   {name:"广汽埃安", mark:"埃", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
   {name:"完美世界", mark:"完", industry:"游戏", status:"open", recruitment:"27届正式已开 · 8/31", research:"暂无正式用研岗", tone:"amber"},
-  {name:"畅游", mark:"畅", industry:"游戏", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
-  {name:"4399", mark:"43", industry:"游戏", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"red"},
+  {name:"畅游", mark:"畅", industry:"游戏", status:"open", recruitment:"27届秋招已开 · 8/6", research:"暂无独立用研岗", tone:"blue"},
+  {name:"4399", mark:"43", industry:"游戏", status:"open", recruitment:"27届校招已开", research:"暂无独立用研岗", tone:"red"},
   {name:"联想", mark:"联", industry:"智能硬件", status:"open", recruitment:"27届正式已开 · 8/5", research:"有用研岗", tone:"indigo"},
   {name:"唯品会", mark:"唯", industry:"电商", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
-  {name:"汽车之家", mark:"汽", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"slate"},
+  {name:"汽车之家", mark:"汽", industry:"汽车", status:"pending", recruitment:"官网仍为26届应届 / 27届日常实习", research:"暂未核验", tone:"slate"},
   {name:"知乎", mark:"知", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
   {name:"Soul", mark:"So", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
   {name:"哈啰", mark:"哈", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"emerald"},
-  {name:"BOSS直聘", mark:"B", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
+  {name:"BOSS直聘", mark:"B", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/18", research:"暂无独立用研岗", tone:"blue"},
   {name:"中国电信", mark:"电", industry:"通信", status:"open", recruitment:"27届正式已开 · 8/21", research:"暂无正式用研岗", tone:"blue"},
   {name:"度小满", mark:"满", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/17", research:"暂无正式用研岗", tone:"violet"},
   {name:"挚文集团", mark:"挚", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/10", research:"暂无正式用研岗", tone:"red"},
@@ -604,8 +654,9 @@ function renderCompanies(){
     const totalJobs = companyJobs(c.name);
     const selected = state.company.includes(c.name);
     const statusLabel = c.status==="open" ? "已开" : c.status==="special" ? "专项" : "待确认";
-    const researchLabel = totalJobs.length ? "有用研岗" : c.status==="pending" ? "待核验" : "暂无用研";
-    const researchClass = totalJobs.length || c.status==="pending" ? "" : " no-research";
+    const researchPending = /待核验|线索|可核验/.test(c.research);
+    const researchLabel = totalJobs.length ? "有用研岗" : c.status==="pending" ? "待核验" : researchPending ? "线索待核验" : "暂无用研";
+    const researchClass = totalJobs.length || c.status==="pending" || researchPending ? "" : " no-research";
     return `<button type="button" class="company-card ${selected?'selected':''}" data-company="${c.name}" aria-pressed="${selected}" aria-label="筛选 ${c.name} 的岗位">
       <div class="company-card-head"><span class="company-name" title="${c.name}">${c.name}</span><span class="company-jobs">${jobs.length} 个岗位</span></div>
       <div class="company-meta"><span class="tag" title="${c.industry}">${c.industry}</span><span class="company-status ${c.status}" title="${c.recruitment}">${statusLabel}</span></div>
