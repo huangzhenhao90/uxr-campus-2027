@@ -550,7 +550,7 @@ const COMPANIES = [
   {name:"阿里巴巴", mark:"阿", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"官网检索用户研究 / 用户体验 / 市场研究暂无独立岗位", tone:"orange"},
   {name:"百度", mark:"百", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"有用研岗", tone:"blue"},
   {name:"拼多多", mark:"拼", industry:"电商", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"red"},
-  {name:"网易游戏", mark:"游", industry:"游戏", status:"open", recruitment:"27届正式已开 · 8/26", research:"暂无可核验用研岗", tone:"red"},
+  {name:"网易游戏", mark:"游", industry:"游戏", status:"open", recruitment:"27届正式已开 · 8/26", research:"有用研岗 · UX用户体验管培生（用户研究与玩家社区方向）", tone:"red"},
   {name:"蔚来", mark:"蔚", industry:"汽车", status:"open", recruitment:"27届批次已开", research:"暂无可核验用研岗 · 已剔除安全体验岗", tone:"indigo"},
   {name:"大疆", mark:"疆", industry:"智能硬件", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"slate"},
   {name:"滴滴", mark:"滴", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"emerald"},
@@ -586,7 +586,7 @@ const COMPANIES = [
   {name:"哈啰", mark:"哈", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"emerald"},
   {name:"BOSS直聘", mark:"B", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/18", research:"暂无独立用研岗", tone:"blue"},
   {name:"中国电信", mark:"电", industry:"通信", status:"open", recruitment:"27届正式已开 · 8/21", research:"暂无正式用研岗", tone:"blue"},
-  {name:"度小满", mark:"满", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/17", research:"暂无正式用研岗", tone:"violet"},
+  {name:"度小满", mark:"满", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/17", research:"有用研岗 · 2条完整JD", tone:"violet"},
   {name:"挚文集团", mark:"挚", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/10", research:"暂无正式用研岗", tone:"red"},
   {name:"宁德时代", mark:"宁", industry:"汽车", status:"open", recruitment:"27届正式已开 · 8/25", research:"暂无正式用研岗", tone:"emerald"},
   {name:"TCL", mark:"TCL", industry:"智能硬件", status:"open", recruitment:"27届正式已开", research:"暂无正式用研岗", tone:"indigo"},
@@ -654,9 +654,10 @@ function renderCompanies(){
     const totalJobs = companyJobs(c.name);
     const selected = state.company.includes(c.name);
     const statusLabel = c.status==="open" ? "已开" : c.status==="special" ? "专项" : "待确认";
-    const researchPending = /待核验|线索|可核验/.test(c.research);
-    const researchLabel = totalJobs.length ? "有用研岗" : c.status==="pending" ? "待核验" : researchPending ? "线索待核验" : "暂无用研";
-    const researchClass = totalJobs.length || c.status==="pending" || researchPending ? "" : " no-research";
+    const researchPending = /待核验|可核验|暂未核验/.test(c.research);
+    const researchLead = /线索/.test(c.research);
+    const researchLabel = totalJobs.length ? "有用研岗" : c.status==="pending" ? "待核验" : researchLead ? "线索待核验" : researchPending ? "待核验" : "暂无用研";
+    const researchClass = totalJobs.length || c.status==="pending" || researchPending || researchLead ? "" : " no-research";
     return `<button type="button" class="company-card ${selected?'selected':''}" data-company="${c.name}" aria-pressed="${selected}" aria-label="筛选 ${c.name} 的岗位">
       <div class="company-card-head"><span class="company-name" title="${c.name}">${c.name}</span><span class="company-jobs">${jobs.length} 个岗位</span></div>
       <div class="company-meta"><span class="tag" title="${c.industry}">${c.industry}</span><span class="company-status ${c.status}" title="${c.recruitment}">${statusLabel}</span></div>
