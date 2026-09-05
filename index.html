@@ -305,6 +305,11 @@
   .research-tabs button[aria-pressed="true"]{background:#fff;color:var(--coral);border-color:#c7d2fe;box-shadow:0 1px 3px #00000008;}
   .research-tabs span{font-size:12px;margin-left:6px;font-weight:400;white-space:nowrap;}
   @media(max-width:480px){.research-tabs button{font-size:12px;padding:10px 4px;}.research-tabs span{display:block;margin:3px 0 0;font-size:11px;}}
+  .publisher{display:flex;justify-content:center;align-items:center;gap:20px;margin:0 auto 22px;padding-top:24px;border-top:1px solid var(--line);max-width:1132px;text-align:left;}
+  .publisher img{display:block;width:128px;height:128px;background:#fff;border:1px solid var(--line);border-radius:8px;}
+  .publisher strong{display:block;font-size:15px;font-weight:600;color:var(--ink);}
+  .publisher p{margin:5px 0 0;color:var(--ink-3);font-size:12px;}
+  @media(max-width:480px){.publisher{flex-direction:column;gap:10px;text-align:center;margin-left:16px;margin-right:16px;}}
 </style>
 </head>
 <body>
@@ -410,6 +415,10 @@
 </div>
 
 <footer class="footer">
+  <div class="publisher">
+    <a href="assets/zhenzhihaojian-qr.jpg" target="_blank" rel="noopener" aria-label="打开真知浩见二维码原图"><img src="assets/zhenzhihaojian-qr.jpg" width="128" height="128" alt="真知浩见二维码" loading="lazy"></a>
+    <div><strong>「真知浩见」出品</strong><p>扫码了解更多 · 点击二维码查看原图</p></div>
+  </div>
   数据快照：2026-09-03 官网复核；岗位会变化，投递前请回到官方链接复核。<br>
   检索词：用户研究 / 市场研究 / 用户洞察 / 体验研究 / 人因研究 等 12 组。岗位信息变化很快，投递前请以企业官网为准。
 </footer>
