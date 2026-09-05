@@ -236,7 +236,8 @@
   .masthead{background:#fff;color:var(--ink);padding:23px 0 20px;border-top:4px solid var(--coral);border-bottom:1px solid var(--line);}
   .masthead h1{font-family:inherit;font-size:26px;font-weight:700;letter-spacing:-.03em;margin:0;}
   .meta{gap:0;margin-top:10px;}
-  .stat{background:none;border:0;border-radius:0;padding:0 18px;border-right:1px solid var(--line);gap:5px;}
+  .stat{background:none;border:0;border-radius:0;padding:0;gap:5px;}
+  .stat+.stat::before{content:'→';color:#9ca3af;margin:0 14px;font-size:14px;}
   .stat:first-child{padding-left:0;}
   .stat:last-child{border-right:0;}
   .stat b{font-family:inherit;font-size:17px;color:var(--coral);font-weight:650;font-variant-numeric:tabular-nums;}
@@ -280,10 +281,11 @@
     .masthead{padding:17px 0 15px;}
     .masthead h1{font-size:22px;}
     .meta{row-gap:5px;}
-    .stat{padding:0 9px;gap:3px;}
+    .stat{padding:0;gap:3px;}
+    .stat+.stat::before{margin:0 6px;font-size:12px;}
     .stat b{font-size:15px;}
     .stat span{font-size:10px;}
-    .stat:last-child{padding:0;border:0;flex-basis:100%;}
+    .stat:last-child{padding:0;border:0;}
     .company-board-head{flex-wrap:wrap;gap:10px;}
     .company-tools{width:100%;flex-direction:row;}
     .company-search{width:0;}
@@ -305,11 +307,10 @@
 <header class="masthead">
   <div class="wrap">
     <h1 class="serif">2027 届用研校招岗位库</h1>
-    <div class="meta">
-      <div class="stat"><b id="statJobs">0</b><span>个正式研究岗</span></div>
-      <div class="stat"><b id="statCos">0</b><span>家公司有岗</span></div>
-      <div class="stat"><b id="statCompanies">0</b><span>公司库</span></div>
-      <div class="stat"><b id="statNum">0</b><span>公开名额（下限）</span></div>
+    <div class="meta" aria-label="全库公司概览，不随筛选变化" title="全库公司概览；下方数量随筛选变化">
+      <div class="stat"><b id="statCompanies">0</b><span>家收录公司</span></div>
+      <div class="stat"><b id="statOpen">0</b><span>家已开正式校招</span></div>
+      <div class="stat"><b id="statCos">0</b><span>家有用研岗</span></div>
     </div>
   </div>
 </header>
@@ -325,19 +326,19 @@
           <div class="filter-content">
 
           <div class="fgroup">
-            <div class="flabel" title="数量按公司统计">公司 <button data-company-clear="all">清除选择</button></div>
+            <div class="flabel" title="数量按公司统计">公司（家） <button data-company-clear="all">清除选择</button></div>
             <label class="fitem" title="只显示已开启正式校招的公司"><input type="checkbox" id="company-only-open"> 已开启校招 <span class="fcount" id="company-open-count">0</span></label>
             <label class="fitem" title="只显示当前有正式用研岗位的公司"><input type="checkbox" id="company-only-research"> 有用研岗位 <span class="fcount" id="company-research-count">0</span></label>
             <label class="fitem" title="只显示至少一个岗位 JD 明确提到 AI、人工智能、大模型或 AIGC 的公司"><input type="checkbox" id="job-only-ai"> 有 AI 要求 <span class="fcount" id="company-ai-count">0</span></label>
           </div>
 
           <div class="fgroup">
-            <div class="flabel">行业 <button data-reset="ind">重置</button></div>
+            <div class="flabel">行业（公司数） <button data-reset="ind">重置</button></div>
             <div id="f-industry"></div>
           </div>
 
           <div class="fgroup">
-            <div class="flabel">类型 <button data-reset="type">重置</button></div>
+            <div class="flabel">类型（岗位数） <button data-reset="type">重置</button></div>
             <div id="f-type"></div>
           </div>
 
@@ -377,6 +378,7 @@
               </ul>
             </div>
           </details>
+          <div class="active-chips" id="activeChips"></div>
           <div class="company-grid" id="company-grid"></div>
           <div class="company-board-footer">
             <span id="company-display-count"></span>
@@ -385,10 +387,9 @@
         </section>
 
         <div class="toolbar">
-          <div class="title serif">岗位列表</div>
+          <div class="title serif">用研岗位</div>
           <div class="count" id="listCount"></div>
         </div>
-        <div class="active-chips" id="activeChips"></div>
         <div id="list"></div>
       </section>
     </div>
@@ -659,7 +660,7 @@ const COMPANIES = [
 
 /* ---------------- 状态 ---------------- */
 const state = { ind:[], type:[], company:[], companyOnlyOpen:false, companyOnlyResearch:false, aiOnly:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
-const INDUSTRIES = [...new Set(JOBS.map(j=>j.industry))];
+const INDUSTRIES = [...new Set(COMPANIES.map(c=>c.industry))];
 const TYPES = ["战略/策略向","交互/设计向","体验管理向","不确定"];
 
 /* ---------------- 渲染 ---------------- */
@@ -692,21 +693,22 @@ function typeClass(type){
   return "type-d";
 }
 
-function companyMatches(c){
-  const q = state.companyQuery.trim().toLowerCase();
-  if(state.companyStatus!=="all" && c.status!==state.companyStatus) return false;
-  if(state.companyOnlyOpen && c.status!=="open") return false;
+function companyMatches(c, overrides={}){
+  const s = {...state, ...overrides};
+  const q = s.companyQuery.trim().toLowerCase();
+  if(s.companyStatus!=="all" && c.status!==s.companyStatus) return false;
+  if(s.companyOnlyOpen && c.status!=="open") return false;
   if(q && !c.name.toLowerCase().includes(q)) return false;
-  if(state.companyOnlyResearch && companyJobs(c.name).length===0) return false;
-  const matchedJobs = matchingJobsForCompany(c.name);
-  if(state.ind.length && !state.ind.includes(c.industry) && matchedJobs.length===0) return false;
-  if(state.type.length && matchedJobs.length===0) return false;
-  if(state.aiOnly && matchedJobs.length===0) return false;
+  if(s.companyOnlyResearch && companyJobs(c.name).length===0) return false;
+  const matchedJobs = companyJobs(c.name).filter(j=>(!s.type.length || s.type.includes(j.type)) && (!s.aiOnly || hasAiRequirement(j)));
+  if(s.ind.length && !s.ind.includes(c.industry)) return false;
+  if(s.type.length && matchedJobs.length===0) return false;
+  if(s.aiOnly && matchedJobs.length===0) return false;
   return true;
 }
 
 function renderCompanies(){
-  const matching = COMPANIES.filter(companyMatches);
+  const matching = COMPANIES.filter(c=>companyMatches(c)).sort((a,b)=>Number(companyJobs(b.name).length>0)-Number(companyJobs(a.name).length>0));
   const searchActive = state.companyQuery.trim().length > 0;
   const showAll = state.companyExpanded || searchActive;
   const previewLimit = window.matchMedia('(max-width:480px)').matches ? 6 : 12;
@@ -728,21 +730,21 @@ function renderCompanies(){
       <div class="company-research${researchClass}" title="${c.research}">${researchLabel}</div>
     </button>`;
   }).join("") : `<div class="empty company-empty"><h4>没有匹配的公司</h4><p>试试清空搜索词，或放宽左侧的公司呈现条件。</p></div>`;
-  $("company-selected-note").textContent = state.company.length
-    ? `已选 ${state.company.join("、")} · 岗位列表同步筛选`
-    : "未选择公司 · 显示全部岗位";
-  $("company-display-count").textContent = matching.length
-    ? `显示 ${visible.length} / ${matching.length} 家公司`
+  const withJobs = matching.filter(c=>matchingJobsForCompany(c.name).length>0).length;
+  $("company-selected-note").textContent = `符合条件 ${matching.length} 家 · ${withJobs} 家有用研岗`;
+  $("company-display-count").textContent = matching.length > visible.length
+    ? "优先展示有用研岗位的公司"
     : "";
   const toggle = $("company-toggle");
   const canToggle = matching.length > previewLimit && !searchActive;
   toggle.style.display = canToggle ? "inline-flex" : "none";
   toggle.setAttribute("aria-expanded", String(state.companyExpanded));
-  toggle.textContent = state.companyExpanded ? "收起公司库 ↑" : `展开全部 ${matching.length} 家公司 ↓`;
+  toggle.textContent = state.companyExpanded ? "收起公司库 ↑" : `展开其余 ${matching.length-visible.length} 家公司 ↓`;
 }
 
 function filters(){
-  let list = JOBS;
+  const eligible = new Set(COMPANIES.filter(c=>companyMatches(c)).map(c=>c.name));
+  let list = JOBS.filter(j=>eligible.has(j.co));
   if(state.company.length) list = list.filter(j=>state.company.includes(j.co));
   if(state.companyOnlyOpen) list = list.filter(j=>COMPANIES.some(c=>c.name===j.co && c.status==="open"));
   if(state.companyOnlyResearch) list = list.filter(j=>companyJobs(j.co).length>0);
@@ -756,16 +758,18 @@ function renderSidebar(){
   $("company-only-open").closest(".fitem").classList.toggle("on", state.companyOnlyOpen);
   $("company-only-research").closest(".fitem").classList.toggle("on", state.companyOnlyResearch);
   $("job-only-ai").closest(".fitem").classList.toggle("on", state.aiOnly);
-  $("company-open-count").textContent = COMPANIES.filter(c=>c.status==="open").length;
-  $("company-research-count").textContent = new Set(JOBS.map(j=>j.co)).size;
-  $("company-ai-count").textContent = new Set(JOBS.filter(hasAiRequirement).map(j=>j.co)).size;
+  $("company-status-filter").value = state.companyStatus;
+  $("company-open-count").textContent = COMPANIES.filter(c=>companyMatches(c,{companyStatus:"open",companyOnlyOpen:true})).length;
+  $("company-research-count").textContent = COMPANIES.filter(c=>companyMatches(c,{companyOnlyResearch:true})).length;
+  $("company-ai-count").textContent = COMPANIES.filter(c=>companyMatches(c,{aiOnly:true})).length;
   $("f-industry").innerHTML = INDUSTRIES.map(i=>{
-    const n = JOBS.filter(j=>j.industry===i).length;
+    const n = COMPANIES.filter(c=>companyMatches(c,{ind:[i]})).length;
     const on = state.ind.includes(i);
     return `<label class="fitem ${on?'on':''}"><input type="checkbox" id="c-ind-${i}" data-ind="${i}" ${on?'checked':''}><span>${i}</span><span class="fcount">${n}</span></label>`;
   }).join("");
   $("f-type").innerHTML = TYPES.map(t=>{
-    const n = JOBS.filter(j=>j.type===t).length;
+    const eligible = new Set(COMPANIES.filter(c=>companyMatches(c,{type:[t]})).map(c=>c.name));
+    const n = JOBS.filter(j=>eligible.has(j.co) && j.type===t && (!state.aiOnly || hasAiRequirement(j)) && (!state.company.length || state.company.includes(j.co))).length;
     const on = state.type.includes(t);
     return `<label class="fitem ${on?'on':''}"><input type="checkbox" id="c-type-${t}" data-type="${t}" ${on?'checked':''}><span>${t}</span><span class="fcount">${n}</span></label>`;
   }).join("");
@@ -773,7 +777,7 @@ function renderSidebar(){
 
 function renderList(){
   const list = filters();
-  $("listCount").textContent = `共 ${list.length} 个岗位`;
+  $("listCount").textContent = `${new Set(list.map(j=>j.co)).size} 家公司 · ${list.length} 个用研岗位`;
   const chips = [
     ...state.company.map(c=>({v:c,typ:'company'})),
     ...state.ind.map(i=>({v:i,typ:'ind'})),
@@ -782,6 +786,7 @@ function renderList(){
   if(state.companyOnlyOpen) chips.push({v:'已开启校招',typ:'companyOnlyOpen'});
   if(state.companyOnlyResearch) chips.push({v:'有用研岗位',typ:'companyOnlyResearch'});
   if(state.aiOnly) chips.push({v:'有 AI 要求',typ:'aiOnly'});
+  if(state.companyStatus!=="all" && !state.companyOnlyOpen) chips.push({v:state.companyStatus==='special'?'技术专项':state.companyStatus==='pending'?'正式批待确认':'已开启校招',typ:'companyStatus'});
   $("activeChips").innerHTML = chips.map(({v,typ})=>`<span class="chip">${v}<span class="x" data-clear="${typ}" data-v="${v}">×</span></span>`).join("");
 
   $("list").innerHTML = list.length ? list.map(j=>`
@@ -802,7 +807,7 @@ function renderList(){
       <p>${j.tagline}</p>
       <div class="job-foot"><span>${j.co} · ${j.loc}</span><span>${j.degree}</span></div>
     </div>`).join("")
-    : `<div class="empty"><h4>没有匹配的岗位</h4><p>试试减少筛选条件，或重置公司 / 行业 / 类型。</p></div>`;
+    : `<div class="empty"><h4>${state.company.length ? escapeHtml(state.company.join('、'))+'：暂无匹配的用研岗位' : '当前范围暂无可核验的用研岗位'}</h4><p>校招开启不代表已发布用研岗。可取消公司选择，或调整筛选条件。</p></div>`;
 }
 
 function bulletList(text){
@@ -953,9 +958,10 @@ document.addEventListener("click", e=>{
   const clear = e.target.closest("[data-clear]");
   if(clear){
     if(clear.dataset.clear==='company') state.company = state.company.filter(x=>x!==clear.dataset.v);
-    else if(clear.dataset.clear==='companyOnlyOpen') state.companyOnlyOpen = false;
+    else if(clear.dataset.clear==='companyOnlyOpen'){ state.companyOnlyOpen = false; state.companyStatus = 'all'; }
     else if(clear.dataset.clear==='companyOnlyResearch') state.companyOnlyResearch = false;
     else if(clear.dataset.clear==='aiOnly') state.aiOnly = false;
+    else if(clear.dataset.clear==='companyStatus') state.companyStatus = 'all';
     else state[clear.dataset.clear] = state[clear.dataset.clear].filter(x=>x!==clear.dataset.v);
     renderCompanies(); renderSidebar(); renderList(); return;
   }
@@ -964,6 +970,7 @@ document.addEventListener("click", e=>{
 document.addEventListener("change", e=>{
   if(e.target.matches("#company-only-open")){
     state.companyOnlyOpen = e.target.checked;
+    state.companyStatus = e.target.checked ? 'open' : 'all';
     renderCompanies(); renderSidebar(); renderList(); return;
   }
   if(e.target.matches("#company-only-research")){
@@ -978,18 +985,18 @@ document.addEventListener("change", e=>{
 
 $("company-search").addEventListener("input", e=>{
   state.companyQuery = e.target.value;
-  renderCompanies();
+  renderCompanies(); renderSidebar(); renderList();
 });
 $("company-status-filter").addEventListener("change", e=>{
   state.companyStatus = e.target.value;
-  renderCompanies();
+  state.companyOnlyOpen = e.target.value==='open';
+  renderCompanies(); renderSidebar(); renderList();
 });
 
 /* ---------------- 初始化 ---------------- */
-$("statJobs").textContent = JOBS.length;
 $("statCos").textContent = new Set(JOBS.map(j=>j.co)).size;
 $("statCompanies").textContent = COMPANIES.length;
-$("statNum").textContent = JOBS.reduce((s,j)=>{ const m = j.num.match(/(\d+)\s*人/); return s + (m ? +m[1] : 0); },0);
+$("statOpen").textContent = COMPANIES.filter(c=>c.status==='open').length;
 const baseUrl = window.location.pathname + window.location.search;
 const initialDetailId = detailIdFromHash();
 if(initialDetailId && JOBS.some(j=>j.id===initialDetailId)){
