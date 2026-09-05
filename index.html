@@ -300,6 +300,11 @@
     .company-meta .tag,.company-status{font-size:9px;padding:1px 3px;}
   }
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important;}}
+  .research-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;margin-top:12px;background:#e9ebf3;border-radius:12px;}
+  .research-tabs button{border:1px solid transparent;border-radius:8px;padding:12px 8px;font:inherit;font-size:14px;font-weight:600;background:transparent;color:var(--ink-2);cursor:pointer;}
+  .research-tabs button[aria-pressed="true"]{background:#fff;color:var(--coral);border-color:#c7d2fe;box-shadow:0 1px 3px #00000008;}
+  .research-tabs span{font-size:12px;margin-left:6px;font-weight:400;white-space:nowrap;}
+  @media(max-width:480px){.research-tabs button{font-size:12px;padding:10px 4px;}.research-tabs span{display:block;margin:3px 0 0;font-size:11px;}}
 </style>
 </head>
 <body>
@@ -328,7 +333,6 @@
           <div class="fgroup">
             <div class="flabel" title="数量按公司统计">公司（家） <button data-company-clear="all">清除选择</button></div>
             <label class="fitem" title="只显示已开启正式校招的公司"><input type="checkbox" id="company-only-open"> 已开启校招 <span class="fcount" id="company-open-count">0</span></label>
-            <label class="fitem" title="只显示当前有正式用研岗位的公司"><input type="checkbox" id="company-only-research"> 有用研岗位 <span class="fcount" id="company-research-count">0</span></label>
             <label class="fitem" title="只显示至少一个岗位 JD 明确提到 AI、人工智能、大模型或 AIGC 的公司"><input type="checkbox" id="job-only-ai"> 有 AI 要求 <span class="fcount" id="company-ai-count">0</span></label>
           </div>
 
@@ -379,6 +383,10 @@
             </div>
           </details>
           <div class="active-chips" id="activeChips"></div>
+          <div class="research-tabs" role="group" aria-label="按校招用研岗位分组">
+            <button type="button" data-research-view="with" aria-pressed="true">有校招用研岗位 <span id="research-with-count"></span></button>
+            <button type="button" data-research-view="without" aria-pressed="false" title="当前未收录可核验的正式校招用研岗，含待核验公司">暂无校招用研岗位 <span id="research-without-count"></span></button>
+          </div>
           <div class="company-grid" id="company-grid"></div>
           <div class="company-board-footer">
             <span id="company-display-count"></span>
@@ -659,7 +667,7 @@ const COMPANIES = [
 ];
 
 /* ---------------- 状态 ---------------- */
-const state = { ind:[], type:[], company:[], companyOnlyOpen:false, companyOnlyResearch:false, aiOnly:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
+const state = { ind:[], type:[], company:[], companyOnlyOpen:false, researchView:'with', aiOnly:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
 const INDUSTRIES = [...new Set(COMPANIES.map(c=>c.industry))];
 const TYPES = ["战略/策略向","交互/设计向","体验管理向","不确定"];
 
@@ -699,7 +707,8 @@ function companyMatches(c, overrides={}){
   if(s.companyStatus!=="all" && c.status!==s.companyStatus) return false;
   if(s.companyOnlyOpen && c.status!=="open") return false;
   if(q && !c.name.toLowerCase().includes(q)) return false;
-  if(s.companyOnlyResearch && companyJobs(c.name).length===0) return false;
+  if(s.researchView==='with' && companyJobs(c.name).length===0) return false;
+  if(s.researchView==='without' && companyJobs(c.name).length>0) return false;
   const matchedJobs = companyJobs(c.name).filter(j=>(!s.type.length || s.type.includes(j.type)) && (!s.aiOnly || hasAiRequirement(j)));
   if(s.ind.length && !s.ind.includes(c.industry)) return false;
   if(s.type.length && matchedJobs.length===0) return false;
@@ -708,6 +717,11 @@ function companyMatches(c, overrides={}){
 }
 
 function renderCompanies(){
+  for(const view of ['with','without']){
+    const count = COMPANIES.filter(c=>companyMatches(c,{researchView:view})).length;
+    $(view==='with'?'research-with-count':'research-without-count').textContent = `${count} 家`;
+    document.querySelector(`[data-research-view="${view}"]`).setAttribute('aria-pressed',String(state.researchView===view));
+  }
   const matching = COMPANIES.filter(c=>companyMatches(c)).sort((a,b)=>Number(companyJobs(b.name).length>0)-Number(companyJobs(a.name).length>0));
   const searchActive = state.companyQuery.trim().length > 0;
   const showAll = state.companyExpanded || searchActive;
@@ -747,20 +761,16 @@ function filters(){
   let list = JOBS.filter(j=>eligible.has(j.co));
   if(state.company.length) list = list.filter(j=>state.company.includes(j.co));
   if(state.companyOnlyOpen) list = list.filter(j=>COMPANIES.some(c=>c.name===j.co && c.status==="open"));
-  if(state.companyOnlyResearch) list = list.filter(j=>companyJobs(j.co).length>0);
   return list.filter(jobPasses);
 }
 
 function renderSidebar(){
   $("company-only-open").checked = state.companyOnlyOpen;
-  $("company-only-research").checked = state.companyOnlyResearch;
   $("job-only-ai").checked = state.aiOnly;
   $("company-only-open").closest(".fitem").classList.toggle("on", state.companyOnlyOpen);
-  $("company-only-research").closest(".fitem").classList.toggle("on", state.companyOnlyResearch);
   $("job-only-ai").closest(".fitem").classList.toggle("on", state.aiOnly);
   $("company-status-filter").value = state.companyStatus;
   $("company-open-count").textContent = COMPANIES.filter(c=>companyMatches(c,{companyStatus:"open",companyOnlyOpen:true})).length;
-  $("company-research-count").textContent = COMPANIES.filter(c=>companyMatches(c,{companyOnlyResearch:true})).length;
   $("company-ai-count").textContent = COMPANIES.filter(c=>companyMatches(c,{aiOnly:true})).length;
   $("f-industry").innerHTML = INDUSTRIES.map(i=>{
     const n = COMPANIES.filter(c=>companyMatches(c,{ind:[i]})).length;
@@ -784,7 +794,6 @@ function renderList(){
     ...state.type.map(t=>({v:t,typ:'type'}))
   ];
   if(state.companyOnlyOpen) chips.push({v:'已开启校招',typ:'companyOnlyOpen'});
-  if(state.companyOnlyResearch) chips.push({v:'有用研岗位',typ:'companyOnlyResearch'});
   if(state.aiOnly) chips.push({v:'有 AI 要求',typ:'aiOnly'});
   if(state.companyStatus!=="all" && !state.companyOnlyOpen) chips.push({v:state.companyStatus==='special'?'技术专项':state.companyStatus==='pending'?'正式批待确认':'已开启校招',typ:'companyStatus'});
   $("activeChips").innerHTML = chips.map(({v,typ})=>`<span class="chip">${v}<span class="x" data-clear="${typ}" data-v="${v}">×</span></span>`).join("");
@@ -959,7 +968,6 @@ document.addEventListener("click", e=>{
   if(clear){
     if(clear.dataset.clear==='company') state.company = state.company.filter(x=>x!==clear.dataset.v);
     else if(clear.dataset.clear==='companyOnlyOpen'){ state.companyOnlyOpen = false; state.companyStatus = 'all'; }
-    else if(clear.dataset.clear==='companyOnlyResearch') state.companyOnlyResearch = false;
     else if(clear.dataset.clear==='aiOnly') state.aiOnly = false;
     else if(clear.dataset.clear==='companyStatus') state.companyStatus = 'all';
     else state[clear.dataset.clear] = state[clear.dataset.clear].filter(x=>x!==clear.dataset.v);
@@ -973,10 +981,6 @@ document.addEventListener("change", e=>{
     state.companyStatus = e.target.checked ? 'open' : 'all';
     renderCompanies(); renderSidebar(); renderList(); return;
   }
-  if(e.target.matches("#company-only-research")){
-    state.companyOnlyResearch = e.target.checked;
-    renderCompanies(); renderSidebar(); renderList(); return;
-  }
   if(e.target.matches("#job-only-ai")){
     state.aiOnly = e.target.checked;
     renderCompanies(); renderSidebar(); renderList(); return;
@@ -987,6 +991,12 @@ $("company-search").addEventListener("input", e=>{
   state.companyQuery = e.target.value;
   renderCompanies(); renderSidebar(); renderList();
 });
+document.querySelectorAll('[data-research-view]').forEach(button=>button.addEventListener('click',()=>{
+  state.researchView = button.dataset.researchView;
+  state.company = [];
+  state.companyExpanded = false;
+  renderCompanies(); renderSidebar(); renderList();
+}));
 $("company-status-filter").addEventListener("change", e=>{
   state.companyStatus = e.target.value;
   state.companyOnlyOpen = e.target.value==='open';
