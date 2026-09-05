@@ -332,7 +332,6 @@
 
           <div class="fgroup">
             <div class="flabel" title="数量按公司统计">公司（家） <button data-company-clear="all">清除选择</button></div>
-            <label class="fitem" title="只显示已开启正式校招的公司"><input type="checkbox" id="company-only-open"> 已开启校招 <span class="fcount" id="company-open-count">0</span></label>
             <label class="fitem" title="只显示至少一个岗位 JD 明确提到 AI、人工智能、大模型或 AIGC 的公司"><input type="checkbox" id="job-only-ai"> 有 AI 要求 <span class="fcount" id="company-ai-count">0</span></label>
           </div>
 
@@ -667,7 +666,7 @@ const COMPANIES = [
 ];
 
 /* ---------------- 状态 ---------------- */
-const state = { ind:[], type:[], company:[], companyOnlyOpen:false, researchView:'with', aiOnly:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
+const state = { ind:[], type:[], company:[], researchView:'with', aiOnly:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
 const INDUSTRIES = [...new Set(COMPANIES.map(c=>c.industry))];
 const TYPES = ["战略/策略向","交互/设计向","体验管理向","不确定"];
 
@@ -705,7 +704,6 @@ function companyMatches(c, overrides={}){
   const s = {...state, ...overrides};
   const q = s.companyQuery.trim().toLowerCase();
   if(s.companyStatus!=="all" && c.status!==s.companyStatus) return false;
-  if(s.companyOnlyOpen && c.status!=="open") return false;
   if(q && !c.name.toLowerCase().includes(q)) return false;
   if(s.researchView==='with' && companyJobs(c.name).length===0) return false;
   if(s.researchView==='without' && companyJobs(c.name).length>0) return false;
@@ -760,17 +758,13 @@ function filters(){
   const eligible = new Set(COMPANIES.filter(c=>companyMatches(c)).map(c=>c.name));
   let list = JOBS.filter(j=>eligible.has(j.co));
   if(state.company.length) list = list.filter(j=>state.company.includes(j.co));
-  if(state.companyOnlyOpen) list = list.filter(j=>COMPANIES.some(c=>c.name===j.co && c.status==="open"));
   return list.filter(jobPasses);
 }
 
 function renderSidebar(){
-  $("company-only-open").checked = state.companyOnlyOpen;
   $("job-only-ai").checked = state.aiOnly;
-  $("company-only-open").closest(".fitem").classList.toggle("on", state.companyOnlyOpen);
   $("job-only-ai").closest(".fitem").classList.toggle("on", state.aiOnly);
   $("company-status-filter").value = state.companyStatus;
-  $("company-open-count").textContent = COMPANIES.filter(c=>companyMatches(c,{companyStatus:"open",companyOnlyOpen:true})).length;
   $("company-ai-count").textContent = COMPANIES.filter(c=>companyMatches(c,{aiOnly:true})).length;
   $("f-industry").innerHTML = INDUSTRIES.map(i=>{
     const n = COMPANIES.filter(c=>companyMatches(c,{ind:[i]})).length;
@@ -793,9 +787,8 @@ function renderList(){
     ...state.ind.map(i=>({v:i,typ:'ind'})),
     ...state.type.map(t=>({v:t,typ:'type'}))
   ];
-  if(state.companyOnlyOpen) chips.push({v:'已开启校招',typ:'companyOnlyOpen'});
   if(state.aiOnly) chips.push({v:'有 AI 要求',typ:'aiOnly'});
-  if(state.companyStatus!=="all" && !state.companyOnlyOpen) chips.push({v:state.companyStatus==='special'?'技术专项':state.companyStatus==='pending'?'正式批待确认':'已开启校招',typ:'companyStatus'});
+  if(state.companyStatus!=="all") chips.push({v:state.companyStatus==='special'?'技术专项':state.companyStatus==='pending'?'正式批待确认':'已开启校招',typ:'companyStatus'});
   $("activeChips").innerHTML = chips.map(({v,typ})=>`<span class="chip">${v}<span class="x" data-clear="${typ}" data-v="${v}">×</span></span>`).join("");
 
   $("list").innerHTML = list.length ? list.map(j=>`
@@ -967,7 +960,6 @@ document.addEventListener("click", e=>{
   const clear = e.target.closest("[data-clear]");
   if(clear){
     if(clear.dataset.clear==='company') state.company = state.company.filter(x=>x!==clear.dataset.v);
-    else if(clear.dataset.clear==='companyOnlyOpen'){ state.companyOnlyOpen = false; state.companyStatus = 'all'; }
     else if(clear.dataset.clear==='aiOnly') state.aiOnly = false;
     else if(clear.dataset.clear==='companyStatus') state.companyStatus = 'all';
     else state[clear.dataset.clear] = state[clear.dataset.clear].filter(x=>x!==clear.dataset.v);
@@ -976,11 +968,6 @@ document.addEventListener("click", e=>{
 });
 
 document.addEventListener("change", e=>{
-  if(e.target.matches("#company-only-open")){
-    state.companyOnlyOpen = e.target.checked;
-    state.companyStatus = e.target.checked ? 'open' : 'all';
-    renderCompanies(); renderSidebar(); renderList(); return;
-  }
   if(e.target.matches("#job-only-ai")){
     state.aiOnly = e.target.checked;
     renderCompanies(); renderSidebar(); renderList(); return;
@@ -999,7 +986,6 @@ document.querySelectorAll('[data-research-view]').forEach(button=>button.addEven
 }));
 $("company-status-filter").addEventListener("change", e=>{
   state.companyStatus = e.target.value;
-  state.companyOnlyOpen = e.target.value==='open';
   renderCompanies(); renderSidebar(); renderList();
 });
 
