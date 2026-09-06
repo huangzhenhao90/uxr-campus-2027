@@ -311,6 +311,9 @@
   .publisher img{display:block;width:80px;height:80px;background:#fff;border:1px solid var(--line);border-radius:6px;margin:auto;}
   .publisher strong{display:block;font-size:11px;font-weight:500;color:var(--ink-2);margin-top:4px;white-space:nowrap;}
   @media(max-width:480px){.publisher img{width:64px;height:64px;}.publisher strong{font-size:10px;}.masthead h1{font-size:20px;}.masthead .meta{row-gap:4px;}.stat+.stat::before{margin:0 4px;}}
+  .data-freshness{grid-column:1;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:4px;font-size:12px;color:#4338ca;}
+  .data-freshness time{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;padding:3px 9px;}
+  .publisher{grid-row:1 / 4;}
 </style>
 </head>
 <body>
@@ -324,6 +327,7 @@
       <div class="stat"><b id="statOpen">0</b><span>家已开正式校招</span></div>
       <div class="stat"><b id="statCos">0</b><span>家有用研岗</span></div>
     </div>
+    <div class="data-freshness" title="最近一次全量招聘数据核验日期，不是页面样式更新时间"><span>招聘数据核验于</span><time id="last-verified-date" datetime="2026-09-03">2026-09-03</time></div>
   </div>
 </header>
 
