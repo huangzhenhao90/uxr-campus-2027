@@ -311,9 +311,9 @@
   .publisher img{display:block;width:80px;height:80px;background:#fff;border:1px solid var(--line);border-radius:6px;margin:auto;}
   .publisher strong{display:block;font-size:11px;font-weight:500;color:var(--ink-2);margin-top:4px;white-space:nowrap;}
   @media(max-width:480px){.publisher img{width:64px;height:64px;}.publisher strong{font-size:10px;}.masthead h1{font-size:20px;}.masthead .meta{row-gap:4px;}.stat+.stat::before{margin:0 4px;}}
-  .data-freshness{grid-column:1;display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:4px;font-size:12px;color:#4338ca;}
+  .data-freshness{display:inline-flex;align-items:center;gap:6px;margin-left:16px;font-size:12px;color:#4338ca;}
   .data-freshness time{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;padding:3px 9px;}
-  .publisher{grid-row:1 / 4;}
+  .publisher{grid-row:1 / 3;}
 </style>
 </head>
 <body>
@@ -326,8 +326,8 @@
       <div class="stat"><b id="statCompanies">0</b><span>家收录公司</span></div>
       <div class="stat"><b id="statOpen">0</b><span>家已开正式校招</span></div>
       <div class="stat"><b id="statCos">0</b><span>家有用研岗</span></div>
+    <div class="data-freshness" title="09-06 检查55家公司入口并重查18条岗位；部分入口和岗位详情仍待核验，详见收录说明"><time id="last-verified-date" datetime="2026-09-06">09-06</time><span>· 部分复核</span></div>
     </div>
-    <div class="data-freshness" title="最近一次全量招聘数据核验日期，不是页面样式更新时间"><span>招聘数据核验于</span><time id="last-verified-date" datetime="2026-09-03">2026-09-03</time></div>
   </div>
 </header>
 
@@ -380,8 +380,9 @@
             <span class="company-selected-note" id="company-selected-note">未选择公司 · 显示全部岗位</span>
           </div>
           <details class="company-method">
-            <summary>收录说明 · 09-03 更新</summary>
+            <summary>收录说明 · 09-06 更新</summary>
             <div class="company-method-body">
+              <p>09-06 检查55家公司入口并重查18条岗位：华为、米哈游、比亚迪、SHEIN已确认正式校招。部分入口空白、失效或只显示列表，沿用历史记录并保留待核验；本次不代表55家全部岗位已穷尽核验。<a href="audit-20260906.json" target="_blank" rel="noopener">查看逐家公司复核记录</a>。</p>
               <p>55 家是重点公司观察池，不是全量公司榜单；按求职关注度、行业覆盖、研究相关性与公开校招入口选入，并保留已开、技术专项、待确认三类对照。</p>
               <ul>
                 <li>点击公司可筛选下方岗位，可多选；左侧条件同时筛选公司和岗位。</li>
@@ -421,7 +422,7 @@
 </div>
 
 <footer class="footer">
-  数据快照：2026-09-03 官网复核；岗位会变化，投递前请回到官方链接复核。<br>
+  最近复核：2026-09-06（部分待核验）；未重新确认的信息保留 09-03 快照，投递前请回到官方链接复核。<br>
   检索词：用户研究 / 市场研究 / 用户洞察 / 体验研究 / 人因研究 等 12 组。岗位信息变化很快，投递前请以企业官网为准。
 </footer>
 
@@ -638,20 +639,20 @@ const COMPANIES = [
   {name:"哔哩哔哩", mark:"哔", industry:"互联网", status:"open", recruitment:"27届正式已开", research:"尚未发现独立用研岗", tone:"blue"},
   {name:"美团", mark:"美", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/17", research:"暂无正式用研岗", tone:"amber"},
   {name:"蚂蚁", mark:"蚁", industry:"互联网", status:"open", recruitment:"27届正式已开 · 8/10", research:"客户体验岗位线索（含用户研究职责），官网直链待核验", tone:"blue"},
-  {name:"华为", mark:"华", industry:"智能硬件", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"red"},
+  {name:"华为", mark:"华", industry:"智能硬件", status:"open", recruitment:"27届正式已开 · 09-06官网确认", research:"独立用研岗位待核验", tone:"red"},
   {name:"小米", mark:"米", industry:"智能硬件", status:"open", recruitment:"27届正式已开 · 8/18", research:"暂无正式用研岗", tone:"orange"},
-  {name:"米哈游", mark:"米", industry:"游戏", status:"special", recruitment:"技术专项已开", research:"暂无正式用研岗", tone:"violet"},
+  {name:"米哈游", mark:"米", industry:"游戏", status:"open", recruitment:"27届应届生正式招聘 · 截止10/31", research:"独立用研岗位待核验", tone:"violet"},
   {name:"理想汽车", mark:"理", industry:"汽车", status:"open", recruitment:"27届正式已开 · 8/21", research:"暂无正式用研岗", tone:"slate"},
   {name:"荣耀", mark:"荣", industry:"智能硬件", status:"open", recruitment:"27届正式已开 · 8/18", research:"暂无正式用研岗", tone:"red"},
   {name:"贝壳", mark:"贝", industry:"房地产", status:"open", recruitment:"27届正式已开 · 8/26", research:"暂无独立用研岗（已检索16个27届职位）", tone:"blue"},
   {name:"小红书", mark:"红", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验（官网热招页未见27届/用研）", tone:"red"},
-  {name:"携程", mark:"携", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验（官网可见岗位页为旧版）", tone:"blue"},
+  {name:"携程", mark:"携", industry:"互联网", status:"pending", recruitment:"27届秋招公告线索 · 官方岗位批次待核验", research:"独立用研岗位待核验", tone:"blue"},
   {name:"得物", mark:"得", industry:"电商", status:"open", recruitment:"27届正式已开 · 8/10", research:"暂无正式用研岗", tone:"violet"},
-  {name:"SHEIN", mark:"SH", industry:"电商", status:"pending", recruitment:"官网仍显示26届校招", research:"暂未核验", tone:"slate"},
+  {name:"SHEIN", mark:"SH", industry:"电商", status:"open", recruitment:"27届正式已开 · 官网投递期2026.09至2027.06", research:"独立用研岗位待核验", tone:"slate"},
   {name:"网易互联网", mark:"网", industry:"互联网", status:"pending", recruitment:"网易总校招页暂未显27届", research:"暂未核验（网易游戏雷火另列）", tone:"red"},
   {name:"腾讯音乐", mark:"TME", industry:"互联网", status:"open", recruitment:"27届正式已开 · 9月上旬面试", research:"暂无可核验独立用研岗", tone:"emerald"},
   {name:"吉利/极氪", mark:"吉", industry:"汽车", status:"open", recruitment:"27届秋季校招已开 · 8/13", research:"暂无独立用研岗（含UX体验设计岗）", tone:"blue"},
-  {name:"比亚迪", mark:"比", industry:"汽车", status:"pending", recruitment:"官网显示 27 届即将开始", research:"暂未核验", tone:"red"},
+  {name:"比亚迪", mark:"比", industry:"汽车", status:"open", recruitment:"27届正式已开 · 09-06官网确认", research:"市场调研类别线索 · 独立JD待核验", tone:"red"},
   {name:"零跑汽车", mark:"零", industry:"汽车", status:"open", recruitment:"27届正式批已开", research:"暂无独立用研岗", tone:"indigo"},
   {name:"长城汽车", mark:"长", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"slate"},
   {name:"上汽集团", mark:"上", industry:"汽车", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
@@ -660,7 +661,7 @@ const COMPANIES = [
   {name:"畅游", mark:"畅", industry:"游戏", status:"open", recruitment:"27届秋招已开 · 8/6", research:"暂无独立用研岗", tone:"blue"},
   {name:"4399", mark:"43", industry:"游戏", status:"open", recruitment:"27届校招已开", research:"暂无独立用研岗", tone:"red"},
   {name:"联想", mark:"联", industry:"智能硬件", status:"open", recruitment:"27届正式已开 · 8/5", research:"有用研岗", tone:"indigo"},
-  {name:"唯品会", mark:"唯", industry:"电商", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
+  {name:"唯品会", mark:"唯", industry:"电商", status:"pending", recruitment:"27届校招公告线索 · 官方入口待核验", research:"独立用研岗位待核验", tone:"violet"},
   {name:"汽车之家", mark:"汽", industry:"汽车", status:"pending", recruitment:"官网仍为26届应届 / 27届日常实习", research:"暂未核验", tone:"slate"},
   {name:"知乎", mark:"知", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"blue"},
   {name:"Soul", mark:"So", industry:"互联网", status:"pending", recruitment:"尚未确认正式批", research:"暂未核验", tone:"violet"},
