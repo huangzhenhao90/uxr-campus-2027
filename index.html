@@ -323,16 +323,22 @@
   :root{--shadow:0 1px 2px rgba(16,24,40,.05),0 4px 14px rgba(16,24,40,.06);}
   .masthead{background:linear-gradient(135deg,#312e81 0%,#4f46e5 55%,#7c3aed 100%);color:#fff;border:0;padding:34px 0 28px;}
   .masthead .wrap{grid-template-columns:minmax(0,1fr) 90px;gap:20px 24px;}
-  .masthead h1{font-size:clamp(24px,3vw,34px);font-weight:800;letter-spacing:0;line-height:1.4;text-align:center;}
-  .masthead .meta{justify-content:center;gap:12px;margin-top:0;}
-  .masthead .stat{display:flex;flex-direction:column;align-items:center;gap:0;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:9px 16px;min-width:116px;}
+  .masthead h1{grid-column:1 / -1;font-size:clamp(28px,3.5vw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.3;text-align:center;}
+  .masthead .meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr) 32px) minmax(0,1fr);align-items:center;gap:0;width:100%;max-width:740px;justify-self:center;margin-top:4px;}
+  .masthead .stat{display:flex;flex-direction:column;align-items:center;gap:0;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:12px 8px;min-width:0;}
+  .masthead .stat:nth-of-type(3){background:rgba(255,255,255,.15);}
+  .masthead .stat.stat-result{background:#fff;border-color:#fff;box-shadow:0 8px 24px #25206326;}
+  .masthead .stat.stat-result b{color:#4f46e5;}
+  .masthead .stat.stat-result span{color:#655aa3;}
+  .stat-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#ddd9ff;font-size:23px;line-height:1;}
+  .stat-arrow small{font-size:10px;margin-bottom:6px;color:#eeeaff;}
   .masthead .stat::before{content:none;}
-  .masthead .stat b{font-size:25px;font-weight:800;color:#fff;}
+  .masthead .stat b{font-size:32px;font-weight:800;color:#fff;}
   .masthead .stat span{font-size:12px;color:rgba(255,255,255,.85);}
-  .masthead .data-freshness{flex-basis:100%;justify-content:center;margin:0;}
+  .masthead .data-freshness{grid-column:1 / -1;justify-content:center;margin:15px 0 0;}
   .masthead .data-freshness strong{color:#fff;background:none;border:0;padding:0;font-size:12px;font-weight:500;letter-spacing:.04em;}
   .masthead .data-freshness strong::before{content:"";display:inline-block;width:6px;height:6px;margin:0 7px 1px 0;border-radius:50%;background:#a7f3d0;}
-  .publisher{align-self:center;}
+  .publisher{align-self:start;grid-row:2;}
   .publisher img{width:82px;height:82px;padding:3px;border:0;border-radius:10px;box-shadow:0 3px 12px #1e1b4b33;}
   .publisher strong{color:#fff;font-size:11px;margin-top:8px;}
   .frame{grid-template-columns:230px minmax(0,1fr);gap:24px;padding-top:26px;}
@@ -375,19 +381,21 @@
   @media(max-width:820px){
     .frame{grid-template-columns:minmax(0,1fr);}
     .masthead .wrap{grid-template-columns:minmax(0,1fr) 76px;gap:16px;}
-    .masthead .meta{gap:8px;}
-    .masthead .stat{min-width:95px;padding:6px 10px;}
+    .masthead .meta{gap:0;grid-template-columns:repeat(3,minmax(0,1fr) 25px) minmax(0,1fr);}
+    .masthead .stat{min-width:0;padding:10px 4px;}
     .publisher img{width:70px;height:70px;}
     .company-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
   }
   @media(max-width:480px){
     .masthead{padding:24px 0 20px;}
     .masthead .wrap{grid-template-columns:minmax(0,1fr) 60px;gap:15px 10px;}
-    .masthead h1{text-align:left;font-size:22px;}
+    .masthead h1{grid-column:1;text-align:left;font-size:25px;}
     .publisher{grid-row:1;}
     .publisher img{width:58px;height:58px;}
     .publisher strong{font-size:9px;white-space:normal;}
-    .masthead .meta{grid-column:1 / -1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;}
+    .masthead .meta{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr) 16px) minmax(0,1fr);gap:0;}
+    .stat-arrow{font-size:16px;}
+    .stat-arrow small{font-size:8px;writing-mode:vertical-rl;margin-bottom:4px;}
     .masthead .stat{min-width:0;padding:8px 2px;}
     .masthead .stat b{font-size:22px;}
     .masthead .stat span{font-size:10px;}
@@ -408,9 +416,12 @@
     <a class="publisher" href="assets/zhenzhihaojian-qr.jpg" target="_blank" rel="noopener" aria-label="打开真知浩见二维码原图"><img src="assets/zhenzhihaojian-qr.jpg" width="80" height="80" alt="真知浩见二维码"><strong>「真知浩见」出品</strong></a>
     <div class="meta" aria-label="全库公司概览，不随筛选变化" title="全库公司概览；下方数量随筛选变化">
       <div class="stat"><b id="statCompanies">0</b><span>家收录公司</span></div>
+      <span class="stat-arrow" aria-hidden="true">→</span>
       <div class="stat"><b id="statOpen">0</b><span>家已开正式校招</span></div>
+      <span class="stat-arrow" aria-hidden="true">→</span>
       <div class="stat"><b id="statCos">0</b><span>家有用研岗</span></div>
-      <div class="stat"><b id="statJobs">0</b><span>个用研岗位</span></div>
+      <span class="stat-arrow" aria-hidden="true"><small>对应</small>→</span>
+      <div class="stat stat-result"><b id="statJobs">0</b><span>个用研岗位</span></div>
     <div class="data-freshness" title="持续跟踪观察池，每日检查招聘变化；最近内容更新：2026-09-07。各岗位核查日期见详情，不代表所有官网每天均可访问。"><strong>持续监测，每日更新</strong></div>
     </div>
   </div>
