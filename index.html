@@ -322,9 +322,10 @@
   /* Research Skills Directory visual family; preserve the job library navigation. */
   :root{--shadow:0 1px 2px rgba(16,24,40,.05),0 4px 14px rgba(16,24,40,.06);}
   .masthead{background:linear-gradient(135deg,#312e81 0%,#4f46e5 55%,#7c3aed 100%);color:#fff;border:0;padding:34px 0 28px;}
-  .masthead .wrap{grid-template-columns:minmax(0,1fr) 90px;gap:14px 40px;}
-  .masthead h1{grid-column:1;grid-row:2;font-size:clamp(28px,3.5vw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.3;text-align:left;}
-  .masthead .meta{grid-row:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr) 32px) minmax(0,1fr);align-items:center;gap:0;width:100%;max-width:none;justify-self:stretch;margin-top:8px;}
+  .masthead .wrap{grid-template-columns:minmax(0,1fr) 90px;gap:26px 40px;}
+  .hero-title-row{grid-column:1 / -1;grid-row:1;display:flex;align-items:center;gap:20px;min-width:0;}
+  .masthead h1{margin:0;min-width:0;font-size:clamp(28px,3.5vw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.3;text-align:left;}
+  .masthead .meta{grid-row:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr) 32px) minmax(0,1fr);align-items:center;gap:0;width:100%;max-width:none;justify-self:stretch;margin-top:0;}
   .masthead .stat{display:flex;flex-direction:column;align-items:center;gap:0;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:12px 8px;min-width:0;}
   .masthead .stat:nth-of-type(3){background:rgba(255,255,255,.15);}
   .masthead .stat.stat-result{background:#fff;border-color:#fff;box-shadow:0 8px 24px #25206326;}
@@ -335,10 +336,10 @@
   .masthead .stat::before{content:none;}
   .masthead .stat b{font-size:32px;font-weight:800;color:#fff;}
   .masthead .stat span{font-size:12px;color:rgba(255,255,255,.85);}
-  .masthead .data-freshness{grid-column:1;grid-row:1;justify-content:flex-start;margin:0;}
+  .masthead .data-freshness{flex-shrink:0;justify-content:flex-start;margin:0;white-space:nowrap;}
   .masthead .data-freshness strong{color:#eeeaff;background:#ffffff0d;border:1px solid #ffffff26;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:500;letter-spacing:.04em;}
   .masthead .data-freshness strong::before{content:"";display:inline-block;width:6px;height:6px;margin:0 7px 1px 0;border-radius:50%;background:#a7f3d0;}
-  .publisher{align-self:center;grid-row:2 / 4;}
+  .publisher{align-self:start;grid-row:2;}
   .publisher img{width:82px;height:82px;padding:3px;border:0;border-radius:10px;box-shadow:0 3px 12px #1e1b4b33;}
   .publisher strong{color:#fff;font-size:11px;margin-top:8px;}
   .frame{grid-template-columns:230px minmax(0,1fr);gap:24px;padding-top:26px;}
@@ -390,10 +391,12 @@
     .masthead{padding:24px 0 20px;}
     .masthead .wrap{grid-template-columns:minmax(0,1fr) 60px;gap:15px 10px;}
     .masthead h1{grid-column:1;text-align:left;font-size:25px;}
-    .publisher{grid-row:1 / 3;}
+    .hero-title-row{gap:10px;}
+    .masthead .data-freshness strong{font-size:10px;padding:4px 6px;white-space:normal;max-width:88px;}
+    .publisher{grid-row:2;}
     .publisher img{width:58px;height:58px;}
     .publisher strong{font-size:9px;white-space:normal;}
-    .masthead .meta{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr) 16px) minmax(0,1fr);gap:0;}
+    .masthead .meta{grid-column:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr) 12px) minmax(0,1fr);gap:0;}
     .stat-arrow{font-size:16px;}
     .stat-arrow small{font-size:8px;writing-mode:vertical-rl;margin-bottom:4px;}
     .masthead .stat{min-width:0;padding:8px 2px;}
@@ -412,8 +415,10 @@
 
 <header class="masthead">
   <div class="wrap">
-    <div class="data-freshness" title="持续跟踪观察池，每日检查招聘变化；最近内容更新：2026-09-07。各岗位核查日期见详情，不代表所有官网每天均可访问。"><strong>持续监测，每日更新</strong></div>
+    <div class="hero-title-row">
     <h1 class="serif">2027 届校招·用户研究/市场研究岗位库</h1>
+    <div class="data-freshness" title="持续跟踪观察池，每日检查招聘变化；最近内容更新：2026-09-07。各岗位核查日期见详情，不代表所有官网每天均可访问。"><strong>持续监测，每日更新</strong></div>
+    </div>
     <a class="publisher" href="assets/zhenzhihaojian-qr.jpg" target="_blank" rel="noopener" aria-label="打开真知浩见二维码原图"><img src="assets/zhenzhihaojian-qr.jpg" width="80" height="80" alt="真知浩见二维码"><strong>「真知浩见」出品</strong></a>
     <div class="meta" aria-label="全库公司概览，不随筛选变化" title="全库公司概览；下方数量随筛选变化">
       <div class="stat"><b id="statCompanies">0</b><span>家收录公司</span></div>
