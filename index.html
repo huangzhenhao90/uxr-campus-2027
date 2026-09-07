@@ -330,7 +330,7 @@
     <div class="meta" aria-label="全库公司概览，不随筛选变化" title="全库公司概览；下方数量随筛选变化">
       <div class="stat"><b id="statCompanies">0</b><span>家收录公司</span></div>
       <div class="stat"><b id="statOpen">0</b><span>家已开正式校招</span></div>
-      <div class="stat"><b id="statCos">0</b><span>家有用研岗</span></div>
+      <div class="stat"><b id="statJobs">0</b><span>个用研岗位</span></div>
     <div class="data-freshness" title="持续跟踪观察池，每日检查招聘变化；最近内容更新：2026-09-07。各岗位核查日期见详情，不代表所有官网每天均可访问。"><strong>持续监测，每日更新</strong></div>
     </div>
   </div>
@@ -782,8 +782,9 @@ function companyMatches(c, overrides={}){
 
 function renderCompanies(){
   for(const view of ['with','without']){
-    const count = COMPANIES.filter(c=>companyMatches(c,{researchView:view})).length;
-    $(view==='with'?'research-with-count':'research-without-count').textContent = `${count} 家`;
+    const groupCompanies = COMPANIES.filter(c=>companyMatches(c,{researchView:view}));
+    const jobCount = groupCompanies.reduce((sum,c)=>sum+matchingJobsForCompany(c.name).length,0);
+    $(view==='with'?'research-with-count':'research-without-count').textContent = `${groupCompanies.length} 家公司 · ${jobCount} 个岗位`;
     document.querySelector(`[data-research-view="${view}"]`).setAttribute('aria-pressed',String(state.researchView===view));
   }
   const matching = COMPANIES.filter(c=>companyMatches(c)).sort((a,b)=>Number(companyJobs(b.name).length>0)-Number(companyJobs(a.name).length>0));
@@ -808,8 +809,8 @@ function renderCompanies(){
       <div class="company-research${researchClass}" title="${c.research}">${researchLabel}</div>
     </button>`;
   }).join("") : `<div class="empty company-empty"><h4>没有匹配的公司</h4><p>试试清空搜索词，或放宽左侧的公司呈现条件。</p></div>`;
-  const withJobs = matching.filter(c=>matchingJobsForCompany(c.name).length>0).length;
-  $("company-selected-note").textContent = `符合条件 ${matching.length} 家 · ${withJobs} 家有用研岗`;
+  const matchingJobCount = matching.reduce((sum,c)=>sum+matchingJobsForCompany(c.name).length,0);
+  $("company-selected-note").textContent = `符合条件 ${matching.length} 家公司 · ${matchingJobCount} 个岗位`;
   $("company-display-count").textContent = matching.length > visible.length
     ? "优先展示有用研岗位的公司"
     : "";
@@ -1069,7 +1070,7 @@ $("pool-industry-list").innerHTML = INDUSTRIES.map(industry=>{
   const names = COMPANIES.filter(c=>c.industry===industry).map(c=>c.name);
   return `<div><dt>${escapeHtml(industry)} · ${names.length} 个条目</dt><dd>${names.map(escapeHtml).join('、')}</dd></div>`;
 }).join('');
-$("statCos").textContent = new Set(JOBS.map(j=>j.co)).size;
+$("statJobs").textContent = JOBS.length;
 $("statCompanies").textContent = COMPANIES.length;
 $("statOpen").textContent = COMPANIES.filter(c=>c.status==='open').length;
 const baseUrl = window.location.pathname + window.location.search;
