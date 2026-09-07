@@ -330,6 +330,7 @@
     <div class="meta" aria-label="全库公司概览，不随筛选变化" title="全库公司概览；下方数量随筛选变化">
       <div class="stat"><b id="statCompanies">0</b><span>家收录公司</span></div>
       <div class="stat"><b id="statOpen">0</b><span>家已开正式校招</span></div>
+      <div class="stat"><b id="statCos">0</b><span>家有用研岗</span></div>
       <div class="stat"><b id="statJobs">0</b><span>个用研岗位</span></div>
     <div class="data-freshness" title="持续跟踪观察池，每日检查招聘变化；最近内容更新：2026-09-07。各岗位核查日期见详情，不代表所有官网每天均可访问。"><strong>持续监测，每日更新</strong></div>
     </div>
@@ -1071,6 +1072,7 @@ $("pool-industry-list").innerHTML = INDUSTRIES.map(industry=>{
   return `<div><dt>${escapeHtml(industry)} · ${names.length} 个条目</dt><dd>${names.map(escapeHtml).join('、')}</dd></div>`;
 }).join('');
 $("statJobs").textContent = JOBS.length;
+$("statCos").textContent = new Set(JOBS.map(j=>j.co)).size;
 $("statCompanies").textContent = COMPANIES.length;
 $("statOpen").textContent = COMPANIES.filter(c=>c.status==='open').length;
 const baseUrl = window.location.pathname + window.location.search;
