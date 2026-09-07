@@ -312,7 +312,12 @@
   .publisher strong{display:block;font-size:11px;font-weight:500;color:var(--ink-2);margin-top:4px;white-space:nowrap;}
   @media(max-width:480px){.publisher img{width:64px;height:64px;}.publisher strong{font-size:10px;}.masthead h1{font-size:20px;}.masthead .meta{row-gap:4px;}.stat+.stat::before{margin:0 4px;}}
   .data-freshness{display:inline-flex;align-items:center;gap:6px;margin-left:16px;font-size:12px;color:#4338ca;}
-  .data-freshness time{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;padding:3px 9px;}
+  .data-freshness strong{font-size:12px;font-weight:650;background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;padding:3px 9px;white-space:nowrap;}
+  .pool-industries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 24px;margin:12px 0;}
+  .pool-industries dt{font-weight:650;color:var(--ink);margin-bottom:4px;}
+  .pool-industries dd{margin:0;line-height:1.8;}
+  .company-method-body h3{font-size:14px;color:var(--ink);margin:14px 0 7px;}
+  @media(max-width:640px){.pool-industries{grid-template-columns:1fr;}.company-method summary{position:static;padding:8px 0;}.data-freshness{margin-left:0;}}
   .publisher{grid-row:1 / 3;}
 </style>
 </head>
@@ -326,7 +331,7 @@
       <div class="stat"><b id="statCompanies">0</b><span>家收录公司</span></div>
       <div class="stat"><b id="statOpen">0</b><span>家已开正式校招</span></div>
       <div class="stat"><b id="statCos">0</b><span>家有用研岗</span></div>
-    <div class="data-freshness" title="09-07 更新：合并官网核查与人工复核结果；这是内容更新日期，不代表所有官网均可访问"><time id="last-updated-date" datetime="2026-09-07">09-07</time><span>更新</span></div>
+    <div class="data-freshness" title="持续跟踪观察池，每日检查招聘变化；最近内容更新：2026-09-07。各岗位核查日期见详情，不代表所有官网每天均可访问。"><strong>持续监测，每日更新</strong></div>
     </div>
   </div>
 </header>
@@ -380,10 +385,22 @@
             <span class="company-selected-note" id="company-selected-note">未选择公司 · 显示全部岗位</span>
           </div>
           <details class="company-method">
-            <summary>收录说明 · 09-07 更新</summary>
+            <summary>观察池：入选标准与行业名单</summary>
             <div class="company-method-body">
+              <h3>为什么选这些公司？</h3>
+              <p>这不是大厂排名，而是面向用研求职者的重点公司观察池：从大家熟悉的互联网公司出发，逐步补入电商、游戏、硬件、汽车等有研究应用场景的企业，帮助你把投递目标拓宽到互联网之外。</p>
+              <ul>
+                <li>求职关注度：以校招生关注的知名公司和行业代表企业为起点，不设市值或营收排名门槛。</li>
+                <li>研究相关性：关注用户、消费者、玩家、市场、体验和人因研究可能服务的业务，不只找职位名叫“用户研究”的公司。</li>
+                <li>行业覆盖与可追踪性：补充不同业务场景，并追踪官方招聘入口或校招公告；暂时打不开、尚未开招或未发现用研岗位，也会保留观察。</li>
+              </ul>
+              <p>入选不等于正在招用研，也不是全行业的完整清单。原55个条目中，网易雷火从网易游戏单列后形成56个公司／业务品牌条目，不是56个独立集团；岗位不重复统计。</p>
+              <h3>覆盖哪些行业、哪些公司？</h3>
+              <p>以下为完整观察池，不随筛选变化。按站内主要业务归类；跨行业公司只列一次。互联网含金融科技、内容社区及生活服务；汽车含出行产业链，智能硬件含消费电子。</p>
+              <dl class="pool-industries" id="pool-industry-list"></dl>
+              <p>拓展目标时，可以从游戏的玩家研究、硬件的人因与体验研究、汽车的用户洞察、电商的消费者与市场研究继续查找；这些是检索方向，不代表每家公司目前都有对应岗位。</p>
+              <h3>如何读懂招聘状态？</h3>
               <p>09-07 更新：百度、网易雷火及暂无相关岗位的判断已结合人工复核；阿里按官网2027届应届生项目收录。暂无岗位指本次未发现符合口径的岗位，不是企业绝无招聘。投递状态以官网为准。</p>
-              <p>原55家公司观察池中，网易雷火从网易游戏单列，现为56个公司/业务品牌条目，不是56个独立集团。观察池按求职关注度、行业覆盖、研究相关性与公开校招入口选入，不代表全行业。</p>
               <ul>
                 <li>点击公司可筛选下方岗位，可多选；左侧条件同时筛选公司和岗位。</li>
                 <li>专项：目前仅确认技术专项。待确认：尚未找到正式批开启的证据。</li>
@@ -1031,6 +1048,10 @@ $("company-status-filter").addEventListener("change", e=>{
 });
 
 /* ---------------- 初始化 ---------------- */
+$("pool-industry-list").innerHTML = INDUSTRIES.map(industry=>{
+  const names = COMPANIES.filter(c=>c.industry===industry).map(c=>c.name);
+  return `<div><dt>${escapeHtml(industry)} · ${names.length} 个条目</dt><dd>${names.map(escapeHtml).join('、')}</dd></div>`;
+}).join('');
 $("statCos").textContent = new Set(JOBS.map(j=>j.co)).size;
 $("statCompanies").textContent = COMPANIES.length;
 $("statOpen").textContent = COMPANIES.filter(c=>c.status==='open').length;
