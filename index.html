@@ -349,6 +349,7 @@
           <div class="fgroup">
             <div class="flabel" title="数量按公司统计">公司（家） <button data-company-clear="all">清除选择</button></div>
             <label class="fitem" title="只显示至少一个岗位 JD 明确提到 AI、人工智能、大模型或 AIGC 的公司"><input type="checkbox" id="job-only-ai"> 有 AI 要求 <span class="fcount" id="company-ai-count">0</span></label>
+            <label class="fitem" title="仅保留明确公布招聘人数且多于1人的岗位，人数未公开的不计入；右侧数字为符合条件的公司数"><input type="checkbox" id="job-multiple-hires"> 岗位需求多于 1 人 <span class="fcount" id="company-multiple-count">0</span></label>
           </div>
 
           <div class="fgroup">
@@ -724,7 +725,7 @@ baiduVerified.num="5人";
 baiduVerified.verificationNote="官方页面截图由人工复核提供";
 
 /* ---------------- 状态 ---------------- */
-const state = { ind:[], type:[], company:[], researchView:'with', aiOnly:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
+const state = { ind:[], type:[], company:[], researchView:'with', aiOnly:false, multipleHires:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
 const INDUSTRIES = [...new Set(COMPANIES.map(c=>c.industry))];
 const TYPES = ["战略/策略向","交互/设计向","体验管理向","不确定"];
 
@@ -740,10 +741,16 @@ function hasAiRequirement(j){
   return j.flags.some(f=>/AI|人工智能|大模型|AIGC/i.test(f)) || /AI|人工智能|大模型|AIGC/i.test(j.jd || "");
 }
 
+function hasMultipleHires(j){
+  const match = String(j.num || '').trim().match(/^(\d+)\s*人$/);
+  return !!match && Number(match[1]) > 1;
+}
+
 function jobPasses(j){
   if(state.ind.length && !state.ind.includes(j.industry)) return false;
   if(state.type.length && !state.type.includes(j.type)) return false;
   if(state.aiOnly && !hasAiRequirement(j)) return false;
+  if(state.multipleHires && !hasMultipleHires(j)) return false;
   return true;
 }
 
@@ -765,10 +772,11 @@ function companyMatches(c, overrides={}){
   if(q && !c.name.toLowerCase().includes(q)) return false;
   if(s.researchView==='with' && companyJobs(c.name).length===0) return false;
   if(s.researchView==='without' && companyJobs(c.name).length>0) return false;
-  const matchedJobs = companyJobs(c.name).filter(j=>(!s.type.length || s.type.includes(j.type)) && (!s.aiOnly || hasAiRequirement(j)));
+  const matchedJobs = companyJobs(c.name).filter(j=>(!s.type.length || s.type.includes(j.type)) && (!s.aiOnly || hasAiRequirement(j)) && (!s.multipleHires || hasMultipleHires(j)));
   if(s.ind.length && !s.ind.includes(c.industry)) return false;
   if(s.type.length && matchedJobs.length===0) return false;
   if(s.aiOnly && matchedJobs.length===0) return false;
+  if(s.multipleHires && matchedJobs.length===0) return false;
   return true;
 }
 
@@ -820,6 +828,9 @@ function filters(){
 }
 
 function renderSidebar(){
+  $("job-multiple-hires").checked = state.multipleHires;
+  $("job-multiple-hires").closest(".fitem").classList.toggle("on", state.multipleHires);
+  $("company-multiple-count").textContent = COMPANIES.filter(c=>companyMatches(c,{multipleHires:true})).length;
   $("job-only-ai").checked = state.aiOnly;
   $("job-only-ai").closest(".fitem").classList.toggle("on", state.aiOnly);
   $("company-status-filter").value = state.companyStatus;
@@ -831,7 +842,7 @@ function renderSidebar(){
   }).join("");
   $("f-type").innerHTML = TYPES.map(t=>{
     const eligible = new Set(COMPANIES.filter(c=>companyMatches(c,{type:[t]})).map(c=>c.name));
-    const n = JOBS.filter(j=>eligible.has(j.co) && j.type===t && (!state.aiOnly || hasAiRequirement(j)) && (!state.company.length || state.company.includes(j.co))).length;
+    const n = JOBS.filter(j=>eligible.has(j.co) && j.type===t && (!state.aiOnly || hasAiRequirement(j)) && (!state.multipleHires || hasMultipleHires(j)) && (!state.company.length || state.company.includes(j.co))).length;
     const on = state.type.includes(t);
     return `<label class="fitem ${on?'on':''}"><input type="checkbox" id="c-type-${t}" data-type="${t}" ${on?'checked':''}><span>${t}</span><span class="fcount">${n}</span></label>`;
   }).join("");
@@ -846,6 +857,7 @@ function renderList(){
     ...state.type.map(t=>({v:t,typ:'type'}))
   ];
   if(state.aiOnly) chips.push({v:'有 AI 要求',typ:'aiOnly'});
+  if(state.multipleHires) chips.push({v:'岗位需求多于 1 人',typ:'multipleHires'});
   if(state.companyStatus!=="all") chips.push({v:state.companyStatus==='special'?'技术专项':state.companyStatus==='pending'?'正式批待确认':'已开启校招',typ:'companyStatus'});
   $("activeChips").innerHTML = chips.map(({v,typ})=>`<span class="chip">${v}<span class="x" data-clear="${typ}" data-v="${v}">×</span></span>`).join("");
 
@@ -1019,6 +1031,7 @@ document.addEventListener("click", e=>{
   if(clear){
     if(clear.dataset.clear==='company') state.company = state.company.filter(x=>x!==clear.dataset.v);
     else if(clear.dataset.clear==='aiOnly') state.aiOnly = false;
+    else if(clear.dataset.clear==='multipleHires') state.multipleHires = false;
     else if(clear.dataset.clear==='companyStatus') state.companyStatus = 'all';
     else state[clear.dataset.clear] = state[clear.dataset.clear].filter(x=>x!==clear.dataset.v);
     renderCompanies(); renderSidebar(); renderList(); return;
@@ -1026,6 +1039,10 @@ document.addEventListener("click", e=>{
 });
 
 document.addEventListener("change", e=>{
+  if(e.target.matches("#job-multiple-hires")){
+    state.multipleHires = e.target.checked;
+    renderCompanies(); renderSidebar(); renderList(); return;
+  }
   if(e.target.matches("#job-only-ai")){
     state.aiOnly = e.target.checked;
     renderCompanies(); renderSidebar(); renderList(); return;
