@@ -347,13 +347,13 @@
           <div class="filter-content">
 
           <div class="fgroup">
-            <div class="flabel" title="数量按公司统计">公司（家） <button data-company-clear="all">清除选择</button></div>
-            <label class="fitem" title="只显示至少一个岗位 JD 明确提到 AI、人工智能、大模型或 AIGC 的公司"><input type="checkbox" id="job-only-ai"> 有 AI 要求 <span class="fcount" id="company-ai-count">0</span></label>
-            <label class="fitem" title="仅保留明确公布招聘人数且多于1人的岗位，人数未公开的不计入；右侧数字为符合条件的公司数"><input type="checkbox" id="job-multiple-hires"> 岗位需求多于 1 人 <span class="fcount" id="company-multiple-count">0</span></label>
+            <div class="flabel" title="左侧数字均为岗位条数，不是招聘人数；结合其他筛选条件计算">岗位条件（岗位数） <button data-company-clear="all" title="清除右侧已选择的公司">清除公司</button></div>
+            <label class="fitem" title="JD 明确提到 AI、人工智能、大模型或 AIGC 的岗位数"><input type="checkbox" id="job-only-ai"> 有 AI 要求 <span class="fcount" id="company-ai-count">0</span></label>
+            <label class="fitem" title="仅保留明确公布招聘人数且多于1人的岗位，人数未公开的不计入；右侧数字为符合条件的岗位条数，不是招聘人数"><input type="checkbox" id="job-multiple-hires"> 岗位需求多于 1 人 <span class="fcount" id="company-multiple-count">0</span></label>
           </div>
 
           <div class="fgroup">
-            <div class="flabel">行业（公司数） <button data-reset="ind">重置</button></div>
+            <div class="flabel">行业（岗位数） <button data-reset="ind">重置</button></div>
             <div id="f-industry"></div>
           </div>
 
@@ -746,16 +746,16 @@ function hasMultipleHires(j){
   return !!match && Number(match[1]) > 1;
 }
 
-function jobPasses(j){
-  if(state.ind.length && !state.ind.includes(j.industry)) return false;
-  if(state.type.length && !state.type.includes(j.type)) return false;
-  if(state.aiOnly && !hasAiRequirement(j)) return false;
-  if(state.multipleHires && !hasMultipleHires(j)) return false;
+function jobPasses(j, s=state){
+  if(s.ind.length && !s.ind.includes(j.industry)) return false;
+  if(s.type.length && !s.type.includes(j.type)) return false;
+  if(s.aiOnly && !hasAiRequirement(j)) return false;
+  if(s.multipleHires && !hasMultipleHires(j)) return false;
   return true;
 }
 
 function matchingJobsForCompany(name){
-  return companyJobs(name).filter(jobPasses);
+  return companyJobs(name).filter(j=>jobPasses(j));
 }
 
 function typeClass(type){
@@ -820,29 +820,29 @@ function renderCompanies(){
   toggle.textContent = state.companyExpanded ? "收起公司库 ↑" : `展开其余 ${matching.length-visible.length} 家公司 ↓`;
 }
 
-function filters(){
-  const eligible = new Set(COMPANIES.filter(c=>companyMatches(c)).map(c=>c.name));
+function filters(overrides={}){
+  const s = {...state, ...overrides};
+  const eligible = new Set(COMPANIES.filter(c=>companyMatches(c,s)).map(c=>c.name));
   let list = JOBS.filter(j=>eligible.has(j.co));
-  if(state.company.length) list = list.filter(j=>state.company.includes(j.co));
-  return list.filter(jobPasses);
+  if(s.company.length) list = list.filter(j=>s.company.includes(j.co));
+  return list.filter(j=>jobPasses(j,s));
 }
 
 function renderSidebar(){
   $("job-multiple-hires").checked = state.multipleHires;
   $("job-multiple-hires").closest(".fitem").classList.toggle("on", state.multipleHires);
-  $("company-multiple-count").textContent = COMPANIES.filter(c=>companyMatches(c,{multipleHires:true})).length;
+  $("company-multiple-count").textContent = filters({multipleHires:true}).length;
   $("job-only-ai").checked = state.aiOnly;
   $("job-only-ai").closest(".fitem").classList.toggle("on", state.aiOnly);
   $("company-status-filter").value = state.companyStatus;
-  $("company-ai-count").textContent = COMPANIES.filter(c=>companyMatches(c,{aiOnly:true})).length;
+  $("company-ai-count").textContent = filters({aiOnly:true}).length;
   $("f-industry").innerHTML = INDUSTRIES.map(i=>{
-    const n = COMPANIES.filter(c=>companyMatches(c,{ind:[i]})).length;
+    const n = filters({ind:[i]}).length;
     const on = state.ind.includes(i);
     return `<label class="fitem ${on?'on':''}"><input type="checkbox" id="c-ind-${i}" data-ind="${i}" ${on?'checked':''}><span>${i}</span><span class="fcount">${n}</span></label>`;
   }).join("");
   $("f-type").innerHTML = TYPES.map(t=>{
-    const eligible = new Set(COMPANIES.filter(c=>companyMatches(c,{type:[t]})).map(c=>c.name));
-    const n = JOBS.filter(j=>eligible.has(j.co) && j.type===t && (!state.aiOnly || hasAiRequirement(j)) && (!state.multipleHires || hasMultipleHires(j)) && (!state.company.length || state.company.includes(j.co))).length;
+    const n = filters({type:[t]}).length;
     const on = state.type.includes(t);
     return `<label class="fitem ${on?'on':''}"><input type="checkbox" id="c-type-${t}" data-type="${t}" ${on?'checked':''}><span>${t}</span><span class="fcount">${n}</span></label>`;
   }).join("");
