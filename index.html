@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2027 届校招·用户研究/市场研究岗位库</title>
+<script src="analytics.js" defer></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="f7c7d87b-d6c4-4c7a-ad55-0f55f9a56d96" data-auto-track="false" data-domains="huangzhenhao90.github.io" data-exclude-search="true" data-exclude-hash="true" onload="initCampusAnalytics()"></script>
 <style>
   :root{
     --paper:#f5f6fa;
@@ -538,7 +540,8 @@
 
 <footer class="footer">
   内容更新：2026-09-07 · 官网核查结合人工复核；未发现岗位不等于企业不招聘，投递前请回到官方链接确认。<br>
-  检索词：用户研究 / 市场研究 / 用户洞察 / 体验研究 / 人因研究 等 12 组。岗位信息变化很快，投递前请以企业官网为准。
+  检索词：用户研究 / 市场研究 / 用户洞察 / 体验研究 / 人因研究 等 12 组。岗位信息变化很快，投递前请以企业官网为准。<br>
+  访问统计：使用 Umami Cloud 统计浏览量、访客及公司、岗位、筛选点击，数据由其美国区域服务处理；不采集搜索输入、不录屏，尊重浏览器 Do Not Track 设置。
 </footer>
 
 <script>
@@ -1006,6 +1009,7 @@ function formatJd(text, highlightAi=false){
 function renderDetail(id){
   const j = JOBS.find(x=>x.id===id);
   if(!j) return;
+  window.campusTrack?.('岗位详情查看', {company:j.co,job_id:j.id,job_title:j.title,type:j.type});
   document.querySelector("#view-list").style.display="none";
   $("view-detail").style.display="block";
   window.scrollTo(0,0);
@@ -1092,6 +1096,11 @@ window.addEventListener("popstate", ()=>{
 
 /* ---------------- 事件 ---------------- */
 document.addEventListener("click", e=>{
+  const applyLink = e.target.closest('.d-cta a.btn');
+  if(applyLink){
+    const j = JOBS.find(x=>x.id===detailIdFromHash());
+    if(j) window.campusTrack?.('官方投递点击',{company:j.co,job_id:j.id,job_title:j.title});
+  }
   const companyToggle = e.target.closest("[data-company-toggle]");
   if(companyToggle){
     state.companyExpanded = !state.companyExpanded;
@@ -1101,6 +1110,7 @@ document.addEventListener("click", e=>{
   if(company){
     const name = company.dataset.company;
     state.company = state.company.includes(name) ? state.company.filter(x=>x!==name) : [...state.company, name];
+    window.campusTrack?.('公司选择',{company:name,selected:state.company.includes(name)});
     renderCompanies(); renderSidebar(); renderList(); return;
   }
   const ind = e.target.closest("[data-ind]");
@@ -1108,11 +1118,13 @@ document.addEventListener("click", e=>{
   if(ind){
     const v = ind.dataset.ind;
     state.ind = state.ind.includes(v) ? state.ind.filter(x=>x!==v) : [...state.ind, v];
+    window.campusTrack?.('筛选使用',{filter:'行业',value:v,selected:state.ind.includes(v)});
     renderCompanies(); renderSidebar(); renderList(); return;
   }
   if(typ){
     const w = typ.dataset.type;
     state.type = state.type.includes(w) ? state.type.filter(x=>x!==w) : [...state.type, w];
+    window.campusTrack?.('筛选使用',{filter:'类型',value:w,selected:state.type.includes(w)});
     renderCompanies(); renderSidebar(); renderList(); return;
   }
   const companyClear = e.target.closest("[data-company-clear]");
@@ -1139,10 +1151,12 @@ document.addEventListener("click", e=>{
 document.addEventListener("change", e=>{
   if(e.target.matches("#job-multiple-hires")){
     state.multipleHires = e.target.checked;
+    window.campusTrack?.('筛选使用',{filter:'岗位需求多于1人',selected:e.target.checked});
     renderCompanies(); renderSidebar(); renderList(); return;
   }
   if(e.target.matches("#job-only-ai")){
     state.aiOnly = e.target.checked;
+    window.campusTrack?.('筛选使用',{filter:'有AI要求',selected:e.target.checked});
     renderCompanies(); renderSidebar(); renderList(); return;
   }
 });
@@ -1153,12 +1167,14 @@ $("company-search").addEventListener("input", e=>{
 });
 document.querySelectorAll('[data-research-view]').forEach(button=>button.addEventListener('click',()=>{
   state.researchView = button.dataset.researchView;
+  window.campusTrack?.('筛选使用',{filter:'有无用研岗位',value:state.researchView});
   state.company = [];
   state.companyExpanded = false;
   renderCompanies(); renderSidebar(); renderList();
 }));
 $("company-status-filter").addEventListener("change", e=>{
   state.companyStatus = e.target.value;
+  window.campusTrack?.('筛选使用',{filter:'校招状态',value:state.companyStatus});
   renderCompanies(); renderSidebar(); renderList();
 });
 
