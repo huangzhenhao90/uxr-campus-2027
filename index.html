@@ -165,6 +165,34 @@
   .job p{color:var(--ink-2);font-size:13.5px;margin:0 0 10px;}
   .job-foot{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-3);}
   .job-go{color:var(--coral);font-weight:600;font-size:12.5px;}
+  .job-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
+  .job-status-select,.tracker-filter,.tracker-form select,.tracker-form input,.tracker-form textarea{
+    border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:12px;
+  }
+  .job-status-select{max-width:126px;padding:5px 8px;cursor:pointer;}
+  .job-plan-date{font-size:11.5px;color:var(--purple);font-weight:600;}
+  .tracker-overview{
+    display:grid;grid-template-columns:minmax(180px,1.2fr) repeat(4,minmax(78px,.55fr)) minmax(150px,.9fr);
+    gap:8px;align-items:stretch;background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:12px;margin-bottom:18px;box-shadow:var(--shadow);
+  }
+  .tracker-intro{padding:4px 8px;}
+  .tracker-intro strong{display:block;font-size:14px;}
+  .tracker-intro span{display:block;color:var(--ink-3);font-size:11px;margin-top:2px;}
+  .tracker-stat{background:#f8f9fc;border-radius:9px;padding:7px 9px;text-align:center;}
+  .tracker-stat b{display:block;color:var(--coral);font-size:18px;line-height:1.2;font-variant-numeric:tabular-nums;}
+  .tracker-stat span{font-size:10.5px;color:var(--ink-3);white-space:nowrap;}
+  .tracker-filter-wrap{display:flex;align-items:center;}
+  .tracker-filter{width:100%;padding:8px 9px;cursor:pointer;}
+  .tracker-form{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:4px;}
+  .tracker-field{display:flex;flex-direction:column;gap:5px;font-size:11.5px;color:var(--ink-3);}
+  .tracker-field.wide{grid-column:1/-1;}
+  .tracker-form select,.tracker-form input,.tracker-form textarea{width:100%;padding:8px 9px;font-size:13px;}
+  .tracker-form textarea{min-height:86px;resize:vertical;line-height:1.55;}
+  .tracker-form-actions{grid-column:1/-1;display:flex;align-items:center;gap:8px;}
+  .tracker-save{border:0;border-radius:8px;background:var(--coral);color:#fff;padding:8px 13px;font:inherit;font-size:12px;font-weight:600;cursor:pointer;}
+  .tracker-clear{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink-2);padding:7px 12px;font:inherit;font-size:12px;cursor:pointer;}
+  .tracker-private{font-size:10.5px;color:var(--ink-3);margin-left:auto;}
 
   .empty{text-align:center;padding:60px 20px;color:var(--ink-3);}
   .empty h4{color:var(--ink-2);font-family:"Songti SC","STSong",serif;margin:0 0 6px;font-size:17px;}
@@ -225,6 +253,8 @@
     .d-body{grid-template-columns:1fr;}
     .d-head{flex-direction:column;}
     .d-cta{text-align:left;width:100%;}
+    .tracker-overview{grid-template-columns:repeat(4,1fr);}
+    .tracker-intro,.tracker-filter-wrap{grid-column:1/-1;}
   }
   @media (max-width:480px){
     .wrap{padding:0 16px;}
@@ -232,6 +262,10 @@
     .company-search,.company-status-filter{width:100%;}
     .company-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
     .company-card{min-height:0;}
+    .tracker-overview{grid-template-columns:repeat(2,1fr);}
+    .tracker-form{grid-template-columns:1fr;}
+    .tracker-field.wide,.tracker-form-actions{grid-column:1;}
+    .tracker-private{width:100%;margin-left:0;}
   }
   /* Compact navigation: keep the company grid in the first screen. */
   :root{--shadow:0 1px 2px rgba(16,24,40,.025);}
@@ -523,6 +557,8 @@
           </div>
         </section>
 
+        <section class="tracker-overview" id="tracker-overview" aria-label="我的投递进度"></section>
+
         <div class="toolbar">
           <div class="title serif">用研岗位</div>
           <div class="count" id="listCount"></div>
@@ -545,6 +581,7 @@
   访问统计：使用 Umami Cloud 统计浏览量、访客及公司、岗位、筛选点击，数据由其美国区域服务处理；不采集搜索输入、不录屏，尊重浏览器 Do Not Track 设置。
 </footer>
 
+<script src="tracker.js"></script>
 <script>
 /* =========================================================
    公开岗位库：只纳入已确认的 2027 届正式校招研究岗；蔚来“安全体验研发工程师”已按口径剔除。
@@ -1130,13 +1167,31 @@ COMPANIES.push(...[
 ]);
 
 /* ---------------- 状态 ---------------- */
-const state = { ind:[], type:[], company:[], researchView:'with', aiOnly:false, multipleHires:false, companyStatus:"all", companyQuery:"", companyExpanded:false };
+const state = { ind:[], type:[], company:[], researchView:'with', aiOnly:false, multipleHires:false, companyStatus:"all", companyQuery:"", companyExpanded:false, applicationStatus:"all" };
 const INDUSTRIES = [...new Set(COMPANIES.map(c=>c.industry))];
 const TYPES = ["战略/策略向","交互/设计向","体验管理向","不确定"];
+let applicationRecords = CampusTracker.load(window.localStorage);
 
 /* ---------------- 渲染 ---------------- */
 const $ = id => document.getElementById(id);
 if (window.matchMedia('(max-width:820px)').matches) document.querySelector('.filter-panel').open = false;
+
+function applicationRecord(id){
+  return applicationRecords[id] || {status:"", plannedDate:"", appliedDate:"", note:""};
+}
+
+function statusOptions(selected=""){
+  return CampusTracker.STATUS_OPTIONS.map(item=>`<option value="${item.value}" ${item.value===selected?'selected':''}>${item.label}</option>`).join("");
+}
+
+function updateApplication(id, patch){
+  applicationRecords = CampusTracker.update(applicationRecords, id, patch, window.localStorage);
+}
+
+function localDateString(){
+  const now = new Date();
+  return new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);
+}
 
 function companyJobs(name){
   return JOBS.filter(j=>j.co===name);
@@ -1156,6 +1211,9 @@ function jobPasses(j, s=state){
   if(s.type.length && !s.type.includes(j.type)) return false;
   if(s.aiOnly && !hasAiRequirement(j)) return false;
   if(s.multipleHires && !hasMultipleHires(j)) return false;
+  const application = applicationRecord(j.id);
+  if(s.applicationStatus==="recorded" && !applicationRecords[j.id]) return false;
+  if(!["all","recorded"].includes(s.applicationStatus) && application.status!==s.applicationStatus) return false;
   return true;
 }
 
@@ -1177,11 +1235,12 @@ function companyMatches(c, overrides={}){
   if(q && !c.name.toLowerCase().includes(q)) return false;
   if(s.researchView==='with' && companyJobs(c.name).length===0) return false;
   if(s.researchView==='without' && companyJobs(c.name).length>0) return false;
-  const matchedJobs = companyJobs(c.name).filter(j=>(!s.type.length || s.type.includes(j.type)) && (!s.aiOnly || hasAiRequirement(j)) && (!s.multipleHires || hasMultipleHires(j)));
+  const matchedJobs = companyJobs(c.name).filter(j=>jobPasses(j,s));
   if(s.ind.length && !s.ind.includes(c.industry)) return false;
   if(s.type.length && matchedJobs.length===0) return false;
   if(s.aiOnly && matchedJobs.length===0) return false;
   if(s.multipleHires && matchedJobs.length===0) return false;
+  if(s.applicationStatus!=="all" && matchedJobs.length===0) return false;
   return true;
 }
 
@@ -1254,6 +1313,23 @@ function renderSidebar(){
   }).join("");
 }
 
+function renderTrackerOverview(){
+  const counts = CampusTracker.summary(applicationRecords);
+  $("tracker-overview").innerHTML = `
+    <div class="tracker-intro"><strong>我的投递</strong><span>记录只保存在当前浏览器，不进入访问统计。</span></div>
+    <div class="tracker-stat"><b>${counts.planned}</b><span>计划投递</span></div>
+    <div class="tracker-stat"><b>${counts.active}</b><span>进行中</span></div>
+    <div class="tracker-stat"><b>${counts.offer}</b><span>已录用</span></div>
+    <div class="tracker-stat"><b>${counts.ended}</b><span>已结束</span></div>
+    <label class="tracker-filter-wrap">
+      <select class="tracker-filter" id="application-status-filter" aria-label="按我的投递状态筛选">
+        <option value="all" ${state.applicationStatus==='all'?'selected':''}>全部岗位</option>
+        <option value="recorded" ${state.applicationStatus==='recorded'?'selected':''}>已记录（${counts.recorded}）</option>
+        ${CampusTracker.STATUS_OPTIONS.filter(item=>item.value).map(item=>`<option value="${item.value}" ${state.applicationStatus===item.value?'selected':''}>${item.label}</option>`).join('')}
+      </select>
+    </label>`;
+}
+
 function renderList(){
   const list = filters();
   $("listCount").textContent = `${new Set(list.map(j=>j.co)).size} 家公司 · ${list.length} 个用研岗位`;
@@ -1265,16 +1341,22 @@ function renderList(){
   if(state.aiOnly) chips.push({v:'有 AI 要求',typ:'aiOnly'});
   if(state.multipleHires) chips.push({v:'岗位需求多于 1 人',typ:'multipleHires'});
   if(state.companyStatus!=="all") chips.push({v:state.companyStatus==='special'?'技术专项':state.companyStatus==='pending'?'正式批待确认':'已开启校招',typ:'companyStatus'});
+  if(state.applicationStatus!=="all") chips.push({v:state.applicationStatus==='recorded'?'我的已记录岗位':CampusTracker.statusLabel(state.applicationStatus),typ:'applicationStatus'});
   $("activeChips").innerHTML = chips.map(({v,typ})=>`<span class="chip">${v}<span class="x" data-clear="${typ}" data-v="${v}">×</span></span>`).join("");
 
-  $("list").innerHTML = list.length ? list.map(j=>`
+  $("list").innerHTML = list.length ? list.map(j=>{
+    const application = applicationRecord(j.id);
+    return `
     <div class="job" onclick="openDetail('${j.id}')">
       <div class="job-top">
         <div>
           <div class="job-co">${j.co}</div>
           <h4>${j.title}</h4>
         </div>
-        <div class="job-go">查看详情 →</div>
+        <div class="job-actions">
+          <select class="job-status-select" data-job-status="${j.id}" onclick="event.stopPropagation()" aria-label="记录 ${escapeHtml(j.co)} ${escapeHtml(j.title)} 的投递状态">${statusOptions(application.status)}</select>
+          <div class="job-go">查看详情 →</div>
+        </div>
       </div>
       <div class="job-tags">
         <span class="tag">${j.industry}</span>
@@ -1283,8 +1365,9 @@ function renderList(){
         ${j.flags.map(f=>`<span class="tag t-flag">${f}</span>`).join('')}
       </div>
       <p>${j.tagline}</p>
-      <div class="job-foot"><span>${j.co} · ${j.loc}</span><span>${j.degree}</span></div>
-    </div>`).join("")
+      <div class="job-foot"><span>${j.co} · ${j.loc}</span><span>${application.plannedDate?`<span class="job-plan-date">计划 ${escapeHtml(application.plannedDate)}</span> · `:''}${j.degree}</span></div>
+    </div>`;
+  }).join("")
     : `<div class="empty"><h4>${state.company.length ? escapeHtml(state.company.join('、'))+'：暂无匹配的用研岗位' : '当前范围暂无可核验的用研岗位'}</h4><p>校招开启不代表已发布用研岗。可取消公司选择，或调整筛选条件。</p></div>`;
 }
 
@@ -1311,10 +1394,11 @@ function formatJd(text, highlightAi=false){
   }).join("");
 }
 
-function renderDetail(id){
+function renderDetail(id, trackView=true){
   const j = JOBS.find(x=>x.id===id);
   if(!j) return;
-  window.campusTrack?.('岗位详情查看', {company:j.co,job_id:j.id,job_title:j.title,type:j.type});
+  const application = applicationRecord(id);
+  if(trackView) window.campusTrack?.('岗位详情查看', {company:j.co,job_id:j.id,job_title:j.title,type:j.type});
   document.querySelector("#view-list").style.display="none";
   $("view-detail").style.display="block";
   window.scrollTo(0,0);
@@ -1356,6 +1440,28 @@ function renderDetail(id){
         </div>
       </div>
       <div>
+        <div class="aside-card">
+          <div class="kicker">我的投递记录</div>
+          <form class="tracker-form" data-tracker-form="${j.id}">
+            <label class="tracker-field">当前进度
+              <select name="status">${statusOptions(application.status)}</select>
+            </label>
+            <label class="tracker-field">计划投递日期
+              <input type="date" name="plannedDate" value="${escapeHtml(application.plannedDate)}">
+            </label>
+            <label class="tracker-field">实际投递日期
+              <input type="date" name="appliedDate" value="${escapeHtml(application.appliedDate)}">
+            </label>
+            <label class="tracker-field wide">备注
+              <textarea name="note" maxlength="2000" placeholder="例如：作品集待补充、内推联系人、下一轮准备事项">${escapeHtml(application.note)}</textarea>
+            </label>
+            <div class="tracker-form-actions">
+              <button class="tracker-save" type="submit">保存记录</button>
+              ${applicationRecords[id]?`<button class="tracker-clear" type="button" data-clear-application="${j.id}">清除</button>`:''}
+              <span class="tracker-private">仅存于当前浏览器</span>
+            </div>
+          </form>
+        </div>
         <div class="aside-card">
           <div class="kicker">岗位分析</div>
           ${bulletList(j.analysis)}
@@ -1407,6 +1513,12 @@ document.addEventListener("click", e=>{
     const j = JOBS.find(x=>x.id===detailIdFromHash());
     if(j) window.campusTrack?.('官方投递点击',{company:j.co,job_id:j.id,job_title:j.title});
   }
+  const clearApplication = e.target.closest("[data-clear-application]");
+  if(clearApplication){
+    const id = clearApplication.dataset.clearApplication;
+    applicationRecords = CampusTracker.remove(applicationRecords, id, window.localStorage);
+    renderTrackerOverview(); renderCompanies(); renderSidebar(); renderList(); renderDetail(id,false); return;
+  }
   const companyToggle = e.target.closest("[data-company-toggle]");
   if(companyToggle){
     state.companyExpanded = !state.companyExpanded;
@@ -1449,12 +1561,24 @@ document.addEventListener("click", e=>{
     else if(clear.dataset.clear==='aiOnly') state.aiOnly = false;
     else if(clear.dataset.clear==='multipleHires') state.multipleHires = false;
     else if(clear.dataset.clear==='companyStatus') state.companyStatus = 'all';
+    else if(clear.dataset.clear==='applicationStatus') state.applicationStatus = 'all';
     else state[clear.dataset.clear] = state[clear.dataset.clear].filter(x=>x!==clear.dataset.v);
-    renderCompanies(); renderSidebar(); renderList(); return;
+    renderCompanies(); renderSidebar(); renderTrackerOverview(); renderList(); return;
   }
 });
 
 document.addEventListener("change", e=>{
+  if(e.target.matches("[data-job-status]")){
+    const id = e.target.dataset.jobStatus;
+    const patch = {status:e.target.value};
+    if(e.target.value==='applied' && !applicationRecord(id).appliedDate) patch.appliedDate = localDateString();
+    updateApplication(id, patch);
+    renderTrackerOverview(); renderCompanies(); renderSidebar(); renderList(); return;
+  }
+  if(e.target.matches("#application-status-filter")){
+    state.applicationStatus = e.target.value;
+    renderCompanies(); renderSidebar(); renderTrackerOverview(); renderList(); return;
+  }
   if(e.target.matches("#job-multiple-hires")){
     state.multipleHires = e.target.checked;
     window.campusTrack?.('筛选使用',{filter:'岗位需求多于1人',selected:e.target.checked});
@@ -1465,6 +1589,20 @@ document.addEventListener("change", e=>{
     window.campusTrack?.('筛选使用',{filter:'有AI要求',selected:e.target.checked});
     renderCompanies(); renderSidebar(); renderList(); return;
   }
+});
+
+document.addEventListener("submit", e=>{
+  const form = e.target.closest("[data-tracker-form]");
+  if(!form) return;
+  e.preventDefault();
+  const id = form.dataset.trackerForm;
+  const values = Object.fromEntries(new FormData(form).entries());
+  if(!values.status && values.appliedDate) values.status = "applied";
+  else if(!values.status && values.plannedDate) values.status = "planned";
+  updateApplication(id, values);
+  renderTrackerOverview(); renderCompanies(); renderSidebar(); renderList(); renderDetail(id,false);
+  const button = document.querySelector(`[data-tracker-form="${id}"] .tracker-save`);
+  if(button) button.textContent = "已保存";
 });
 
 $("company-search").addEventListener("input", e=>{
@@ -1500,12 +1638,14 @@ if(initialDetailId && JOBS.some(j=>j.id===initialDetailId)){
   window.history.pushState({view:"detail",id:initialDetailId},"",detailHash(initialDetailId));
   renderSidebar();
   renderCompanies();
+  renderTrackerOverview();
   renderList();
   renderDetail(initialDetailId);
 }else{
   window.history.replaceState({view:"list"},"",baseUrl);
   renderSidebar();
   renderCompanies();
+  renderTrackerOverview();
   renderList();
 }
 </script>
