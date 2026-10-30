@@ -6,6 +6,15 @@
 <title>2027 届校招·用户研究/市场研究岗位库</title>
 <script src="analytics.js" defer></script>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="f7c7d87b-d6c4-4c7a-ad55-0f55f9a56d96" data-auto-track="false" data-domains="huangzhenhao90.github.io" data-exclude-search="true" data-exclude-hash="true" onload="initCampusAnalytics()"></script>
+<script>
+var _hmt=_hmt||[];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?83c75a4bd0be4caa753d999c2313e715";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 <style>
   :root{
     --paper:#f5f6fa;
@@ -1447,9 +1456,19 @@ function detailIdFromHash(){
   try{return decodeURIComponent(match[1]);}catch{return null;}
 }
 
+// hm.js 会在加载时记首屏。初始化里的 replaceState/pushState 只是还原落地 URL，不能再记一次。
+function trackBaiduPageview(){
+  if(typeof _hmt === "undefined" || !_hmt || typeof _hmt.push !== "function") return;
+  const path = location.pathname + location.search + location.hash;
+  _hmt.push(["_trackPageview", path]);
+}
+
 function openDetail(id, push=true){
   if(!JOBS.some(j=>j.id===id)) return;
-  if(push) window.history.pushState({view:"detail",id}, "", detailHash(id));
+  if(push){
+    window.history.pushState({view:"detail",id}, "", detailHash(id));
+    trackBaiduPageview();
+  }
   renderDetail(id);
 }
 
@@ -1467,6 +1486,7 @@ window.addEventListener("popstate", ()=>{
   const id = detailIdFromHash();
   if(id && JOBS.some(j=>j.id===id)) openDetail(id,false);
   else showList(true);
+  trackBaiduPageview();
 });
 
 /* ---------------- 事件 ---------------- */
