@@ -1,0 +1,76 @@
+# 2027届用研校招岗位库更新说明
+
+2026 年 11 月 4 日
+
+本次从 47 个正式校招岗位中移出 7 个已下线岗位。更新后，岗位列表保留 **31 家公司的 40 个岗位**。观察池仍有 71 家公司或业务主体，其中 62 家曾开启本届正式校招。
+
+## 哪些岗位下线了？
+
+| 公司 | 岗位 | 官网核查结果 |
+| --- | --- | --- |
+| vivo | [市场与用户研究经理](https://hr-campus.vivo.com/campus/detail?jobAdId=3a079cac-f687-4461-898c-80dad1f0b2c2) | 官网提示「当前职位已停止招聘」。 |
+| vivo | [用户研究经理（IOT 方向）](https://hr-campus.vivo.com/campus/detail?jobAdId=40d705f1-3fbb-40b2-b1d6-7e7426d4d3e8) | 官网提示「当前职位已停止招聘」。 |
+| vivo | [市场与用户洞察经理（设计方向）](https://hr-campus.vivo.com/campus/detail?jobAdId=f95165e5-cf47-43ff-aaa4-8f8e523ab7d9) | 官网提示「当前职位已停止招聘」。 |
+| vivo | [人因研究工程师](https://hr-campus.vivo.com/campus/detail?jobAdId=f79e8d80-10a8-4131-b37b-3121c68b29f4) | 官网提示「当前职位已停止招聘」。 |
+| vivo | [用户体验工程师](https://hr-campus.vivo.com/campus/detail?jobAdId=b26d7ff9-ed12-4636-b5c6-73127f5877f5) | 官网提示「当前职位已停止招聘」。 |
+| 联想 | [用户研究](https://talent.lenovo.com.cn/position/detail?id=2397) | 官网提示「该岗位已下线」。 |
+| 蔚来 | [校招-人因研究工程师（整车体验方向）](https://nio.jobs.feishu.cn/campus/position/7678976038874073387/detail) | 官网提示「该职位已下线」。 |
+
+
+这 7 条均来自 11 月 3 日以前已收录的岗位。联想的职位介绍仍然可读，具体职位 2397 的页底已写明下线。历史岗位保留原站详情，读者仍可以查看当时的职责和要求。
+
+## 保留下来的 40 个岗位
+
+核查覆盖 11 月 3 日列表中的全部 47 条，包括原有的 34 条和当日新增的 13 条。原有岗位保留 27 条，新增的 13 条全部保留。下表链接通往招聘方，按 11 月 4 日实际看到的页面记录。百度的岗位正文可由官网读取，浏览器投递入口仍待确认。各岗的剩余名额和简历提交结果未作验证。
+
+| 公司 | 岗位 | 官网所见 |
+| --- | --- | --- |
+| OPPO | [用户研究经理](https://careers.oppo.com/university/oppo/campus/post/1837?recruitType=Graduate) | 职位详情及申请入口可见。 |
+| 东风研发总院 | [用户洞察及感知岗](https://app.mokahr.com/campus-recruitment/dfmc/168424#/job/8660d344-5288-4cea-90a0-af7e3de8ab6e) | 职位详情及申请入口可见。 |
+| 九号公司 | [用户研究专员（电动车）](https://join.ninebot.com/campus-recruitment/ninebot/45627#/job/5ccfd678-fbd5-4acb-a8f2-a8fcfe538990) | 职位详情及申请入口可见。 |
+| 京东 | [用户研究](https://campus.jd.com/#/details?id=9062) | 职位详情及申请入口可见。 |
+| 传音控股 | [用户体验测试工程师（J20266）](https://transsion.zhiye.com/campus/detail?jobAdId=b7a70b58-c3ca-4155-875b-cdcc15c1f492) | 职位详情及申请入口可见。 |
+| 北汽集团 | [客户研究岗（J13950）](https://baicgroup.zhiye.com/campus/detail?jobAdId=c92409f5-fb77-40c5-8319-2f7eab5b68b6) | 职位详情及申请入口可见。 |
+| 北汽集团 | [市场研究岗（J13818）](https://baicgroup.zhiye.com/campus/detail?jobAdId=07135a47-3792-46d8-8b2e-dfd911be05bd) | 职位详情及申请入口可见。 |
+| 华为 | [人因与用户体验工程师](https://career.huawei.com/cn/job-details?advertisementId=36394) | 职位详情及申请入口可见。 |
+| 多益网络 | [用户研究分析师](https://xz.duoyi.com/v40/#/positions?recruit=10&outerTypeId=107&pageIndex=1&pageSize=15) | 官方列表列有该岗，展开可读职责、要求及工作城市。 |
+| 奇瑞汽车 | [市场研究助理（J34220）](https://chery.zhiye.com/campus/detail?jobAdId=3757eb27-3164-41c4-b3a4-5d912f23791b) | 职位详情及申请入口可见。 |
+| 奇瑞汽车 | [市场助理（市场研究方向）（J33873）](https://chery.zhiye.com/campus/detail?jobAdId=f84973d6-ba32-4f05-8a1d-5d10da093e02) | 职位详情及申请入口可见。 |
+| 奇瑞汽车 | [用户研究专员（J33494）](https://chery.zhiye.com/campus/detail?jobAdId=df88452c-7d5f-4798-8440-497f9af5de17) | 职位详情及申请入口可见。 |
+| 奇瑞汽车 | [用户体验评价助理工程师（座舱方向）（J33251）](https://chery.zhiye.com/campus/detail?jobAdId=e0a5ae26-6b66-49ba-9149-eb5c5fc1f330) | 职位详情及申请入口可见。 |
+| 字节跳动 | [用户研究分析师（经营办公室·用户研究）](https://jobs.bytedance.com/campus/position/7667609460127516933/detail) | 职位详情及申请入口可见。 |
+| 小米 | [用户研究员-汽车](https://xiaomi.jobs.f.mioffice.cn/campus/position/7698324239817394473/detail) | 职位详情及申请入口可见。 |
+| 小红书 | [【2027校招】用户研究](https://job.xiaohongshu.com/campus/position/22197) | 职位详情及申请入口可见。 |
+| 度小满 | [用户研究工程师（AI方向）](https://campus.duxiaoman.com/051736/position/7673439632847620395/detail) | 职位详情及申请入口可见。 |
+| 度小满 | [用户研究工程师](https://campus.duxiaoman.com/051736/position/7673438671031257394/detail) | 职位详情及申请入口可见。 |
+| 快手 | [用户研究员](https://campus.kuaishou.cn/recruit/campus/e/#/campus/job-info/13329) | 职位页可读，隐私协议未勾选时投递按钮不可用。 |
+| 星辉游戏 | [市场分析专员（27届秋招）](https://rastargame.jobs.feishu.cn/066491/position/7668142500657662217/detail) | 职位详情及申请入口可见。 |
+| 百度 | [用户研究员](https://talent.baidu.com/jobs/detail/GRADUATE/b6d4fb04-cfd2-43f4-bf7f-12115a53eb54) | 官网返回了 J100749 的职责和申请控件；浏览器打开后为空白，投递入口待确认。 |
+| 盛趣游戏 | [2027届秋招-游戏用户研究](https://app.mokahr.com/campus-recruitment/shengqu/96336#/job/1046bae2-328b-4589-aa46-ded81dc00045) | 职位详情及申请入口可见。 |
+| 科大讯飞 | [用户研究工程师（J13716）](https://iflytek.zhiye.com/campus/detail?jobAdId=409bea0e-bcad-4d9a-86bc-7cbe3be590e3) | 职位详情及申请入口可见。 |
+| 米哈游 | [用户研究](https://jobs.mihoyo.com/#/campus/position/9123) | 职位详情及申请入口可见。 |
+| 网易雷火 | [UX用户体验管培生（用户研究与玩家社区方向）](https://campus.163.com/app/detail/index?id=4785&projectId=77&channel=iSfFmJe) | 职位详情及申请入口可见。 |
+| 美团 | [人因研究员](https://zhaopin.meituan.com/web/position/detail?jobUnionId=4697268278&recruitType=2) | 职位详情及申请入口可见。 |
+| 美的集团 | [用户研究工程师](https://careers.midea.com/schoolOut/post/details?positionId=8b8b37fba029732301a042888eca0c55) | 职位详情及申请入口可见。 |
+| 腾讯 | [用户研究](https://join.qq.com/post_detail.html?postid=1283878533483275264) | 职位详情及申请入口可见。 |
+| 荣耀 | [用户研究代表](https://career.honor.com/SU60ee9e002f9d247b98da489e/mc/detail?distance=0&postId=6a83c53943154813049f2283&recruitType=campus) | 职位详情及申请入口可见。 |
+| 莉莉丝游戏 | [战略研究员](https://lilithgames.jobs.feishu.cn/campus/position/7672234461387884846/detail) | 职位详情及申请入口可见。 |
+| 贝泰妮集团 | [消费者洞察管培生](https://app.mokahr.com/campus-recruitment/botanee/95426#/job/88f10adb-63c7-4828-938c-6501f59a9027) | 职位详情及申请入口可见。 |
+| 赛力斯（问界） | [用户研究助理工程师（J20803）](https://sokon.zhiye.com/campus/detail?jobAdId=efb7bfa1-9d6b-4076-8262-68e1a50a3810) | 职位详情及申请入口可见。 |
+| 赛力斯（问界） | [NPS管控类（J21001）](https://sokon.zhiye.com/campus/detail?jobAdId=985f0254-9d5e-48d0-89f5-9a472d75ae61) | 职位详情及申请入口可见。 |
+| 长安汽车 | [股份本部·人群研究](https://changan.zhiye.com/campus/detail?jobAdId=bc13149f-b0d2-4d9e-9b61-5b8de79a5141) | 职位详情及申请入口可见。 |
+| 长安汽车 | [股份本部·客户调研](https://changan.zhiye.com/campus/detail?jobAdId=bc480706-9f58-421a-87a9-c4e94fb8276d) | 职位详情及申请入口可见。 |
+| 长安汽车 | [股份本部·客户体验研究](https://changan.zhiye.com/campus/detail?jobAdId=4c979f26-01c3-4407-aece-42f64d6f07f4) | 职位详情及申请入口可见。 |
+| 阿里巴巴 | [国际体验运营-小语种](https://campus-talent.alibaba.com/campus/position/199907640018?deptCodes=) | 官网列有在招业务及加入意向单入口。 |
+| 韶音 | [27届正式批-用户与市场研究员](https://app.mokahr.com/campus-recruitment/aftershokzhr/36940#/job/98813c37-9fee-4f17-877c-03a196468782) | 职位详情及申请入口可见。 |
+| 韶音 | [27届正式批-用户研究（大健康）](https://app.mokahr.com/campus-recruitment/aftershokzhr/36940#/job/c33ca25e-7672-49cc-a19d-25b592e53bae) | 职位详情及申请入口可见。 |
+| 龙湖集团 | [客户洞察](https://xiaoyuan.zhaopin.com/job/CC375739230J40865430111?productId=1&channelId=9001) | 职位详情及申请入口可见。 |
+
+## 上次已归档的 2 条
+
+- 小鹏汽车 · [用户研究培训生](https://xiaopeng.jobs.feishu.cn/398875/position/7658239811220343049/detail)。官网提示「该职位已下线」。
+- 合合信息 · [27届校招-用户研究（J14391）](https://intsig.zhiye.com/campus/detail?jobAdId=cb7b4220-4e8e-4d14-99a6-0f7fa58ba6a9)。官网提示「当前职位已停止招聘」。
+
+两条继续保留历史详情，本次没有重复扣减。本站历史归档累计 9 条。
+
+[打开站内更新说明](https://huangzhenhao90.github.io/uxr-campus-2027/#review-20261104)
