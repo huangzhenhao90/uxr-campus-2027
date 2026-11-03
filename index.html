@@ -533,7 +533,9 @@ var _hmt=_hmt||[];
               <ul>
                 <li>得物 · <a href="https://poizon.jobs.feishu.cn/578078/position/7685976792059185471/detail" target="_blank" rel="noopener">交易履约体验运营</a>（上海）。该岗用用户原声和 NPS 改善收货体验，归在运营类，与「供应链用户体验」描述相近。</li>
                 <li>哔哩哔哩的<a href="https://www.job.sjtu.edu.cn/career/xjhxx/view/241948308476661760" target="_blank" rel="noopener">校招宣讲简章</a>列有项目管理（技术线）；中国移动的<a href="https://career.nankai.edu.cn/correcruit/content/id/118222.html" target="_blank" rel="noopener">校招简章</a>列有人力资源管理。</li>
-                <li>携程服务运营、字节体验运营、作业帮战略、联想战略、海信用户运营、中粮人力均按原描述保留，未确认与个人投递相符的具体职位。联想已收录的用户研究与这里的战略岗分别处理。</li>
+                <li>字节跳动 · <a href="https://jobs.bytedance.com/campus/position/7699025234063755525/detail" target="_blank" rel="noopener">商家体验运营（抖音电商）</a>，北京、上海。职责是商家发货履约治理与体验改善。联想<a href="https://talent.lenovo.com.cn/position" target="_blank" rel="noopener">应届生职位列表</a>另列北京的战略运营。这些是可查的相近岗位。</li>
+                <li>携程的公开职位记录列有上海的<a href="https://www.mianshima.com/job/10/MJ036686" target="_blank" rel="noopener">流程管理（用户体验方向），MJ036686</a>，归属服务运营，当前投递状态待官网确认。</li>
+                <li>作业帮的<a href="https://career.hebut.edu.cn/home/correcruit/content/id/79113.html" target="_blank" rel="noopener">2027届简章</a>在运营类列有行业分析，未确认截图中的战略岗。中粮<a href="https://job.xidian.edu.cn/teachin/view/id/127258" target="_blank" rel="noopener">校招简章</a>列有人事行政类，具体用人单位未明。海信的<a href="https://career.nankai.edu.cn/recruitment/content/type/2/id/6042.html" target="_blank" rel="noopener">集团校招简章</a>可查，用户运营的独立岗位详情待核。</li>
                 <li>农业银行、工商银行只提到笔试，未提供岗位名称。</li>
               </ul>
             </div>
@@ -1982,10 +1984,15 @@ if(initialDetailId && lookupJob(initialDetailId)){
   renderList();
   renderDetail(initialDetailId);
 }else{
-  window.history.replaceState({view:"list"},"",baseUrl);
+  const reviewRequested = window.location.hash === "#nov-review";
+  window.history.replaceState({view:"list"},"",reviewRequested ? baseUrl + "#nov-review" : baseUrl);
   renderSidebar();
   renderCompanies();
   renderList();
+  if(reviewRequested){
+    $("nov-review").open = true;
+    $("nov-review").scrollIntoView();
+  }
 }
 </script>
 </body>
